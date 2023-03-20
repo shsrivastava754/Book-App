@@ -11,32 +11,37 @@ const Form = (props) => {
     const [price, setprice] = useState("");
     const [description, setdescription] = useState("");
     const [status, setstatus] = useState("");
+    const [quantity, setquantity] = useState("");
 
     const formSubmit = (e)=>{
         e.preventDefault();
 
-        if(!title || !author || !price || !description || !status){
+        if(!title || !author || !price || !description || !status || !quantity){
             alert("All fields are mandatory");
         }
 
         else{
-            addBook(title,author,price,description,status).then(()=>history('/'));
+            addBook(title,author,price,description,status,quantity).then(()=>history('/'));
             settitle("");
             setauthor("");
             setprice("");
             setdescription("");
             setstatus("");
+            setquantity("");
         }
 
     };
 
-    const addBook = async(title,author,price,description,status)=>{
+    const addBook = async(title,author,price,description,status,quantity)=>{
+        console.log(quantity);
+
         await axios.post('http://localhost:3001/',{
             title: title,
             author: author,
             price: price,
             description: description,
-            status: status
+            status: status,
+            quantity: quantity
         }).then((res)=>res.data);
     }
 
@@ -55,6 +60,10 @@ const Form = (props) => {
             <div className="mb-3">
                 <label htmlFor="price" className="form-label">Price</label>
                 <input type="number" value={price} className="form-control" id="price" onChange={(e)=>{setprice(e.target.value)}} />
+            </div>
+            <div className="mb-3">
+                <label htmlFor="price" className="form-label">Quantity</label>
+                <input type="number" value={quantity} className="form-control" id="quantity" onChange={(e)=>{setquantity(e.target.value)}} />
             </div>
             <div className="mb-3">
                 <label htmlFor="price" className="form-label">Status</label>

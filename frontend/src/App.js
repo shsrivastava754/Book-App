@@ -1,6 +1,8 @@
 import Header from "./components/Header";
 import Booklist from "./components/Booklist";
 import Form from "./components/Form";
+import BookDetails from "./components/BookDetails";
+import EditBook from "./components/EditBook";
 
 import {
   BrowserRouter,
@@ -9,51 +11,23 @@ import {
 } from "react-router-dom";
 
 function App() {
-  // const [books, setbooks] = useState(
-  //   [
-  //     {
-  //       title: "Book 1",
-  //       author: "Shaan Srivastava",
-  //       price: 447,
-  //       description: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature"
-  //     },
-  //     {
-  //       title: "Book 2",
-  //       author: "Jwuqwojn kubhkwejbn",
-  //       price: 247,
-  //       description: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature"
-  //     },
-  //     {
-  //       title: "Book 3",
-  //       author: "WFweik wkjnfwe",
-  //       price: 292,
-  //       description: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature"
-  //     },
-  //     {
-  //       title: "Book 4",
-  //       author: "Awkedu ewkjnew",
-  //       price: 1010,
-  //       description: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature"
-  //     }
 
-  //   ]
-
-    // );
-    
   let deleteBook = (book)=>{
     console.log("Delete book called!!");
   };
 
-  let editBook = (book)=>{
-    console.log("Edititng");
+  let editBook = (id)=>{
+    console.log(id);
   }
   
   return (
     <BrowserRouter>
       <Header/>
       <Routes>
-        <Route path="/" element={<Booklist deleteBook={deleteBook} editBook={editBook} />} /> 
-        <Route path="/addBook" element={<Form/>} />
+        <Route path="/" element={<Booklist deleteBook={deleteBook} editBook={editBook}  exact />} /> 
+        <Route path="/addBook" element={<Form/>} exact />
+        <Route path="/:id" element={<BookDetails/>} exact />
+        <Route path="/books/:id" element={<EditBook/>} exact />
       </Routes>
     </BrowserRouter>
   );

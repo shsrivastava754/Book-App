@@ -39,7 +39,7 @@ const addBook = async(req,res)=>{
                 description:req.body.description,
                 price:req.body.price,
                 quantity:req.body.quantity,
-                status:req.body.status
+                status:"available"
             });
 
             await newBook.save();
@@ -57,8 +57,7 @@ const addBook = async(req,res)=>{
 
 // Function to get a book by id
 const getById = async(req,res)=>{
-    // req.params is the url sent during post
-    const id = req.params.id;
+    const id = req.params.id.slice(1);
     let book;
     try {
         book = await Books.findById(id);
@@ -75,6 +74,7 @@ const getById = async(req,res)=>{
 
 // Function to update a book
 const updateBook = async(req,res)=>{
+    // console.log(req.params.id);
     const id = req.params.id;
     let book;
 

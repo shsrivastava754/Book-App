@@ -1,7 +1,23 @@
 import React from 'react'
 import './style.css';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Book = (props) => {
+  const navigate = useNavigate();
+
+  const editBook = (book)=>{
+    navigate(`/books/${book._id}`);
+  };
+
+  const getDetails = (book)=>{
+    navigate(`/${book._id}`);
+  };
+
+  const deleteBook = (book)=>{
+    axios.delete(`http://localhost:3001/${book._id}`).then(res=>res.data).then(()=>navigate("/")).then(()=>navigate("/"));
+  }
+
   return (
     <tr>
       <td>{props.srno}</td>
@@ -14,7 +30,17 @@ const Book = (props) => {
           (props.book.status==="available" || String(props.book.status)==='1')? <span className='statusAvailable'>Available</span>: <span className='statusSold'>Sold</span>
         }
       </td>
-      <td><button className="btn btn-danger" onClick={()=>{props.deleteBook(props.book)}}>Delete</button><button className="btn btn-warning" onClick={()=>{props.editBook(props.book)}}>Edit</button></td>
+      <td>
+        <button className="btn btn-danger" onClick={()=>{deleteBook(props.book)}}>
+          <i className="fa-solid fa-trash"></i>
+        </button>
+        <button className="btn btn-warning" onClick={()=>{editBook(props.book)}}>
+          <i className="fa-solid fa-pen-to-square"></i>
+        </button>
+        <button className="btn btn-primary"  onClick={()=>{getDetails(props.book)}}>
+          <i className="fa-solid fa-circle-info"></i>
+        </button>
+      </td>
     </tr>
   )
 }

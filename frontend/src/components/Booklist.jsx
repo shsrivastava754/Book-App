@@ -37,7 +37,7 @@ const Booklist = (props) => {
             {
               books&&books.map((book)=>{
                 return (
-                <Book book={book} key={book.title} deleteBook={props.deleteBook} editBook={props.editBook} srno={books.indexOf(book)+1} />
+                <Book book={book} key={book.title} deleteBook={props.deleteBook} editBook={props.editBook} getDetails={props.getDetails} srno={books.indexOf(book)+1} />
                 )
               })
             }

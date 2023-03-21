@@ -64,7 +64,7 @@ const EditBook = () => {
         <form onSubmit={formSubmit}>
             <div className="mb-3">
                 <label htmlFor="title" className="form-label">Title</label>
-                <input type="text" value={book?.title} className="form-control" id="title" onChange={(e)=>{settitle(e.target.value)}} />
+                <input type="text" className="form-control" id="title" />
             </div>
             <div className="mb-3">
                 <label htmlFor="author" className="form-label">Author</label>

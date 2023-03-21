@@ -1,9 +1,16 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const BookDetails = () => {
+  const navigate = useNavigate();
+
+  const editBook = (book)=>{
+    navigate(`/books/${book._id}`);
+  };
+
     const id = useParams().id;
     const [book, setBook] = useState();
 
@@ -18,14 +25,15 @@ const BookDetails = () => {
     }, [])
     
   return (
-    <div className='container mt-4 formContainer p-4'>
+    <div className='container mt-4 detailsContainer p-4'>
         <h3 className='text-center'>Book Details</h3>
         <div className="details">
-            <h4>Title: {book?.title}</h4>
-            <h4>Author: {book?.author}</h4>
-            <h4>Description: {book?.description}</h4>
-            <h4>Status: {book?.status}</h4>
-            <h4>Price: {book?.price}</h4>
+            <h5><span>Title</span>: {book?.title}</h5>
+            <h5><span>Author</span>: {book?.author}</h5>
+            <h5 className='my-3 lh-base'><span>Description</span>: {book?.description}</h5>
+            <h5><span>Status</span>: {book?.status}</h5>
+            <h5><span>Price</span>: {book?.price}</h5>
+            <button className="btn" onClick={()=>{editBook(book)}}>Edit Details</button>
         </div>
     </div>
   )

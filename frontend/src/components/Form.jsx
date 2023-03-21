@@ -10,29 +10,29 @@ const Form = (props) => {
     const [author, setauthor] = useState("");
     const [price, setprice] = useState("");
     const [description, setdescription] = useState("");
-    const [status, setstatus] = useState("");
+    // const [status, setstatus] = useState("");
     const [quantity, setquantity] = useState("");
 
     const formSubmit = (e)=>{
         e.preventDefault();
 
-        if(!title || !author || !price || !description || !status || !quantity){
+        if(!title || !author || !price || !description || !quantity){
             alert("All fields are mandatory");
         }
 
         else{
-            addBook(title,author,price,description,status,quantity).then(()=>history('/'));
+            addBook(title,author,price,description,quantity).then(()=>history('/'));
             settitle("");
             setauthor("");
             setprice("");
             setdescription("");
-            setstatus("");
+            // setstatus("");
             setquantity("");
         }
 
     };
 
-    const addBook = async(title,author,price,description,status,quantity)=>{
+    const addBook = async(title,author,price,description,quantity)=>{
         console.log(quantity);
 
         await axios.post('http://localhost:3001/',{
@@ -40,7 +40,6 @@ const Form = (props) => {
             author: author,
             price: price,
             description: description,
-            status: status,
             quantity: quantity
         }).then((res)=>res.data);
     }
@@ -65,13 +64,13 @@ const Form = (props) => {
                 <label htmlFor="price" className="form-label">Quantity</label>
                 <input type="number" value={quantity} className="form-control" id="quantity" onChange={(e)=>{setquantity(e.target.value)}} />
             </div>
-            <div className="mb-3">
+            {/* <div className="mb-3">
                 <label htmlFor="price" className="form-label">Status</label>
                 <select className="form-select" id="status" onChange={(e)=>{setstatus(e.target.value)}} >
                     <option value="1">Available</option>
                     <option value="2">Sold</option>
                 </select>
-            </div>
+            </div> */}
             <div className="mb-3">
                 <label htmlFor="description" className="form-label">Description</label>
                 <textarea type="text" value={description} className="form-control" id="description" onChange={(e)=>{setdescription(e.target.value)}} />

@@ -11,6 +11,17 @@ const fetchHandler = async ()=>{
 
 const Booklist = (props) => {
   const [books, setBooks] = useState();
+  const [search, setSearch] = useState();
+
+  const handleSearch = ()=>{
+    if(search==null){
+      return books;
+    }
+
+    return books.filter((book)=>(     
+      book.author.toLowerCase().includes(search) || book.title.toLowerCase().includes(search)
+    ));
+  }
 
   useEffect(() => {
     fetchHandler().then((data)=>{
@@ -21,6 +32,7 @@ const Booklist = (props) => {
   return (
     <div className='container bookList'>
         <h3 className='text-center my-3'>Books List</h3>
+        <input className='searchBar' placeholder='Search here...' onChange={(e)=>setSearch(e.target.value)} />
         <table className="table table-striped table-dark">
         <thead>
           <tr>
@@ -28,16 +40,15 @@ const Booklist = (props) => {
             <th scope="col">Title</th>
             <th scope="col">Author</th>
             <th scope="col">Price</th>
-            <th scope="col">Description</th>
             <th scope="col">Status</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
             {
-              books&&books.map((book)=>{
+              handleSearch()&&handleSearch().map((book)=>{
                 return (
-                <Book book={book} key={book.title} deleteBook={props.deleteBook} editBook={props.editBook} getDetails={props.getDetails} srno={books.indexOf(book)+1} />
+                <Book book={book} key={book.title} srno={books.indexOf(book)+1} />
                 )
               })
             }

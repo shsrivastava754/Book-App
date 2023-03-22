@@ -7,6 +7,7 @@ import axios from 'axios';
 const BookDetails = () => {
   const navigate = useNavigate();
 
+  // Function for editing book details
   const editBook = (book)=>{
     navigate(`/books/${book._id}`);
   };

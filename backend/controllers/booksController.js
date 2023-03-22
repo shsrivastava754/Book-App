@@ -74,7 +74,6 @@ const getById = async(req,res)=>{
 
 // Function to update a book
 const updateBook = async(req,res)=>{
-    // console.log(req.params.id);
     const id = req.params.id;
     let book;
 

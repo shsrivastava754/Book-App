@@ -6,14 +6,17 @@ import axios from 'axios';
 const Book = (props) => {
   const navigate = useNavigate();
 
+  // Function for editing book details
   const editBook = (book)=>{
     navigate(`/books/${book._id}`);
   };
 
+  // Function for getting book details
   const getDetails = (book)=>{
     navigate(`/${book._id}`);
   };
 
+  // Function for deleting a book
   const deleteBook = (book)=>{
     axios.delete(`http://localhost:3001/${book._id}`).then(res=>res.data).then(()=>navigate("/")).then(()=>navigate("/"));
   };

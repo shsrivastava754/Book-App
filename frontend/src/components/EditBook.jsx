@@ -20,6 +20,7 @@ const EditBook = () => {
       });
     }, [])
 
+    // States for form fields
     const [title, settitle] = useState(book?.title);
     const [author, setauthor] = useState(book?.author);
     const [price, setprice] = useState(book?.price);
@@ -27,6 +28,7 @@ const EditBook = () => {
     const [status, setstatus] = useState(book?.status);
     const [quantity, setquantity] = useState(book?.quantity);
 
+    // Validate the form
     const formSubmit = (e)=>{
         e.preventDefault();
 
@@ -46,6 +48,7 @@ const EditBook = () => {
 
     };
 
+    // Sending put request to backend 
     const editBook = async(title,author,price,description,status,quantity)=>{
 
         await axios.put(`http://localhost:3001/${id}`,{

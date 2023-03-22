@@ -6,13 +6,14 @@ import { useNavigate } from 'react-router-dom';
 const Form = (props) => {
     const history = useNavigate();
 
+    // States for form fields
     const [title, settitle] = useState("");
     const [author, setauthor] = useState("");
     const [price, setprice] = useState("");
     const [description, setdescription] = useState("");
-    // const [status, setstatus] = useState("");
     const [quantity, setquantity] = useState("");
 
+    // Validating the form
     const formSubmit = (e)=>{
         e.preventDefault();
 
@@ -32,6 +33,7 @@ const Form = (props) => {
 
     };
 
+    // Sending post request to backend for adding book
     const addBook = async(title,author,price,description,quantity)=>{
         console.log(quantity);
 

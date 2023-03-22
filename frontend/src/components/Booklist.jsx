@@ -13,6 +13,7 @@ const Booklist = (props) => {
   const [books, setBooks] = useState();
   const [search, setSearch] = useState();
 
+  // Function to handle the search bar
   const handleSearch = ()=>{
     if(search==null){
       return books;

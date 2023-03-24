@@ -33,11 +33,11 @@ const EditBook = () => {
     const formSubmit = (e)=>{
         e.preventDefault();
 
-        if(!title || !author || !price || !description || !status || !quantity){
-            alert("All fields are mandatory");
-        }
+        // if(!title || !author || !price || !description || !status || !quantity){
+        //     alert("All fields are mandatory");
+        // }
 
-        else{
+        // else{
             editBook(title,author,price,description,status,quantity).then(()=>navigate('/'));
             settitle("");
             setauthor("");
@@ -45,7 +45,7 @@ const EditBook = () => {
             setdescription("");
             setstatus("");
             setquantity("");
-        }
+        // }
 
     };
 

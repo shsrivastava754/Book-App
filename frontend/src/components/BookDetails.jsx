@@ -9,7 +9,7 @@ const BookDetails = () => {
 
   // Function for editing book details
   const editBook = (book)=>{
-    navigate(`/books/${book._id}`);
+    navigate(`/books/${book._id}`,{state:{name:book.title,author: book.author,description: book.description,price: book.price,quantity: book.quantity}});
   };
 
     const id = useParams().id;

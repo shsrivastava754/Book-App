@@ -8,7 +8,7 @@ const Book = (props) => {
 
   // Function for editing book details
   const editBook = (book)=>{
-    navigate(`/books/${book._id}`);
+    navigate(`/books/${book._id}`,{state:{name:book.title,author: book.author,description: book.description,price: book.price,quantity: book.quantity}});
   };
 
   // Function for getting book details
@@ -18,7 +18,7 @@ const Book = (props) => {
 
   // Function for deleting a book
   const deleteBook = (book)=>{
-    axios.delete(`http://localhost:3001/${book._id}`).then(res=>res.data).then(()=>navigate("/")).then(()=>navigate("/"));
+    axios.delete(`http://localhost:3001/${book._id}`).then(()=>navigate("/addBook")).then(()=>navigate("/"));
   };
 
   return (

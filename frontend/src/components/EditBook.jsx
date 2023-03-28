@@ -38,7 +38,7 @@ const EditBook = () => {
         // }
 
         // else{
-            editBook(title,author,price,description,status,quantity).then(()=>navigate('/'));
+            editBook(title,author,price,description,status,quantity).then(()=>navigate('/books'));
             settitle("");
             setauthor("");
             setprice("");

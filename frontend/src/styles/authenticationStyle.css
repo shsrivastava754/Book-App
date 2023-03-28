@@ -1,0 +1,175 @@
+ .loginContainer h1, .registerContainer h1 {
+    text-align: center;
+    margin-top: 3rem;
+    color: #39AEA9;
+  }
+  
+  .loginContainer form, .registerContainer form {
+    width: 35rem;
+    margin: auto;
+    margin-top: 3rem;
+    box-sizing: border-box;
+    padding: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: 30rem;
+    border-radius: 10px;
+  }
+  
+  .mainForm {
+    margin-top: 3rem;
+  }
+  
+  .loginContainer input, .registerContainer input {
+    color: #0ff6eb;
+    font-weight: 500;
+    display: block;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid rgb(164, 194, 214);
+    font-size: 1.4rem;
+    padding: 5px;
+    width: 80%;
+    margin: auto;
+    background: none;
+  }
+  
+  .loginContainer ::placeholder, .registerContainer ::placeholder {
+    color: rgb(211, 222, 226);
+  }
+  
+  .loginForm input.username, .loginForm input.email {
+    margin-bottom: 50px;
+  }
+  
+  .registerForm input.username,
+  .registerForm input[type=email] {
+    margin-bottom: 30px;
+  }
+  
+  .registerForm input {
+    font-size: 1.4rem;
+  }
+  
+  .loginForm input.email{
+    display: none;
+  }
+  
+  .loginForm #usernameLogin{
+    display: none;
+  }
+  
+  .loginContainer form button.submitBtn, .registerContainer form button.submitBtn {
+    width: 80%;
+    margin-top: 30px;
+    margin-left: 54px;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 30px;
+    background-color: #39AEA9;
+    color: #fff;
+    outline: none;
+    border: none;
+    font-weight: 600;
+  }
+  
+  .loginContainer form button.submitBtn:hover:enabled, .registerContainer form button.submitBtn:hover:enabled {
+    color: #39AEA9;
+    background-color: #000000;
+    cursor: pointer;
+    border: #fff;
+  }
+  
+  .loginContainer .loginForm button.submitBtn, .registerContainer .loginForm button.submitBtn {
+    margin-top: 5rem;
+  }
+  
+  .loginContainer .submitBtn:disabled,
+  .loginContainer .submitBtn[disabled],
+  .registerContainer .submitBtn:disabled,
+  .registerContainer .submitBtn[disabled]
+  {
+  background-color: #dcd5d5;
+  color: #666666;
+  }
+  
+  .registerForm p {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 20px;
+  }
+  
+  .loginForm p {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 20px;
+  }
+  
+  .loginContainer a, .registerContainer a {
+    color: #e4e9eaea;
+    margin-left: 10px;
+  }
+  
+  .loginContainer input,
+  .loginContainer form,
+  .registerContainer input,
+  .registerContainer form
+  .mainForm,
+  .loginContainer form h2,
+  .registerContainer form h2,
+  .loginContainer p,
+  .registerContainer p,
+  .loginContainer a,
+  .registerContainer a {
+    background-color: rgb(97, 126, 124);
+  }
+  
+  @media screen and (max-width: 600px) {
+    .loginContainer form, .registerContainer form {
+        width: 25rem;
+    }
+  }
+  
+  @media screen and (max-width: 400px) {
+    .loginContainer form, .registerContainer form {
+        width: 20rem;
+    }
+  }
+  
+  .loginContainer span, .registerContainer span {
+    position: absolute;
+    top: 33%;
+    right: 4rem;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 17px;
+    background-color: #39AEA9;
+    color: #fff;
+    outline: none;
+    border: none;
+    font-weight: 400;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .registerForm span {
+    top: 43%;
+  }
+  
+  .loginContainer form, .registerContainer form {
+    position: relative;
+  }
+  
+  .mainForm a.loginMethod{
+    text-align: center;
+    display: block;
+    font-size: 20px;
+    margin: 20px;
+  }
+  
+  .loginMethod i{
+    color: #2dc9c1;
+    background-color: transparent;
+    margin-right: 10px;
+  }

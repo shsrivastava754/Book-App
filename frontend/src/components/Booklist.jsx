@@ -20,7 +20,7 @@ const Booklist = (props) => {
     }
 
     return books.filter((book)=>(     
-      book.author.toLowerCase().includes(search) || book.title.toLowerCase().includes(search)
+      book.author.toLowerCase().includes(search.trim()) || book.title.toLowerCase().includes(search.trim())
     ));
   }
 

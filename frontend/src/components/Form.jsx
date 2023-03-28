@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import './style.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Form = (props) => {
-    const history = useNavigate();
+    const navigate = useNavigate();
 
     // States for form fields
     const [title, settitle] = useState("");
@@ -22,15 +24,22 @@ const Form = (props) => {
         }
 
         else{
-            addBook(title,author,price,description,quantity).then(()=>history('/'));
+            addBook(title,author,price,description,quantity);
             settitle("");
             setauthor("");
             setprice("");
             setdescription("");
-            // setstatus("");
             setquantity("");
         }
 
+    };
+
+    const showToast = ()=>{
+        toast.success('Added book successfully');
+    };
+
+    const showerrorToast = ()=>{
+        toast.warning('Failed to add book');
     };
 
     // Sending post request to backend for adding book
@@ -43,7 +52,18 @@ const Form = (props) => {
             price: price,
             description: description,
             quantity: quantity
-        }).then((res)=>res.data);
+        // }).then((res)=>res.data);
+        })
+        // .then(navigate('/books'))
+        .then((res)=>{
+            if(res){
+                res = res.data;
+                showToast();
+            } else{
+                showerrorToast();
+            }
+        });
+
     }
 
   return (
@@ -66,19 +86,13 @@ const Form = (props) => {
                 <label htmlFor="price" className="form-label">Quantity</label>
                 <input type="number" value={quantity} className="form-control" id="quantity" onChange={(e)=>{setquantity(e.target.value)}} />
             </div>
-            {/* <div className="mb-3">
-                <label htmlFor="price" className="form-label">Status</label>
-                <select className="form-select" id="status" onChange={(e)=>{setstatus(e.target.value)}} >
-                    <option value="1">Available</option>
-                    <option value="2">Sold</option>
-                </select>
-            </div> */}
             <div className="mb-3">
                 <label htmlFor="description" className="form-label">Description</label>
                 <textarea type="text" value={description} className="form-control" id="description" onChange={(e)=>{setdescription(e.target.value)}} />
             </div>
             <button className="btn p-2">Add Book</button>
         </form>
+        <ToastContainer/>
     </div>
   )
 }

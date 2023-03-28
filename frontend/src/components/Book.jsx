@@ -18,7 +18,8 @@ const Book = (props) => {
 
   // Function for deleting a book
   const deleteBook = (book)=>{
-    axios.delete(`http://localhost:3001/${book._id}`).then(()=>navigate("/addBook")).then(()=>navigate("/"));
+    axios.delete(`http://localhost:3001/${book._id}`).then(()=>navigate("/books"));
+    window.location.reload();
   };
 
   return (

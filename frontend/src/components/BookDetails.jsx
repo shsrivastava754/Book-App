@@ -4,10 +4,18 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+
+/**
+ * 
+ * @returns {React.Component} Details of book
+ */
 const BookDetails = () => {
   const navigate = useNavigate();
 
-  // Function for editing book details
+  /**
+   * 
+   * @param {Object} book Book to be edited 
+   */
   const editBook = (book)=>{
     navigate(`/books/${book._id}`,{state:{name:book.title,author: book.author,description: book.description,price: book.price,quantity: book.quantity}});
   };

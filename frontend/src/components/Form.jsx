@@ -44,8 +44,6 @@ const Form = (props) => {
 
     // Sending post request to backend for adding book
     const addBook = async(title,author,price,description,quantity)=>{
-        console.log(quantity);
-
         await axios.post('http://localhost:3001/',{
             title: title,
             author: author,

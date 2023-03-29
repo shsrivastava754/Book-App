@@ -86,7 +86,7 @@
 }
 
 .searchBar{
-    width: 100%;
+    width: 50%;
     box-sizing: border-box;
     margin-bottom: 20px;
     padding: 10px;
@@ -100,3 +100,71 @@
     color: #38acde;
     font-weight: bolder;
 }
+
+.btnAdd{
+    width: 20%;
+    right: 0;
+    margin-left: 45px;
+}
+
+.bookList label{
+    margin-right: 10px;
+    margin-left: 30px;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.bookList select{
+    padding: 4px;
+    font-size: 17px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    width: 18%;
+}
+
+.bookList select:hover, .bookList option:hover{
+    cursor: pointer;
+}
+
+@media screen and (max-width: 1400px) {
+    .components{
+        display: flex;
+    }
+
+    .components select,.btnAdd{
+        max-height: 47.2px;
+    }
+  }
+
+  @media screen and (max-width: 992px) {
+    .components{
+        display: flex;
+    }
+
+    .components select,.btnAdd{
+        max-height: 57.2px;
+    }
+  }
+
+  @media screen and (max-width: 769px) {
+    .components{
+        display: flex;
+    }
+
+    .components label{
+        display: none;
+    }
+
+    .components select{
+        width: 30%;
+        margin-left: 10px;
+        margin-right: 0;
+        max-height: 47.2px;
+    }
+
+    .components .btnAdd{
+        height: 47.2px;
+        width: 28%;
+    }
+  }

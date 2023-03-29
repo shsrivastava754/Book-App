@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Book = (props) => {
@@ -24,7 +24,6 @@ const Book = (props) => {
 
   return (
     <tr>
-      <td>{props.srno}</td>
       <td>{props.book.title}</td>
       <td>{props.book.author}</td>
       <td>Rs. {props.book.price}</td>

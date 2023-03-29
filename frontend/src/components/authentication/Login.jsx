@@ -1,8 +1,16 @@
 import React from 'react'
 import '../../styles/authenticationStyle.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const login = () => {
+const Login = (props) => {
+    const [username, setusername] = useState("");
+    const [password, setpassword] = useState("");
+    let navigate = useNavigate();
+
     const handleToggle = ()=>{
         let pass = document.getElementById("password");
         let toggleBtn = document.getElementById("toggle");
@@ -18,25 +26,45 @@ const login = () => {
         }
     };
 
+    const login = async(e)=>{
+        e.preventDefault();
+
+        loginUser(username,password);
+        setusername("");
+        setpassword("");
+    }
+
+    const loginUser = async(username,password)=>{
+        try {
+            await axios.post('http://localhost:3001/login',{
+                username: username,
+                password: password,
+            });
+            props.setLogin(true);
+            localStorage.setItem("token",username);
+            navigate('/books');
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+    }
+
   return (
     <>
-    <div className='loginContainer'>
-        <h1>User Login</h1>
-
-        <form class="loginForm" action="/login" method="POST">
-            <div class="mainForm">
-                <input type="text" placeholder="Enter username" class="username" name="username" id="username" />
-                <input type="email" placeholder="Enter email" class="email" name="email" id="email" />
-                <input type="password" placeholder="Enter Password" name="password" id="password" />
-                <span class="fa-sharp fa-solid fa-eye toggle" id="toggle" onClick={handleToggle}></span>
-                <button type="submit" class="submitBtn" id="submitBtn">Login</button>
-
-                <p>New user? <Link to="/register">Register Here</Link></p>
-            </div>
+    <div className="login-card">
+        <h2>Login</h2>
+        <h3>Enter your credentials</h3>
+        <form className="login-form" onSubmit={login}>
+            <input type="text" placeholder='Username' name='username' id='username' value={username} onChange={(e)=>{setusername(e.target.value)}} />
+            <input type="password" placeholder='Password' name='password' id='password' value={password} onChange={(e)=>{setpassword(e.target.value)}} />
+            <span className="fa-sharp fa-solid fa-eye toggle" id="toggle" onClick={handleToggle}></span>
+            <Link to={"/register"}>Don't have an account?</Link>
+            <button type='submit' id='submitBtn'>Login</button>
         </form>
     </div>
+    <ToastContainer/>
+
     </>
   )
 }
 
-export default login
+export default Login;

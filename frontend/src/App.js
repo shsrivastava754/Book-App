@@ -23,7 +23,7 @@ function App() {
   
   return (
     <BrowserRouter>
-      {value !== null ?<Header/> : null}
+      {value !== null ?<Header setLogin={setLogin}/> : null}
       <Routes>
         <Route element={<PrivateRoutes/>}>
           <Route path="/books" element={<Booklist/>} exact />

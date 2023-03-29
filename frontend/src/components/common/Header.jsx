@@ -2,11 +2,12 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../style.css';
 
-const Header = () => {
+const Header = (props) => {
   const navigate = useNavigate();
 
   const logout = ()=>{
     localStorage.removeItem("token");
+    props.setLogin(true);
     navigate('/');
   }
 

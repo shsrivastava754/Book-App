@@ -36,12 +36,12 @@ const Login = (props) => {
 
     const loginUser = async(username,password)=>{
         try {
-            await axios.post('http://localhost:3001/login',{
+            let res = await axios.post('http://localhost:3001/login',{
                 username: username,
                 password: password,
             });
             props.setLogin(true);
-            localStorage.setItem("token",username);
+            localStorage.setItem("user",JSON.stringify(res.data.user));
             navigate('/books');
         } catch (error) {
             toast.error(error.response.data.message);

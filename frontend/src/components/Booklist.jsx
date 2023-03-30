@@ -3,6 +3,7 @@ import Book from './Book';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import './style.css';
+import {Link} from 'react-router-dom';
 
 const url = 'http://localhost:3001/';
 const fetchHandler = async ()=>{
@@ -61,18 +62,20 @@ const Booklist = (props) => {
   }, []);
 
   return (
+
+    <>
     <div className='container bookList'>
         <h3 className='text-center my-3'>Books List</h3>
         <div className="components">
           <input className='searchBar' placeholder='Search here...' onChange={(e)=>setSearch(e.target.value)} />
-          <label htmlFor="filterTable mx-2">Filter by:</label>
+          <label htmlFor="filterTable mx-2"style={{color:"#fff"}}>Filter by:</label>
           <select name="filterTable" id="filterTable" onChange={handleFilter}>
             <option value="0">No filter</option>
             <option value="1">Available</option>
             <option value="2">Ready to Pick</option>
             <option value="3">Sold</option>
           </select>
-          <button className='btn btn-success btnAdd'>Donate a Book</button>
+          <Link to='/addBook'><button className='btn btn-success btnAdd'>Donate a Book</button></Link>
         </div>
         <table className="table table-striped table-dark">
         <thead>
@@ -81,7 +84,9 @@ const Booklist = (props) => {
             <th scope="col">Author</th>
             <th scope="col">Price</th>
             <th scope="col">Status</th>
+            {JSON.parse(localStorage.getItem("user"))["role"]=='Admin'?
             <th scope="col">Action</th>
+             :null}
           </tr>
         </thead>
         <tbody>
@@ -95,6 +100,7 @@ const Booklist = (props) => {
         </tbody>
         </table>
     </div>
+    </>
   )
 }
 

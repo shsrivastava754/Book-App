@@ -18,7 +18,7 @@ function App() {
   const [login,setLogin] = useState(false);
 
   useEffect(() => {
-    setValue( localStorage.getItem("token")) ;
+    setValue( localStorage.getItem("user")) ;
   }, [login]);
   
   return (

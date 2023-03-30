@@ -3,14 +3,13 @@ import { Outlet, Navigate } from 'react-router-dom'
 
 const PrivateRoutes = () => {
     let flag;
-    if(localStorage.getItem("token")===null){
+    if(localStorage.getItem("user")===null){
         flag = false;
     } else {
         flag = true;
     }
-    let auth = {'token':flag};
   return (
-    auth.token ? <Outlet/> : <Navigate to="/login"/>
+    flag ? <Outlet/> : <Navigate to="/login"/>
   )
 }
 

@@ -6,6 +6,9 @@ import EditBook from "./components/EditBook";
 import Login from "./components/authentication/Login";
 import Register from "./components/authentication/Register";
 import PrivateRoutes from "./routes/PrivateRoutes";
+import ProtectLogin from "./routes/ProtectLogin";
+import ProtectAdmin from "./routes/ProtectAdmin";
+import Users from "./components/admin/Users";
 import {
   BrowserRouter,
   Routes,
@@ -31,9 +34,15 @@ function App() {
           <Route path="/:id" element={<BookDetails/>} exact />
           <Route path="/books/:id" element={<EditBook/>} exact />
         </Route>
-        <Route path="/" element={<Login setLogin={setLogin} />} exact /> 
-        <Route path="/login" element={<Login setLogin={setLogin} />} exact /> 
-        <Route path="/register" element={<Register/>} exact /> 
+        <Route element={<ProtectLogin/>}>
+          <Route path="/login" element={<Login setLogin={setLogin} />} exact /> 
+          <Route path="/register" element={<Register/>} exact /> 
+          <Route path="/" element={<Login setLogin={setLogin} />} exact /> 
+        </Route>
+
+        <Route element={<ProtectAdmin/>}>
+          <Route path="/users" element={<Users/>}/>
+        </Route>
       </Routes>
     </BrowserRouter>
   );

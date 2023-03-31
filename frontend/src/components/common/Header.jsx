@@ -26,6 +26,14 @@ const Header = (props) => {
               <li className="nav-item">
                 <Link className="nav-link" to="/books">Books</Link>
               </li>
+              {
+                localStorage.getItem("user")?
+                JSON.parse(localStorage.getItem("user"))["role"]==='Admin'?
+                <li className="nav-item">
+                  <Link className="nav-link" to="/users">Users</Link>
+                </li>
+                : null : null
+              }
             </ul>
           </div>
         </div>

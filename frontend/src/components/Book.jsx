@@ -17,14 +17,14 @@ const Book = (props) => {
   };
 
   const confirmDelete = (id)=>{
-    var modal = document.getElementById("myModal");
+    let modal = document.getElementById("myModal");
 
     // Get the button that opens the modal
-    var btn = document.getElementById(id);
+    let btn = document.getElementById(id);
 
     // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-    var deny = document.getElementsByClassName("btnConfirmNo")[0];
+    let span = document.getElementsByClassName("close")[0];
+    let deny = document.getElementsByClassName("btnConfirmNo")[0];
 
     // When the user clicks on the button, open the modal
     btn.onclick = function() {
@@ -59,10 +59,11 @@ const Book = (props) => {
 
   return (
     <>
-    <tr>
+    <tr onClick={()=>{getDetails(props.book)}}>
       <td>{props.book.title}</td>
       <td>{props.book.author}</td>
       <td>Rs. {props.book.price}</td>
+      <td>{"Shaan Srivastava"}</td>
       <td>
         {
           (props.book.status==="available" || String(props.book.status)==='1')? <span className='statusAvailable'>Available</span>: <span className='statusSold'>Sold</span>
@@ -78,9 +79,9 @@ const Book = (props) => {
         <button className="btn btn-warning mx-2 tooltips" onClick={()=>{editBook(props.book)}}>
           <i className="fa-solid fa-pen-to-square"></i><span class="tooltiptext">Edit Book</span>
         </button>
-        <button className="btn btn-primary mx-2 tooltips"  onClick={()=>{getDetails(props.book)}}>
+        {/* <button className="btn btn-primary mx-2 tooltips"  onClick={()=>{getDetails(props.book)}}>
           <i className="fa-solid fa-circle-info"></i><span class="tooltiptext">View Details</span>
-        </button>
+        </button> */}
       </td>
       : null}
     </tr>

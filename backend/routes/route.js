@@ -15,5 +15,6 @@ router.delete('/:id',booksController.deleteBook);
 // Routes for authentication of users
 router.post('/register',bodyParser,usersController.register);
 router.post('/login',bodyParser,usersController.login);
+router.get('/users/getUsers',usersController.getUsers);
 
 module.exports = router;

@@ -77,12 +77,13 @@ const Booklist = (props) => {
           </select>
           <Link to='/addBook'><button className='btn btn-success btnAdd'>Donate a Book</button></Link>
         </div>
-        <table className="table table-striped table-dark">
+        <table className="table table-borderless table-responsive booksTable">
         <thead>
           <tr>
             <th scope="col">Title</th>
             <th scope="col">Author</th>
             <th scope="col">Price</th>
+            <th scope='col'>Donated by</th>
             <th scope="col">Status</th>
             {JSON.parse(localStorage.getItem("user"))["role"]=='Admin'?
             <th scope="col">Action</th>

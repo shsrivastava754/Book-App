@@ -263,10 +263,9 @@
     }
   }
 
-.tooltips {
+  .tooltips {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted black;
   }
   
   .tooltips .tooltiptext {
@@ -283,4 +282,18 @@
   
   .tooltips:hover .tooltiptext {
     visibility: visible;
+  }
+
+  .table,.table-responsive{
+    background-color: #000;
+    color: #fff;
+  }
+
+  .table tr{
+    border-bottom: 1px solid rgb(118, 125, 130);
+  }
+
+  .table tbody tr:hover{
+    background-color: #495056;
+    cursor: pointer;
   }

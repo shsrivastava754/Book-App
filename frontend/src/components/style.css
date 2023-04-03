@@ -152,10 +152,10 @@
   }
 
   .modal-content {
-    background-color: #fefefe;
+    background-color: #4a5050 !important;
     margin: 15% auto;
     padding: 20px;
-    width: 50%;
+    width: 30%;
   }
   
   .close {
@@ -296,4 +296,14 @@
   .table tbody tr:hover{
     background-color: #495056;
     cursor: pointer;
+  }
+
+  footer {
+    padding:12px 10px;
+    background-color:#000;
+    color:grey;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
   }

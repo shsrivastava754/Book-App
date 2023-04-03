@@ -13,7 +13,8 @@ const Bookschema = new mongoose.Schema({
     quantity: Number,
     description: String,
     price: Number,
-    status: String
+    status: String,
+    donatedBy: String
 });
 
 const Books = new mongoose.model("Books", Bookschema);

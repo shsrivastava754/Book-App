@@ -49,7 +49,8 @@ const Form = (props) => {
             author: author,
             price: price,
             description: description,
-            quantity: quantity
+            quantity: quantity,
+            donatedBy: JSON.parse(localStorage.getItem("user"))["name"]
         // }).then((res)=>res.data);
         })
         // .then(navigate('/books'))

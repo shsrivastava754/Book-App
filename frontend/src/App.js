@@ -9,6 +9,7 @@ import PrivateRoutes from "./routes/PrivateRoutes";
 import ProtectLogin from "./routes/ProtectLogin";
 import ProtectAdmin from "./routes/ProtectAdmin";
 import Users from "./components/admin/Users";
+import Footer from "./components/common/Footer";
 import {
   BrowserRouter,
   Routes,
@@ -44,6 +45,7 @@ function App() {
           <Route path="/users" element={<Users/>}/>
         </Route>
       </Routes>
+      {/* <Footer/> */}
     </BrowserRouter>
   );
 }

@@ -39,7 +39,8 @@ const addBook = async(req,res)=>{
                 description:req.body.description,
                 price:req.body.price,
                 quantity:req.body.quantity,
-                status:"available"
+                status:"available",
+                donatedBy:req.body.donatedBy
             });
 
             await newBook.save();

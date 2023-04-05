@@ -5,14 +5,17 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import CartItem from './CartItem';
 
-const url = 'http://localhost:3001/books/cartItems';
+const url = 'http://localhost:3001/users/returnCartItems';
 const fetchHandler = async ()=>{
+    return await axios.post(url,{
+        id: JSON.parse(localStorage.getItem("user"))._id
+    }).then((res)=>res.data);
+
   return await axios.get(url).then((res)=>res.data);
 };
 
 const Cart = () => {
     const [items, setItems] = useState();
-    // const [total, setTotal] = useState();
     let total = 0;
     useEffect(() => {
         fetchHandler().then((data)=>{
@@ -38,7 +41,7 @@ const Cart = () => {
             <tbody>
                 {
                 items&&items.map((item)=>{
-                    total = total+item.totalPrice;
+                    total = total+(item.quantity*item.price);
                     return (
                     <CartItem item={item} key={item.title} />
                     )

@@ -19,18 +19,19 @@ const Book = (props) => {
   };
 
   const showToast = ()=>{
-      toast.success('Added book successfully');
+      toast.success('Added to cart');
   };
 
   const showerrorToast = ()=>{
-      toast.warning('Failed to add book');
+      toast.warning('Failed to add to cart');
   };
 
-  const purchase = async (book)=>{
-    await axios.post('http://localhost:3001/books/addToCart',{
+  const addToCart = async (book)=>{
+    await axios.post('http://localhost:3001/users/addToCart',{
       title: book.title,
       price: book.price,
-      author: book.author
+      author: book.author,
+      userId: JSON.parse(localStorage.getItem("user"))._id
     })
     .then((res)=>{
       if(res){
@@ -40,8 +41,7 @@ const Book = (props) => {
           showerrorToast();
       }
   });
-    navigate('/books/cart',{state:{name:book.title,author: book.author,description: book.description,price: book.price,quantity: book.quantity}});
-  }
+ }
 
   const confirmDelete = (id)=>{
     let modal = document.getElementById("myModal");
@@ -108,7 +108,7 @@ const Book = (props) => {
       </td>
       : 
       <td>
-        <button className="btn btn-primary mx-2 tooltips"  onClick={()=>{purchase(props.book)}}>
+        <button className="btn btn-primary mx-2 tooltips"  onClick={()=>{addToCart(props.book)}}>
         <i className="fa-solid fa-cart-shopping"></i><span class="tooltiptext">Add to Cart</span>
         </button>
       </td>

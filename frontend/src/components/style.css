@@ -316,3 +316,13 @@
     font-size: 1.4rem;
     margin-right: 20px;
   }
+
+  .cartTotal{
+    color: #fff;
+    text-align: center;
+    background-color: #3e5d6a;
+    padding: 14px;
+    width: 40%;
+    font-weight: 500;
+    margin: auto;
+  }

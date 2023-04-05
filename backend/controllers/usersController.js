@@ -29,6 +29,7 @@ const register = async (req, res) => {
         password: req.body.password,
         email: req.body.email,
         role: "User",
+        cart: []
       });
       await newUser.save();
     }
@@ -60,6 +61,59 @@ const login = async (req, res) => {
   }
 };
 
+const addToCart = async (req,res)=>{
+  try {
+    let user = await Users.findOne({ _id: req.body.userId });
+    const userCart = user.cart;
+    let flag = 0;
+    let newCart;
+    for(let i=0;i<userCart.length;i++){
+      if(userCart[i].title===req.body.title){
+        flag = 1;
+        userCart[i].quantity+=1;
+        break;
+      }
+    }
+
+    newCart = userCart;
+
+    if(flag==0){
+        const newItem = {
+          title: req.body.title,
+          price: req.body.price,
+          author: req.body.author,
+          quantity: 1
+        }
+        newCart = [...userCart,newItem];
+    }
+    let updatedUser  = await Users.findByIdAndUpdate(req.body.userId,{
+      cart: newCart
+    });
+
+    updatedUser.save();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const returnCartItems = async (req,res)=>{
+  let items;
+    try {
+        let user = await Users.findOne({ _id: req.body.id });
+        items = user.cart;
+    } catch (err) {
+        console.log(err);
+    }
+
+    if(!items){
+        return res.status(400).json({message:"No cart items"});
+    }
+
+    return res.status(200).json({items});
+};
+
 module.exports.register = register;
 module.exports.login = login;
 module.exports.getUsers = getUsers;
+module.exports.addToCart = addToCart;
+module.exports.returnCartItems = returnCartItems;

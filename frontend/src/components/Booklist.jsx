@@ -85,9 +85,9 @@ const Booklist = (props) => {
             <th scope="col">Price</th>
             <th scope='col'>Donated by</th>
             <th scope="col">Status</th>
-            {JSON.parse(localStorage.getItem("user"))["role"]=='Admin'?
+            {/* {JSON.parse(localStorage.getItem("user"))["role"]=='Admin'? */}
             <th scope="col">Action</th>
-             :null}
+             {/* :null} */}
           </tr>
         </thead>
         <tbody>

@@ -3,6 +3,7 @@ const app = express();
 const router = express.Router();
 const booksController = require('../controllers/booksController');
 const usersController = require('../controllers/usersController');
+const cartController = require('../controllers/cartsController');
 const bodyParser = require('body-parser').json();
 
 // Routes for CRUD of Books Model
@@ -13,8 +14,13 @@ router.put('/:id',bodyParser,booksController.updateBook);
 router.delete('/:id',booksController.deleteBook);
 
 // Routes for authentication of users
+router.get('/users/getUsers',usersController.getUsers);
 router.post('/register',bodyParser,usersController.register);
 router.post('/login',bodyParser,usersController.login);
-router.get('/users/getUsers',usersController.getUsers);
+
+// Routes for cart
+router.post('/books/addToCart',bodyParser,cartController.addToCart);
+router.get('/books/cartItems',cartController.getCartItems);
+
 
 module.exports = router;

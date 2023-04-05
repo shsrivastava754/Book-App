@@ -53,7 +53,7 @@ const Login = (props) => {
     <div className="login-card">
         <h2>Login</h2>
         <h3>Enter your credentials</h3>
-        <form className="login-form" onSubmit={login}>
+        <form className="login-form" onSubmit={login} autoComplete='off'>
             <input type="text" placeholder='Username' name='username' id='username' value={username} onChange={(e)=>{setusername(e.target.value)}} />
             <input type="password" placeholder='Password' name='password' id='password' value={password} onChange={(e)=>{setpassword(e.target.value)}} />
             <span className="fa-sharp fa-solid fa-eye toggle" id="toggle" onClick={handleToggle}></span>

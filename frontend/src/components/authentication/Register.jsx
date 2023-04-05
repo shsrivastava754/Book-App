@@ -12,7 +12,6 @@ const Register = () => {
     const [name, setname] = useState("");
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
-    // const [role, setrole] = useState(["admin","user"]);
 
     const handleToggle = ()=>{
         let pass = document.getElementById("password");
@@ -27,10 +26,6 @@ const Register = () => {
         toggleBtn.setAttribute("class", "fa-sharp fa-solid fa-eye toggle");
         }
     };
-
-    // const handleSelect = (e)=>{
-    //     setrole(e.target.value);
-    // }
 
     const register = (e)=>{
         e.preventDefault();
@@ -62,14 +57,10 @@ const Register = () => {
     <div className="register-card">
         <h2>Register</h2>
         <h3>Enter your credentials</h3>
-        <form className="register-form" onSubmit={register}>
+        <form className="register-form" onSubmit={register} autoComplete='off'>
             <input type="text" placeholder='Name' name='name' id='name' value={name} onChange={(e)=>{setname(e.target.value)}} />
             <input type="text" placeholder='Username' name='username' id='username' value={username} onChange={(e)=>{setusername(e.target.value)}} />
             <input type="email" placeholder='Email' name='email' id='email'  value={email} onChange={(e)=>{setemail(e.target.value)}} />
-            {/* <select name="role" id="role" onChange={handleSelect}>
-                    <option value="admin">Admin</option>
-                    <option value="user">User</option>
-            </select> */}
             <input type="password" placeholder='Password' name='password' id='password'  value={password} onChange={(e)=>{setpassword(e.target.value)}} />
             <span className="fa-sharp fa-solid fa-eye toggle" id="toggle" onClick={handleToggle}></span>
             <Link to={"/login"}>Already have an account?</Link>

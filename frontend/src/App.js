@@ -9,7 +9,7 @@ import PrivateRoutes from "./routes/PrivateRoutes";
 import ProtectLogin from "./routes/ProtectLogin";
 import ProtectAdmin from "./routes/ProtectAdmin";
 import Users from "./components/admin/Users";
-import Footer from "./components/common/Footer";
+import Cart from "./components/cart/Cart";
 import {
   BrowserRouter,
   Routes,
@@ -29,18 +29,24 @@ function App() {
     <BrowserRouter>
       {value !== null ?<Header setLogin={setLogin}/> : null}
       <Routes>
+
+        {/* Routes that only logged in normal user can access */}
         <Route element={<PrivateRoutes/>}>
           <Route path="/books" element={<Booklist/>} exact />
           <Route path="/addBook" element={<Form/>} exact />
           <Route path="/:id" element={<BookDetails/>} exact />
           <Route path="/books/:id" element={<EditBook/>} exact />
+          <Route path="/books/cart" element={<Cart/>} />
         </Route>
+
+      {/* Routes that is accessed by not logged in user */}
         <Route element={<ProtectLogin/>}>
           <Route path="/login" element={<Login setLogin={setLogin} />} exact /> 
           <Route path="/register" element={<Register/>} exact /> 
           <Route path="/" element={<Login setLogin={setLogin} />} exact /> 
         </Route>
 
+      {/* Routes that only admin can access */}
         <Route element={<ProtectAdmin/>}>
           <Route path="/users" element={<Users/>}/>
         </Route>

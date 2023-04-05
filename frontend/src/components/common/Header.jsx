@@ -11,6 +11,10 @@ const Header = (props) => {
     navigate('/');
   }
 
+  const cart = ()=>{
+    navigate('/books/cart');
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
@@ -38,6 +42,9 @@ const Header = (props) => {
           </div>
         </div>
         
+        <button id='cartIcon' onClick={cart}>
+          <i className="fa-solid fa-cart-shopping"></i>
+        </button>
         <button id='logout' onClick={logout}>
           <div>Logout</div>
         </button>

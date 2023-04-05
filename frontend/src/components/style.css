@@ -307,3 +307,12 @@
     width: 100%;
     text-align: center;
   }
+
+  #cartIcon{
+    color: #fff;
+    background-color: inherit;
+    border: none;
+    outline: none;
+    font-size: 1.4rem;
+    margin-right: 20px;
+  }

@@ -2,6 +2,8 @@ import React from 'react'
 import './style.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Book = (props) => {
   const navigate = useNavigate();
@@ -15,6 +17,31 @@ const Book = (props) => {
   const getDetails = (book)=>{
     navigate(`/${book._id}`);
   };
+
+  const showToast = ()=>{
+      toast.success('Added book successfully');
+  };
+
+  const showerrorToast = ()=>{
+      toast.warning('Failed to add book');
+  };
+
+  const purchase = async (book)=>{
+    await axios.post('http://localhost:3001/books/addToCart',{
+      title: book.title,
+      price: book.price,
+      author: book.author
+    })
+    .then((res)=>{
+      if(res){
+          res = res.data;
+          showToast();
+      } else{
+          showerrorToast();
+      }
+  });
+    navigate('/books/cart',{state:{name:book.title,author: book.author,description: book.description,price: book.price,quantity: book.quantity}});
+  }
 
   const confirmDelete = (id)=>{
     let modal = document.getElementById("myModal");
@@ -78,11 +105,14 @@ const Book = (props) => {
         <button className="btn btn-warning mx-2 tooltips" onClick={()=>{editBook(props.book)}}>
           <i className="fa-solid fa-pen-to-square"></i><span class="tooltiptext">Edit Book</span>
         </button>
-        {/* <button className="btn btn-primary mx-2 tooltips"  onClick={()=>{getDetails(props.book)}}>
-          <i className="fa-solid fa-circle-info"></i><span class="tooltiptext">View Details</span>
-        </button> */}
       </td>
-      : null}
+      : 
+      <td>
+        <button className="btn btn-primary mx-2 tooltips"  onClick={()=>{purchase(props.book)}}>
+        <i className="fa-solid fa-cart-shopping"></i><span class="tooltiptext">Add to Cart</span>
+        </button>
+      </td>
+      }
     </tr>
     <div id="myModal" class="modal">
       <div class="modal-content">
@@ -95,6 +125,7 @@ const Book = (props) => {
         </div>
       </div>
     </div>
+    <ToastContainer/>
     </>
   )
 }

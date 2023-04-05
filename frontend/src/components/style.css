@@ -317,7 +317,7 @@
     margin-right: 20px;
   }
 
-  .cartTotal{
+  .cartTotal,.checkout{
     color: #fff;
     text-align: center;
     background-color: #3e5d6a;
@@ -325,4 +325,13 @@
     width: 40%;
     font-weight: 500;
     margin: auto;
+  }
+
+  .checkout{
+    display: block;
+    margin-top: 30px;
+    border-radius: 30px;
+    border: none;
+    outline: none; 
+  
   }

@@ -42,9 +42,15 @@ const Header = (props) => {
           </div>
         </div>
         
-        <button id='cartIcon' onClick={cart}>
-          <i className="fa-solid fa-cart-shopping"></i>
-        </button>
+
+        {
+          localStorage.getItem("user")?
+          JSON.parse(localStorage.getItem("user"))["role"]==='User'?
+          <button id='cartIcon' onClick={cart}>
+            <i className="fa-solid fa-cart-shopping"></i>
+          </button>  
+          : null : null
+        }
         <button id='logout' onClick={logout}>
           <div>Logout</div>
         </button>

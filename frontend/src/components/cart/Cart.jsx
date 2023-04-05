@@ -26,9 +26,9 @@ const Cart = () => {
     <>
         <div className='container bookList'>
             <h3 className='text-center my-3'>Your Cart</h3>
-            <div className="components">
+            {/* <div className="components">
                 <Link to='/addBook'><button className='btn btn-success btnAdd'>Donate a Book</button></Link>
-            </div>
+            </div> */}
             <table className="table table-borderless table-responsive booksTable">
             <thead>
             <tr>
@@ -51,6 +51,7 @@ const Cart = () => {
             </tbody>
             </table>
             <div className='cartTotal'>Cart total: {total}</div>
+            <button className='checkout'>Proceed to checkout <i class="fa-regular fa-credit-card"></i></button>
         </div>
     </>
   )

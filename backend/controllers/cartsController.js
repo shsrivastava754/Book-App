@@ -60,11 +60,7 @@ const getCartItems = async (req,res)=>{
 }
 
 const clearCart = async(req,res)=>{
-    Cart.deleteMany({ userId: req.body.id }).then((res)=>{
-        console.log("Done",res)
-    }).catch((err)=>{
-        console.log(err);
-    });
+    Cart.deleteMany({ userId: req.body.userId });
     return res.status(400).json({message:"Deleted cart items"});
 };
 

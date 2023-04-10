@@ -12,6 +12,19 @@ const Register = () => {
     const [name, setname] = useState("");
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
+    const [emailError,setemailError] = useState("");
+    const [passwordError,setpasswordError] = useState("");
+    const [disabled, setdisabled] = useState(true);
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+    const passwordRegex = {
+        'uppercaseRegExp'   : /(?=.*?[A-Z])/,
+    'lowercaseRegExp'   : /(?=.*?[a-z])/,
+     'digitsRegExp'      : /(?=.*?[0-9])/,
+     'specialCharRegExp' : /(?=.*?[#?!@$%^&*-])/,
+     'minLengthRegExp'   : /.{8,}/
+    };
+
+    const [message, setmessage] = useState("");
 
     const handleToggle = ()=>{
         let pass = document.getElementById("password");
@@ -29,12 +42,19 @@ const Register = () => {
 
     const register = (e)=>{
         e.preventDefault();
+        if(!name || !email || !username || !password){
+            setmessage("All fields are mandatory");
+            setdisabled(true);
+        } else {
+            setmessage("");
+            setdisabled(false);
+            registerUser(name,username,email,password);
+            setname("");
+            setpassword("");
+            setusername("");
+            setemail("");
+        }
 
-        registerUser(name,username,email,password);
-        setname("");
-        setpassword("");
-        setusername("");
-        setemail("");
     };
     
     const registerUser = async(name,username,email,password)=>{
@@ -51,6 +71,62 @@ const Register = () => {
         }
     }
 
+    const checkEmail = (e)=>{
+        setemail(e.target.value);
+        if(!name || !email || !username || !password){
+            setdisabled(true);
+        } else {
+            setdisabled(false);
+        }
+        if(emailRegex.test(email)===false){
+            setemailError("Please enter a valid email address");
+        } else {
+            setemailError('');
+            return true;
+        }
+    }
+
+    const checkPasswordRegex = (password)=>{
+        return passwordRegex.digitsRegExp.test(password) &&
+                  passwordRegex.lowercaseRegExp.test(password) &&
+                  passwordRegex.minLengthRegExp.test(password) &&
+                  passwordRegex.specialCharRegExp.test(password) &&
+                  passwordRegex.uppercaseRegExp.test(password);
+    }
+
+    const checkPassword = (e)=>{
+        setpassword(e.target.value);
+        if(!name || !email || !username || !password){
+            setdisabled(true);
+        } else {
+            setdisabled(false);
+        }
+        // if(checkPasswordRegex(password)){
+        //     setpasswordError("Password must contain at least one uppercase, lowercase, digit, special character, minimum 8 characters ");
+        // } else {
+        //     setpasswordError('');
+        //     return true;
+        // }
+    }
+
+    const checkName = (e)=>{
+        setname(e.target.value);
+        if(!name || !email || !username || !password){
+            setdisabled(true);
+        } else {
+            setdisabled(false);
+        }
+    }
+
+    const checkUsername = (e)=>{
+        setusername(e.target.value);
+        if(!name || !email || !username || !password){
+            setdisabled(true);
+        } else {
+            setdisabled(false);
+        }
+    }
+
   return (
     <>
 
@@ -58,13 +134,16 @@ const Register = () => {
         <h2>Register</h2>
         <h3>Enter your credentials</h3>
         <form className="register-form" onSubmit={register} autoComplete='off'>
-            <input type="text" placeholder='Name' name='name' id='name' value={name} onChange={(e)=>{setname(e.target.value)}} />
-            <input type="text" placeholder='Username' name='username' id='username' value={username} onChange={(e)=>{setusername(e.target.value)}} />
-            <input type="email" placeholder='Email' name='email' id='email'  value={email} onChange={(e)=>{setemail(e.target.value)}} />
-            <input type="password" placeholder='Password' name='password' id='password'  value={password} onChange={(e)=>{setpassword(e.target.value)}} />
+            <input type="text" placeholder='Name' name='name' id='name' value={name} onChange={checkName} />
+            <input type="text" placeholder='Username' name='username' id='username' value={username} onChange={checkUsername} />
+            <input type="email" placeholder='Email' name='email' id='email'  value={email} onChange={checkEmail} />
+            <p className='text-danger m-0 p-0'>{emailError}</p>
+            <input type="password" placeholder='Password' name='password' id='password'  value={password} onChange={checkPassword} />
+            <p className='text-danger m-0 p-0'>{passwordError}</p>
             <span className="fa-sharp fa-solid fa-eye toggle" id="toggle" onClick={handleToggle}></span>
+            <p className='text-danger'>{message}</p>
             <Link to={"/login"}>Already have an account?</Link>
-            <button type='submit' id='submitBtn'>Register</button>
+            <button type='submit' id='submitBtn' disabled={disabled}>Register</button>
         </form>
     </div>
     <ToastContainer />

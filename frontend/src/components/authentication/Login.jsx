@@ -9,6 +9,10 @@ import 'react-toastify/dist/ReactToastify.css';
 const Login = (props) => {
     const [username, setusername] = useState("");
     const [password, setpassword] = useState("");
+    const [disabled, setdisabled] = useState(true);
+    const [message, setmessage] = useState("");
+    
+
     let navigate = useNavigate();
 
     const handleToggle = ()=>{
@@ -28,10 +32,16 @@ const Login = (props) => {
 
     const login = async(e)=>{
         e.preventDefault();
-
-        loginUser(username,password);
-        setusername("");
-        setpassword("");
+        if(!username || !password){
+            setmessage("All fields are mandatory");
+            setdisabled(true);
+        } else {
+            setmessage("");
+            setdisabled(false);
+            loginUser(username,password);
+            setusername("");
+            setpassword("");
+        }
     }
 
     const loginUser = async(username,password)=>{
@@ -48,17 +58,36 @@ const Login = (props) => {
         }
     }
 
+    const checkUsername = (e)=>{
+        setusername(e.target.value);
+        if(!username || !password){
+            setdisabled(true);
+        } else {
+            setdisabled(false);
+        }
+    }
+
+    const checkPassword = (e)=>{
+        setpassword(e.target.value);
+        if(!username || !password){
+            setdisabled(true);
+        } else {
+            setdisabled(false);
+        }
+    }
+
   return (
     <>
     <div className="login-card">
         <h2>Login</h2>
         <h3>Enter your credentials</h3>
         <form className="login-form" onSubmit={login} autoComplete='off'>
-            <input type="text" placeholder='Username' name='username' id='username' value={username} onChange={(e)=>{setusername(e.target.value)}} />
-            <input type="password" placeholder='Password' name='password' id='password' value={password} onChange={(e)=>{setpassword(e.target.value)}} />
+            <input type="text" placeholder='Username' name='username' id='username' value={username} onChange={checkUsername} />
+            <input type="password" placeholder='Password' name='password' id='password' value={password} onChange={checkPassword} />
             <span className="fa-sharp fa-solid fa-eye toggle" id="toggle" onClick={handleToggle}></span>
+            <p className='text-danger'>{message}</p>
             <Link to={"/register"}>Don't have an account?</Link>
-            <button type='submit' id='submitBtn'>Login</button>
+            <button type='submit' id='submitBtn' disabled={disabled}>Login</button>
         </form>
     </div>
     <ToastContainer/>

@@ -27,7 +27,7 @@ const Book = (props) => {
   };
 
   const addToCart = async (book)=>{
-    await axios.post('http://localhost:3001/users/addToCart',{
+    await axios.post('http://localhost:3001/cart/addToCart',{
       title: book.title,
       price: book.price,
       author: book.author,
@@ -79,7 +79,6 @@ const Book = (props) => {
 
   // Function for deleting a book
   const deleteBook = (book)=>{
-    console.log("Delete called");
     axios.delete(`http://localhost:3001/${book._id}`).then(()=>navigate("/books"));
     window.location.reload();
   };
@@ -104,6 +103,9 @@ const Book = (props) => {
         </button>
         <button className="btn btn-warning mx-2 tooltips" onClick={()=>{editBook(props.book)}}>
           <i className="fa-solid fa-pen-to-square"></i><span class="tooltiptext">Edit Book</span>
+        </button>
+        <button className="btn btn-primary mx-2 tooltips"  onClick={()=>{addToCart(props.book)}}>
+        <i className="fa-solid fa-cart-shopping"></i><span class="tooltiptext">Add to Cart</span>
         </button>
       </td>
       : 

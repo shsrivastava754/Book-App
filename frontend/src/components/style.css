@@ -333,5 +333,18 @@
     border-radius: 30px;
     border: none;
     outline: none; 
-  
+  }
+
+  .clearCart{
+    padding: 10px;
+    border: none;
+    outline: none;
+    display: block;
+    margin: auto;
+    width: 30%;
+    background-color: rgb(39, 135, 208);
+    border-radius: 40px;
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 20px;
   }

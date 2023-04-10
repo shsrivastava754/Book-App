@@ -19,8 +19,8 @@ router.post('/register',bodyParser,usersController.register);
 router.post('/login',bodyParser,usersController.login);
 
 // Routes for cart
-router.post('/users/addToCart',bodyParser,usersController.addToCart);
-router.post('/users/returnCartItems',bodyParser,usersController.returnCartItems);
-
+router.post('/cart/addToCart',bodyParser,cartController.addToCart);
+router.post('/cart/getCartItems',bodyParser,cartController.getCartItems);
+router.post('/cart/clearCart',bodyParser,cartController.clearCart);
 
 module.exports = router;

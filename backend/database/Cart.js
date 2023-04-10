@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 mongoose.set('strictQuery',false);
 
+const schema = mongoose.Schema;
+const ObjectId = schema.ObjectId;
+
 const Cartschema = new mongoose.Schema({
     title: {
         type: String,
@@ -12,7 +15,8 @@ const Cartschema = new mongoose.Schema({
     },
     quantity: Number,
     price: Number,
-    totalPrice: Number
+    totalPrice: Number,
+    userId: ObjectId
 });
 
 const Books = new mongoose.model("Cart", Cartschema);

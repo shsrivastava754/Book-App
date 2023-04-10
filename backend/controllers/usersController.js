@@ -1,4 +1,5 @@
 const Users = require("../database/Users");
+const bcrypt = require('bcrypt');
 
 const getUsers = async (req, res) => {
   let users;
@@ -17,6 +18,8 @@ const getUsers = async (req, res) => {
 
 const register = async (req, res) => {
   let newUser;
+  let saltRounds = 10;
+  let hashedPass = bcrypt.hashSync(req.body.password,saltRounds);
 
   try {
     const user = await Users.findOne({ username: req.body.username });
@@ -26,7 +29,7 @@ const register = async (req, res) => {
       newUser = new Users({
         name: req.body.name,
         username: req.body.username,
-        password: req.body.password,
+        password: hashedPass,
         email: req.body.email,
         role: "User",
         cart: []
@@ -50,7 +53,8 @@ const login = async (req, res) => {
     if (!user) {
       return res.status(500).json({ message: "Invalid User" });
     } else {
-      if (user.password === req.body.password) {
+      let verified = bcrypt.compareSync(req.body.password,user.password);
+      if(verified){
         return res.status(201).json({ user });
       } else {
         return res.status(501).json({ message: "Password mismatch" });
@@ -112,8 +116,21 @@ const returnCartItems = async (req,res)=>{
     return res.status(200).json({items});
 };
 
+const clearCart = async (req,res)=>{
+  try {
+    let updatedUser  = await Users.findByIdAndUpdate(req.body.id,{
+      cart: []
+    });
+
+    updatedUser.save();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports.register = register;
 module.exports.login = login;
 module.exports.getUsers = getUsers;
 module.exports.addToCart = addToCart;
 module.exports.returnCartItems = returnCartItems;
+module.exports.clearCart = clearCart;

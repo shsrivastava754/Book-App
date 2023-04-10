@@ -79,11 +79,11 @@ const Form = (props) => {
             </div>
             <div className="mb-3">
                 <label htmlFor="price" className="form-label">Price</label>
-                <input type="number" value={price} className="form-control" id="price" onChange={(e)=>{setprice(e.target.value)}} />
+                <input type="number" value={price} className="form-control" id="price" onChange={(e)=>{setprice(e.target.value)}} min={1} />
             </div>
             <div className="mb-3">
                 <label htmlFor="price" className="form-label">Quantity</label>
-                <input type="number" value={quantity} className="form-control" id="quantity" onChange={(e)=>{setquantity(e.target.value)}} />
+                <input type="number" value={quantity} className="form-control" id="quantity" onChange={(e)=>{setquantity(e.target.value)}} min={1} />
             </div>
             <div className="mb-3">
                 <label htmlFor="description" className="form-label">Description</label>

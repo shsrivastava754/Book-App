@@ -4,24 +4,33 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import CartItem from './CartItem';
+import { useNavigate } from 'react-router-dom';
 
-const url = 'http://localhost:3001/users/returnCartItems';
+const url = 'http://localhost:3001/cart/getCartItems';
 const fetchHandler = async ()=>{
     return await axios.post(url,{
         id: JSON.parse(localStorage.getItem("user"))._id
     }).then((res)=>res.data);
 
-  return await axios.get(url).then((res)=>res.data);
+//   return await axios.get(url).then((res)=>res.data);
 };
+
 
 const Cart = () => {
     const [items, setItems] = useState();
+    const navigate = useNavigate();
     let total = 0;
     useEffect(() => {
         fetchHandler().then((data)=>{
             setItems(data.items);
         });
-      }, []);
+    }, []);
+    const clearCart = ()=>{
+        axios.post('http://localhost:3001/cart/clearCart',{
+            userId: JSON.parse(localStorage.getItem("user"))._id
+        }).then(()=>navigate("/books"));
+        window.location.reload();
+    };
   return (
     <>
         <div className='container bookList'>
@@ -50,6 +59,13 @@ const Cart = () => {
 
             </tbody>
             </table>
+            {items?.length?
+            <div className="components">
+                <button className='clearCart' onClick={clearCart}>Clear Cart</button>
+            </div>
+            : null    
+            }   
+            
             <div className='cartTotal'>Cart total: {total}</div>
             <button className='checkout'>Proceed to checkout <i class="fa-regular fa-credit-card"></i></button>
         </div>

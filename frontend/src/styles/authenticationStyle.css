@@ -59,7 +59,7 @@ button {
   border: 2px solid #ebebeb;
 }
 
-.login-form > button, .register-form > button {
+.login-form > button:enabled, .register-form > button:enabled {
   padding: 15px 25px;
   border: unset;
   border-radius: 15px;
@@ -73,6 +73,18 @@ button {
   box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
   transition: all 250ms;
   overflow: hidden;
+}
+
+.login-form > button:disabled, .register-form > button:disabled{
+  padding: 15px 25px;
+  border: unset;
+  border-radius: 15px;
+  color: #212121;
+  z-index: 1;
+  background: #e8e8e8;
+  position: relative;
+  font-weight: 1000;
+  font-size: 17px;
 }
 
 .login-form > button::before, .register-form > button::before {
@@ -90,17 +102,17 @@ button {
   transition: all 250ms;
 }
 
-.login-form > button:hover, .register-form > button:hover {
+.login-form > button:enabled:hover, .register-form > button:hover:enabled {
   color: #e8e8e8;
 }
 
-.login-form > button:hover::before, .register-form > button:hover::before {
+.login-form > button:hover:enabled::before, .register-form > button:hover:enabled::before {
   width: 100%;
 }
 
 .login-card span, .register-card span{
   position: absolute;
-  top: 57%;
+  top: 53%;
   right: 3rem;
   cursor: pointer;
   padding: 5px;
@@ -120,7 +132,7 @@ button {
 }
 
 .register-card span{
-  top: 67.5%;
+  top: 63.5%;
 }
 
 #logout a{
@@ -133,4 +145,16 @@ button {
   padding: 6px 22px 6px 22px;
   border-radius: 13px;
   color: #000;
+}
+
+.register-form #submitBtn:disabled,
+.register-form #submitBtn[disabled]{
+  background-color: #dcd5d5;
+  color: grey;
+}
+
+.login-form #submitBtn:disabled,
+.login-form #submitBtn[disabled]{
+  background-color: #dcd5d5;
+  color: grey;
 }

@@ -4,10 +4,16 @@ const addToCart = async(req,res)=>{
     let cartItem;
 
     try {
-        const item = await Cart.findOne({title:req.body.title});
+
+        const item = await Cart.findOne({
+            userId: req.body.userId,
+            title: req.body.title
+        });
+
+
         if(item){
             // increase the quantity by the quantity of req.body.quantity
-                await Cart.updateOne({title:item.title},
+                await Cart.updateOne({title:item.title,userId: req.body.userId},
                 {
                     $set: {
                         quantity: item.quantity+1,
@@ -21,7 +27,8 @@ const addToCart = async(req,res)=>{
                 author:req.body.author,
                 price:req.body.price,
                 quantity:1,
-                totalPrice: req.body.price
+                totalPrice: req.body.price,
+                userId: req.body.userId
             });
 
             await cartItem.save();
@@ -40,7 +47,7 @@ const addToCart = async(req,res)=>{
 const getCartItems = async (req,res)=>{
     let items;
     try {
-        items = await Cart.find();
+        items = await Cart.find({userId:req.body.id});
     } catch (err) {
         console.log(err);
     }
@@ -52,11 +59,15 @@ const getCartItems = async (req,res)=>{
     return res.status(200).json({items});
 }
 
-// const getTotalPrice = async(req,res)=>{
-//     "total" : {
-//             $sum : "$quantity"
-//         }
-// }
+const clearCart = async(req,res)=>{
+    Cart.deleteMany({ userId: req.body.id }).then((res)=>{
+        console.log("Done",res)
+    }).catch((err)=>{
+        console.log(err);
+    });
+    return res.status(400).json({message:"Deleted cart items"});
+};
 
 module.exports.addToCart = addToCart;
 module.exports.getCartItems = getCartItems;
+module.exports.clearCart = clearCart;

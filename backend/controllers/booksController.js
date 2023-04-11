@@ -5,7 +5,6 @@ const User = require('../database/Users');
 const getBooks = async (req,res)=>{
     let books;
     try {
-        // books = await Books.find({});
         books = await Books.find({'donatedById': {$ne: req.body.userId}});
     } catch (err) {
         console.log(err);

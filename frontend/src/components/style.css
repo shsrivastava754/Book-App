@@ -51,6 +51,12 @@
     margin-left: 10px;
 }
 
+.statusRtp{
+  background-color: rgb(255, 128, 0);
+  padding: 7px;
+  border-radius: 10px;
+}
+
 .detailsContainer h3{
     border-bottom: 1px solid rgb(181, 191, 185);
     padding-bottom: 10px;

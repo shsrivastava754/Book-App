@@ -18,10 +18,12 @@ router.delete('/books/deleteAllBooks',booksController.deleteAllBooks);
 router.get('/users/getUsers',usersController.getUsers);
 router.post('/register',bodyParser,usersController.register);
 router.post('/login',bodyParser,usersController.login);
+router.get('/users/getDonations/:id',usersController.donations);
 
 // Routes for cart
 router.post('/cart/addToCart',bodyParser,cartController.addToCart);
 router.post('/cart/getCartItems',bodyParser,cartController.getCartItems);
 router.post('/cart/clearCart',bodyParser,cartController.clearCart);
+router.delete('/cart/clearCartModel',cartController.clearCartModel);
 
 module.exports = router;

@@ -10,8 +10,7 @@ const dbScehma = new mongoose.Schema({
     unique: true,
   },
   password: String,
-  role: String,
-  cart: Array
+  role: String
 });
 
 const Users = new mongoose.model("Users", dbScehma);

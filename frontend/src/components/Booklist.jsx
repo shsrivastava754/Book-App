@@ -94,7 +94,7 @@ const Booklist = (props) => {
         </thead>
         <tbody>
             {
-              handleSearch()&&handleSearch().map((book)=>{
+              tableBooks&&tableBooks.map((book)=>{
                 return (
                 <Book book={book} key={book.title} srno={books.indexOf(book)+1} />
                 )

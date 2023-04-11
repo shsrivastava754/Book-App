@@ -65,6 +65,12 @@ const clearCart = async(req,res)=>{
     return res.status(400).json({message:"Deleted cart items"});
 };
 
+const clearCartModel = async(req,res)=>{
+    await Cart.deleteMany({});
+    return res.status(400).json({message:"Deleted cart model items"});
+}
+
 module.exports.addToCart = addToCart;
 module.exports.getCartItems = getCartItems;
 module.exports.clearCart = clearCart;
+module.exports.clearCartModel = clearCartModel;

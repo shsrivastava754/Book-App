@@ -55,7 +55,7 @@ const Users = () => {
               {
                 handleSearch()&&handleSearch().map((user)=>{
                   return (
-                  <User user={user} key={user.name} />
+                  <User user={user} key={user._id} />
                   )
                 })
               }

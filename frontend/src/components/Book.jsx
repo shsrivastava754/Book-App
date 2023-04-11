@@ -93,7 +93,7 @@ const Book = (props) => {
       <td onClick={()=>{getDetails(props.book)}}>{props.book.donatedByEmail}</td>
       <td onClick={()=>{getDetails(props.book)}}>
         {
-          (props.book.status==="available" || String(props.book.status)==='1')? <span className='statusAvailable'>Available</span>: <span className='statusSold'>Sold</span>
+          (props.book.status==="available" || String(props.book.status)==='1')? <span className='statusAvailable'>Available</span>: (props.book.status==="sold" || String(props.book.status)==='2') ? <span className='statusSold'>Sold</span> : <span className='statusRtp'>Ready to Pick</span>
         }
       </td>
 

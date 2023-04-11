@@ -7,11 +7,12 @@ const cartController = require('../controllers/cartsController');
 const bodyParser = require('body-parser').json();
 
 // Routes for CRUD of Books Model
-router.get('/',booksController.getBooks);
+router.post('/books/getBooks',bodyParser,booksController.getBooks);
 router.post('/',bodyParser,booksController.addBook);
 router.get('/:id',booksController.getById);
 router.put('/:id',bodyParser,booksController.updateBook);
 router.delete('/:id',booksController.deleteBook);
+router.delete('/books/deleteAllBooks',booksController.deleteAllBooks);
 
 // Routes for authentication of users
 router.get('/users/getUsers',usersController.getUsers);

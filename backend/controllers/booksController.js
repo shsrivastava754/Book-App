@@ -1,10 +1,12 @@
 const Books = require('../database/Books');
+const User = require('../database/Users');
 
 // Function to get all books at once
 const getBooks = async (req,res)=>{
     let books;
     try {
-        books = await Books.find();
+        // books = await Books.find({});
+        books = await Books.find({'donatedById': {$ne: req.body.userId}});
     } catch (err) {
         console.log(err);
     }
@@ -33,6 +35,7 @@ const addBook = async(req,res)=>{
 
                 newBook = book;
         } else {
+            const user = await User.findOne({_id:req.body.donatedById});
             newBook = new Books({
                 title:req.body.title,
                 author:req.body.author,
@@ -40,7 +43,8 @@ const addBook = async(req,res)=>{
                 price:req.body.price,
                 quantity:req.body.quantity,
                 status:"available",
-                donatedBy:req.body.donatedBy
+                donatedById:user._id,
+                donatedByEmail:user.email
             });
 
             await newBook.save();
@@ -117,8 +121,18 @@ const deleteBook = async(req,res)=>{
     return res.status(201).json({message:"Deleted successfully"});
 }
 
+const deleteAllBooks = async (req,res)=>{
+    try {
+        await Books.deleteMany({});
+        return res.status(201).json({message:"Deleted all books"})
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports.getBooks = getBooks;
 module.exports.addBook = addBook;
 module.exports.getById = getById;
 module.exports.updateBook = updateBook;
 module.exports.deleteBook = deleteBook;
+module.exports.deleteAllBooks = deleteAllBooks;

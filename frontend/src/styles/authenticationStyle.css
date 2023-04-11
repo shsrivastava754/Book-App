@@ -151,10 +151,12 @@ button {
 .register-form #submitBtn[disabled]{
   background-color: #dcd5d5;
   color: grey;
+  cursor: not-allowed;
 }
 
 .login-form #submitBtn:disabled,
 .login-form #submitBtn[disabled]{
   background-color: #dcd5d5;
   color: grey;
+  cursor: not-allowed;
 }

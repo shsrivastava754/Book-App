@@ -28,7 +28,8 @@ const addToCart = async(req,res)=>{
                 price:req.body.price,
                 quantity:1,
                 totalPrice: req.body.price,
-                userId: req.body.userId
+                userId: req.body.userId,
+                userEmail: req.body.userEmail
             });
 
             await cartItem.save();
@@ -60,7 +61,7 @@ const getCartItems = async (req,res)=>{
 }
 
 const clearCart = async(req,res)=>{
-    Cart.deleteMany({ userId: req.body.userId });
+    await Cart.deleteMany({ userId: req.body.userId });
     return res.status(400).json({message:"Deleted cart items"});
 };
 

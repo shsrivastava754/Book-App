@@ -50,14 +50,15 @@ const Form = (props) => {
             price: price,
             description: description,
             quantity: quantity,
-            donatedBy: JSON.parse(localStorage.getItem("user"))["name"]
+            donatedById: JSON.parse(localStorage.getItem("user"))["_id"]
         // }).then((res)=>res.data);
         })
         // .then(navigate('/books'))
         .then((res)=>{
             if(res){
-                res = res.data;
-                showToast();
+                // res = res.data;
+                // showToast();
+                navigate('/books');
             } else{
                 showerrorToast();
             }

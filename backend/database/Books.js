@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 mongoose.set('strictQuery',false);
 
+const schema = mongoose.Schema;
+const ObjectId = schema.ObjectId;
+
 const Bookschema = new mongoose.Schema({
     title: {
         type: String,
@@ -14,7 +17,8 @@ const Bookschema = new mongoose.Schema({
     description: String,
     price: Number,
     status: String,
-    donatedBy: String
+    donatedById: ObjectId,
+    donatedByEmail: String
 });
 
 const Books = new mongoose.model("Books", Bookschema);

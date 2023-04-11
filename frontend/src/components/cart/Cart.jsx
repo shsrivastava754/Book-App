@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import CartItem from './CartItem';
 import { useNavigate } from 'react-router-dom';
+import '../style.css';
 
 const url = 'http://localhost:3001/cart/getCartItems';
 const fetchHandler = async ()=>{
@@ -12,7 +13,6 @@ const fetchHandler = async ()=>{
         id: JSON.parse(localStorage.getItem("user"))._id
     }).then((res)=>res.data);
 
-//   return await axios.get(url).then((res)=>res.data);
 };
 
 
@@ -27,7 +27,8 @@ const Cart = () => {
     }, []);
     const clearCart = ()=>{
         axios.post('http://localhost:3001/cart/clearCart',{
-            userId: JSON.parse(localStorage.getItem("user"))._id
+            userId: JSON.parse(localStorage.getItem("user"))._id,
+            userEmail: JSON.parse(localStorage.getItem("user")).email
         }).then(()=>navigate("/books"));
         window.location.reload();
     };

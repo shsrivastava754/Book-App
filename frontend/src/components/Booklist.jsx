@@ -5,9 +5,11 @@ import { useEffect, useState } from 'react';
 import './style.css';
 import {Link} from 'react-router-dom';
 
-const url = 'http://localhost:3001/';
+const url = 'http://localhost:3001/books/getBooks';
 const fetchHandler = async ()=>{
-  return await axios.get(url).then((res)=>res.data);
+  return await axios.post(url,{
+    userId: JSON.parse(localStorage.getItem("user"))._id
+  }).then((res)=>res.data);
 };
 
 const Booklist = (props) => {

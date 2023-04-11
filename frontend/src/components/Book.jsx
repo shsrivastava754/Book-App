@@ -31,7 +31,8 @@ const Book = (props) => {
       title: book.title,
       price: book.price,
       author: book.author,
-      userId: JSON.parse(localStorage.getItem("user"))._id
+      userId: JSON.parse(localStorage.getItem("user"))._id,
+      userEmail: JSON.parse(localStorage.getItem("user")).email
     })
     .then((res)=>{
       if(res){
@@ -89,7 +90,7 @@ const Book = (props) => {
       <td onClick={()=>{getDetails(props.book)}}>{props.book.title}</td>
       <td onClick={()=>{getDetails(props.book)}}>{props.book.author}</td>
       <td onClick={()=>{getDetails(props.book)}}>Rs. {props.book.price}</td>
-      <td onClick={()=>{getDetails(props.book)}}>{props.book.donatedBy}</td>
+      <td onClick={()=>{getDetails(props.book)}}>{props.book.donatedByEmail}</td>
       <td onClick={()=>{getDetails(props.book)}}>
         {
           (props.book.status==="available" || String(props.book.status)==='1')? <span className='statusAvailable'>Available</span>: <span className='statusSold'>Sold</span>

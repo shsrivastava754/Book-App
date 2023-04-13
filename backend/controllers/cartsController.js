@@ -1,38 +1,14 @@
 const Cart = require('../database/Cart');
+const cartsServices = require('../services/cartsServices');
 
 const addToCart = async(req,res)=>{
     let cartItem;
-
     try {
-
-        const item = await Cart.findOne({
-            userId: req.body.userId,
-            title: req.body.title
-        });
-
-
+        const item = await cartsServices.returnItem(req.body.userId,req.body.title)
         if(item){
-            // increase the quantity by the quantity of req.body.quantity
-                await Cart.updateOne({title:item.title,userId: req.body.userId},
-                {
-                    $set: {
-                        quantity: item.quantity+1,
-                        totalPrice: item.totalPrice+item.price
-                    }
-                });
-                cartItem = item;
+                cartItem = cartsServices.updateItemQuantity(item);
         } else {
-            cartItem = new Cart({
-                title:req.body.title,
-                author:req.body.author,
-                price:req.body.price,
-                quantity:1,
-                totalPrice: req.body.price,
-                userId: req.body.userId,
-                userEmail: req.body.userEmail
-            });
-
-            await cartItem.save();
+            await cartsServices.addNewItem(req.body);
         }
     } catch (error) {
         console.log(error);
@@ -48,7 +24,7 @@ const addToCart = async(req,res)=>{
 const getCartItems = async (req,res)=>{
     let items;
     try {
-        items = await Cart.find({userId:req.body.id});
+        items = await cartsServices.returnCartItems(req.body.id);
     } catch (err) {
         console.log(err);
     }
@@ -61,16 +37,26 @@ const getCartItems = async (req,res)=>{
 }
 
 const clearCart = async(req,res)=>{
-    await Cart.deleteMany({ userId: req.body.userId });
+    await cartsServices.clearCart(req.body.userId);
     return res.status(400).json({message:"Deleted cart items"});
 };
 
 const clearCartModel = async(req,res)=>{
-    await Cart.deleteMany({});
-    return res.status(400).json({message:"Deleted cart model items"});
+    await cartsServices.clearCartModel();
+    return res.status(201).json({message:"Deleted cart model items"});
+}
+
+const deleteItem = async (req,res)=>{
+    try {
+        await cartsServices.deleteItem(req.params.userId,req.params.itemId);
+        return res.status(201).json({message:"Deleted cart model item"});
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 module.exports.addToCart = addToCart;
 module.exports.getCartItems = getCartItems;
 module.exports.clearCart = clearCart;
 module.exports.clearCartModel = clearCartModel;
+module.exports.deleteItem = deleteItem;

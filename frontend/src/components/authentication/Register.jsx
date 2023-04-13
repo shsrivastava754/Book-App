@@ -78,7 +78,7 @@ const Register = () => {
         } else {
             setdisabled(false);
         }
-        if(emailRegex.test(email)===false){
+        if(emailRegex.test(e.target.value)===false){
             setemailError("Please enter a valid email address");
         } else {
             setemailError('');
@@ -139,7 +139,7 @@ const Register = () => {
             <input type="email" placeholder='Email' name='email' id='email'  value={email} onChange={checkEmail} />
             <p className='text-danger m-0 p-0'>{emailError}</p>
             <input type="password" placeholder='Password' name='password' id='password'  value={password} onChange={checkPassword} />
-            <p className='text-danger m-0 p-0'>{passwordError}</p>
+            {/* <p className='text-danger m-0 p-0'>{passwordError}</p> */}
             <span className="fa-sharp fa-solid fa-eye toggle" id="toggle" onClick={handleToggle}></span>
             <p className='text-danger'>{message}</p>
             <Link to={"/login"}>Already have an account?</Link>

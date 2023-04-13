@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './style.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -45,6 +45,7 @@ const Book = (props) => {
  }
 
   const confirmDelete = (id)=>{
+    console.log(id);
     let modal = document.getElementById("myModal");
 
     // Get the button that opens the modal
@@ -79,16 +80,17 @@ const Book = (props) => {
   }
 
   // Function for deleting a book
-  const deleteBook = (book)=>{
-    axios.delete(`http://localhost:3001/${book._id}`).then(()=>navigate("/books"));
-    window.location.reload();
+  const deleteBook = ()=>{
+    console.log("Current id:",props.book._id);
+    // axios.delete(`http://localhost:3001/${props.book._id}`).then(()=>navigate("/books"));
+    // window.location.reload();
   };
 
   return (
     <>
     <tr>
       <td onClick={()=>{getDetails(props.book)}}>{props.book.title}</td>
-      <td onClick={()=>{getDetails(props.book)}}>{props.book.author}</td>
+      <td onClick={()=>{getDetails(props.book)}}>{props.book.author}{props.book._id}</td>
       <td onClick={()=>{getDetails(props.book)}}>Rs. {props.book.price}</td>
       <td onClick={()=>{getDetails(props.book)}}>{props.book.donatedByEmail}</td>
       <td onClick={()=>{getDetails(props.book)}}>
@@ -99,6 +101,7 @@ const Book = (props) => {
 
       {JSON.parse(localStorage.getItem("user"))["role"]==='Admin'?
       <td>
+        {/* <button className="btn btn-danger mx-2 tooltips" id={props.book._id} onClick={()=>{confirmDelete(props.book._id)}} > */}
         <button className="btn btn-danger mx-2 tooltips" id={props.book._id} onClick={()=>{confirmDelete(props.book._id)}} >
           <i className="fa-solid fa-trash"></i><span class="tooltiptext">Delete Book</span>
         </button>
@@ -116,18 +119,20 @@ const Book = (props) => {
         </button>
       </td>
       }
-    </tr>
+    
     <div id="myModal" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
         <i class="fa-regular fa-circle-xmark"></i>
         <p className='text-center'>Confirm Delete?</p>
         <div className="buttons">
-          <button className='btnConfirmYes' onClick={()=>{deleteBook(props.book)}}>Ok</button>
+          <button className='btnConfirmYes' onClick={()=>{deleteBook()}}>Ok</button>
           <button className='btnConfirmNo'>Cancel</button>
         </div>
       </div>
     </div>
+    </tr>
+    
     <ToastContainer/>
     </>
   )

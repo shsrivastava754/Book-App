@@ -25,5 +25,6 @@ router.post('/cart/addToCart',bodyParser,cartController.addToCart);
 router.post('/cart/getCartItems',bodyParser,cartController.getCartItems);
 router.post('/cart/clearCart',bodyParser,cartController.clearCart);
 router.delete('/cart/clearCartModel',cartController.clearCartModel);
+router.delete('/cart/:itemId/:userId',cartController.deleteItem)
 
 module.exports = router;

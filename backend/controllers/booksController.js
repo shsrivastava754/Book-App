@@ -1,11 +1,12 @@
 const Books = require('../database/Books');
 const User = require('../database/Users');
+const bookServices = require('../services/bookServices');
 
 // Function to get all books at once
 const getBooks = async (req,res)=>{
     let books;
     try {
-        books = await Books.find({'donatedById': {$ne: req.body.userId}});
+        books = await bookServices.findBooks(req.body.userId);
     } catch (err) {
         console.log(err);
     }
@@ -22,31 +23,11 @@ const addBook = async(req,res)=>{
     let newBook;
 
     try {
-        const book = await Books.findOne({title:req.body.title});
+        const book = await bookServices.findOneBook(req.body.title);
         if(book){
-            // increase the quantity by the quantity of req.body.quantity
-                await Books.updateOne({title:book.title},
-                {
-                    $set: {
-                        quantity: req.body.quantity+book.quantity
-                    }
-                });
-
-                newBook = book;
+                newBook = bookServices.updateQuantity(book,req.body.quantity);
         } else {
-            const user = await User.findOne({_id:req.body.donatedById});
-            newBook = new Books({
-                title:req.body.title,
-                author:req.body.author,
-                description:req.body.description,
-                price:req.body.price,
-                quantity:req.body.quantity,
-                status:"available",
-                donatedById:user._id,
-                donatedByEmail:user.email
-            });
-
-            await newBook.save();
+            newBook = bookServices.addNewBook(req.body);
         }
     } catch (error) {
         console.log(error);
@@ -78,6 +59,7 @@ const getById = async(req,res)=>{
 
 // Function to update a book
 const updateBook = async(req,res)=>{
+    console.log(req.params.id, req.body);
     const id = req.params.id;
     let book;
 

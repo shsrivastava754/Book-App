@@ -10,6 +10,7 @@ import ProtectLogin from "./routes/ProtectLogin";
 import ProtectAdmin from "./routes/ProtectAdmin";
 import Users from "./components/admin/Users";
 import Cart from "./components/cart/Cart";
+import DialogBox from "./components/DialogBox";
 import {
   BrowserRouter,
   Routes,

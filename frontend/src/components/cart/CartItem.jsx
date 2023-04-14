@@ -2,50 +2,56 @@ import React from 'react'
 import '../style.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
 
 const CartItem = (props) => {
   const navigate = useNavigate();
 
   const userId = JSON.parse(localStorage.getItem("user"))._id;
 
-  const confirmDelete = (id)=>{
-    let modal = document.getElementById("myModal");
-
-    // Get the button that opens the modal
-    let btn = document.getElementById(id);
-
-    // Get the <span> element that closes the modal
-    let span = document.getElementsByClassName("close")[0];
-    let deny = document.getElementsByClassName("btnConfirmNo")[0];
-
-    // When the user clicks on the button, open the modal
-    btn.onclick = function() {
-      modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-      modal.style.display = "none";
-    }
-
-    // When the user clicks on "No", close the modal
-    deny.onclick = function() {
-      modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }
-
-  }
-
-  const removeItem = (item)=>{
-    axios.delete(`http://localhost:3001/cart/${item._id}/${userId}`).then(()=>navigate("/books/cart"));
+  const removeItem = ()=>{
+    axios.delete(`http://localhost:3001/cart/${props.item._id}/${userId}`).then(()=>navigate("/books/cart"));
     window.location.reload();
   }
+
+  const [openDialog, handleDisplay] = React.useState(false);
+    
+  const handleClose = () => {
+      handleDisplay(false);
+  };
+  
+  const openDialogBox = () => {
+      handleDisplay(true);
+  };
+  const buttonStyle = {
+      width: "10rem",
+      fontsize: "1.5rem",
+      height: "2rem",
+      padding: "5px",
+      borderRadius: "10px",
+      backgroundColor: "green",
+      color: "White",
+      border: "2px solid yellow",
+  };
+  const divStyle = {
+      display: "flex",
+      felxDirection: "row",
+      position: "absolute",
+      right: "0px",
+      bottom: "0px",
+      // padding: "1rem",
+  };
+  const confirmButtonStyle = {
+      width: "5rem",
+      height: "1.5rem",
+      fontsize: "1rem",
+      backgroundColor: "grey",
+      color: "black",
+      margin: "5px",
+      borderRadius: "10px",
+      border: "1px solid black",
+  };
 
   return (
     <>
@@ -56,22 +62,26 @@ const CartItem = (props) => {
       <td>{props.item.price}</td>
       <td>{props.item.quantity}</td>
       <td>
-        <button className='btn btn-danger tooltips' id={props.item._id} onClick={()=>{confirmDelete(props.item._id)}}>
+        <button className='btn btn-danger tooltips' id={props.item._id} onClick={openDialogBox}>
         <i className="fa-solid fa-trash"></i><span class="tooltiptext">Remove Item</span>
         </button>
       </td>
     </tr>
-    <div id="myModal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <i class="fa-regular fa-circle-xmark"></i>
-        <p className='text-center'>Confirm Delete?</p>
-        <div className="buttons">
-          <button className='btnConfirmYes' onClick={()=>{removeItem(props.item)}}>Ok</button>
-          <button className='btnConfirmNo'>Cancel</button>
-        </div>
+    <Dialog onClose = {handleClose} open = {openDialog}>
+      <DialogTitle> Confirm Dialog </DialogTitle>
+      <h3 style = {{ marginTop: "-10px", padding: "5px 10px" }}>
+              Are you sure to delete the item? {" "}
+      </h3>
+      <br></br>
+      <div style = {divStyle}>
+          <button style = {confirmButtonStyle} onClick = {removeItem}>
+              Confirm
+          </button>
+          <button style = {confirmButtonStyle} onClick = {handleClose}>
+              Cancel
+          </button>
       </div>
-    </div>
+    </Dialog>
     </>
   )
 }

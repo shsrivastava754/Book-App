@@ -108,7 +108,6 @@ const Book = (props) => {
 
       {JSON.parse(localStorage.getItem("user"))["role"]==='Admin'?
       <td>
-        {/* <button className="btn btn-danger mx-2 tooltips" id={props.book._id} onClick={()=>{confirmDelete(props.book._id)}} > */}
         <button className="btn btn-danger mx-2 tooltips" id={props.book._id} onClick = {openDialogBox} >
           <i className="fa-solid fa-trash"></i><span class="tooltiptext">Delete Book</span>
         </button>
@@ -128,18 +127,15 @@ const Book = (props) => {
       }
     
     </tr>
-
-    <Dialog onClose = {handleClose} open = {openDialog}>
-      <DialogTitle> Confirm Dialog </DialogTitle>
-      <h3 style = {{ marginTop: "-10px", padding: "5px 10px" }}>
-              Are you sure to delete the item? {" "}
+    <Dialog onClose = {handleClose} open = {openDialog} className='dialogBox'>
+      <h3 >
+              Are you sure to delete the book?
       </h3>
-      <br></br>
-      <div style = {divStyle}>
-          <button style = {confirmButtonStyle} onClick = {deleteBook}>
+      <div className='buttons'>
+          <button onClick = {deleteBook} className='btnConfirmYes'>
               Confirm
           </button>
-          <button style = {confirmButtonStyle} onClick = {handleClose}>
+          <button  onClick = {handleClose} className='btnConfirmNo'>
               Cancel
           </button>
       </div>

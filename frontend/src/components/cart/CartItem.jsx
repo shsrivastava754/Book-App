@@ -65,17 +65,16 @@ const CartItem = (props) => {
         </button>
       </td>
     </tr>
-    <Dialog onClose = {handleClose} open = {openDialog}>
-      <DialogTitle> Confirm Dialog </DialogTitle>
-      <h3 style = {{ marginTop: "-10px", padding: "5px 10px" }}>
-              Are you sure to delete the item? {" "}
+    <Dialog onClose = {handleClose} open = {openDialog} className='dialogBox'>
+      <h3>
+              Are you sure to remove the item?
       </h3>
       <br></br>
-      <div style = {divStyle}>
-          <button style = {confirmButtonStyle} onClick = {removeItem}>
+      <div className='buttons'>
+          <button onClick = {removeItem} className='btnConfirmYes'>
               Confirm
           </button>
-          <button style = {confirmButtonStyle} onClick = {handleClose}>
+          <button onClick = {handleClose} className='btnConfirmNo'>
               Cancel
           </button>
       </div>

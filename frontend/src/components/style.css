@@ -141,59 +141,13 @@
     cursor: pointer;
 }
 
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%;
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(11, 55, 90, 0.4); 
-  }
-  
-  .modal i{
-    margin-left: 47%;
-    margin-bottom: 30px;
-    color: red;
-    font-size: 4rem;
-  }
-
-  .modal p{
-    font-size: 1.3rem;
-    font-weight: 600;
-  }
-
-  .modal-content {
-    background-color: #4a5050 !important;
-    margin: 15% auto;
-    padding: 20px;
-    width: 30%;
-  }
-  
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    margin-left: 97%;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  .modal .buttons{
+ .buttons{
     display: flex;
     margin-left: 16%;
     flex-wrap:nowrap;
   }
 
-  .modal button{
+  .buttons button{
     width: 40%;
     border-radius: 40px;
     outline: none;
@@ -203,7 +157,7 @@
     font-weight: 700;
   }
 
-  .modal .btnConfirmYes{
+  .buttons .btnConfirmYes{
     background-color: rgb(21, 156, 21);
     margin-right: 30px;
   }
@@ -214,8 +168,16 @@
     outline: 1px solid #fff;
   }
 
-  .modal .btnConfirmNo{
+  .buttons .btnConfirmNo{
     background-color: red;
+  }
+
+  .dialogBox h3{
+    padding: 2rem;
+  }
+
+  .buttons{
+    padding: 1rem;
   }
 
 @media screen and (max-width: 1400px) {

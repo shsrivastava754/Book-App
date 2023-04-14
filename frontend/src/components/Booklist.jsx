@@ -16,7 +16,14 @@ const Booklist = (props) => {
   const [books, setBooks] = useState();
   const [tableBooks, setTableBooks] = useState(books);
   const [search, setSearch] = useState();
-
+  
+  useEffect(() => {
+    fetchHandler().then((data)=>{
+        setBooks(data.books);
+        setTableBooks(data.books);
+    });
+  }, []);
+  
   const handleFilter = (e)=>{  
     let newBooks;
 
@@ -56,12 +63,6 @@ const Booklist = (props) => {
     ));
   }
 
-  useEffect(() => {
-    fetchHandler().then((data)=>{
-        setBooks(data.books);
-        setTableBooks(data.books);
-    });
-  }, []);
 
   return (
 

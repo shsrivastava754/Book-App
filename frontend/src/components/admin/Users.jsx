@@ -16,6 +16,12 @@ const Users = () => {
 
   const [users, setUsers] = useState();
   const [search, setSearch] = useState();
+  
+  useEffect(() => {
+    fetchHandler().then((data)=>{
+        setUsers(data.users);
+    });
+  }, []);
 
   // Function to handle the search bar
   const handleSearch = ()=>{
@@ -28,11 +34,6 @@ const Users = () => {
     ));
   }
 
-  useEffect(() => {
-    fetchHandler().then((data)=>{
-        setUsers(data.users);
-    });
-  }, []);
 
   return (
     <>

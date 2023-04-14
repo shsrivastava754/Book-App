@@ -11,6 +11,7 @@ import axios from 'axios';
  */
 const BookDetails = () => {
   const navigate = useNavigate();
+  const [book, setBook] = useState();
 
   /**
    * 
@@ -20,18 +21,18 @@ const BookDetails = () => {
     navigate(`/books/${book._id}`,{state:{name:book.title,author: book.author,description: book.description,price: book.price,quantity: book.quantity}});
   };
 
-    const id = useParams().id;
-    const [book, setBook] = useState();
+  useEffect(() => {
+    fetchHandler().then((data)=>{
+      setBook(data.book);
+    });
+  }, []);
 
-    const fetchHandler = async ()=>{
-        return await axios.get(`http://localhost:3001/:${id}`).then((res)=>res.data);
-    };
-    
-    useEffect(() => {
-      fetchHandler().then((data)=>{
-        setBook(data.book);
-      });
-    }, [])
+  const id = useParams().id;
+
+  const fetchHandler = async ()=>{
+      return await axios.get(`http://localhost:3001/:${id}`).then((res)=>res.data);
+  };
+  
     
   return (
     <div className='container mt-4 detailsContainer p-4'>

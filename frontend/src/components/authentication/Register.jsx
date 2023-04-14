@@ -15,6 +15,8 @@ const Register = () => {
     const [emailError,setemailError] = useState("");
     const [passwordError,setpasswordError] = useState("");
     const [disabled, setdisabled] = useState(true);
+    const [message, setmessage] = useState("");
+    
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     const passwordRegex = {
         'uppercaseRegExp'   : /(?=.*?[A-Z])/,
@@ -24,7 +26,6 @@ const Register = () => {
      'minLengthRegExp'   : /.{8,}/
     };
 
-    const [message, setmessage] = useState("");
 
     const handleToggle = ()=>{
         let pass = document.getElementById("password");
@@ -101,12 +102,6 @@ const Register = () => {
         } else {
             setdisabled(false);
         }
-        // if(checkPasswordRegex(password)){
-        //     setpasswordError("Password must contain at least one uppercase, lowercase, digit, special character, minimum 8 characters ");
-        // } else {
-        //     setpasswordError('');
-        //     return true;
-        // }
     }
 
     const checkName = (e)=>{

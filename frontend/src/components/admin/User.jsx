@@ -5,18 +5,19 @@ import axios from 'axios';
 
 const User = (props) => {
   const [donations, setDonations] = useState(0);
+  
+  useEffect(() => {
+    fetchHandler().then((data)=>{
+        setDonations(data.donations);
+    });
+  }, []);
+  
   const userId = props.user._id;
   
   const url = `http://localhost:3001/users/getDonations/${userId}`;
   const fetchHandler = async ()=>{
     return await axios.get(url).then((res)=>res.data);
   };
-
-  useEffect(() => {
-    fetchHandler().then((data)=>{
-        setDonations(data.donations);
-    });
-  }, []);
   
   return (
     <>

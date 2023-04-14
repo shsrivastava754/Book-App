@@ -9,10 +9,8 @@ import Dialog from "@mui/material/Dialog";
 
 const Book = (props) => {
   const [bookId, setBookId] = useState("");
-
-  const navigate = useNavigate();
-
   const [openDialog, handleDisplay] = React.useState(false);
+  const navigate = useNavigate();
     
   const handleClose = () => {
       handleDisplay(false);
@@ -21,6 +19,7 @@ const Book = (props) => {
   const openDialogBox = () => {
       handleDisplay(true);
   };
+
   const buttonStyle = {
       width: "10rem",
       fontsize: "1.5rem",
@@ -31,6 +30,7 @@ const Book = (props) => {
       color: "White",
       border: "2px solid yellow",
   };
+
   const divStyle = {
       display: "flex",
       felxDirection: "row",
@@ -39,6 +39,7 @@ const Book = (props) => {
       bottom: "0px",
       // padding: "1rem",
   };
+  
   const confirmButtonStyle = {
       width: "5rem",
       height: "1.5rem",

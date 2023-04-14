@@ -6,8 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Form = (props) => {
-    const navigate = useNavigate();
-
+    
     // States for form fields
     const [title, settitle] = useState("");
     const [author, setauthor] = useState("");
@@ -15,6 +14,7 @@ const Form = (props) => {
     const [description, setdescription] = useState("");
     const [quantity, setquantity] = useState("");
     const [disabled, setDisabled] = useState(true);
+    const navigate = useNavigate();
 
     // Validating the form
     const formSubmit = (e)=>{

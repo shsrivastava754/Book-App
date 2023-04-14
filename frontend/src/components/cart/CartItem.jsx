@@ -6,6 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 
 const CartItem = (props) => {
+  const [openDialog, handleDisplay] = React.useState(false);
   const navigate = useNavigate();
 
   const userId = JSON.parse(localStorage.getItem("user"))._id;
@@ -14,9 +15,7 @@ const CartItem = (props) => {
     axios.delete(`http://localhost:3001/cart/${props.item._id}/${userId}`).then(()=>navigate("/books/cart"));
     window.location.reload();
   }
-
-  const [openDialog, handleDisplay] = React.useState(false);
-    
+ 
   const handleClose = () => {
       handleDisplay(false);
   };
@@ -40,7 +39,6 @@ const CartItem = (props) => {
       position: "absolute",
       right: "0px",
       bottom: "0px",
-      // padding: "1rem",
   };
   const confirmButtonStyle = {
       width: "5rem",

@@ -17,12 +17,14 @@ const fetchHandler = async ()=>{
 const Cart = () => {
     const [items, setItems] = useState();
     const navigate = useNavigate();
-    let total = 0;
+    
     useEffect(() => {
         fetchHandler().then((data)=>{
             setItems(data.items);
         });
     }, []);
+    
+    let total = 0;
     const clearCart = ()=>{
         axios.post('http://localhost:3001/cart/clearCart',{
             userId: JSON.parse(localStorage.getItem("user"))._id,

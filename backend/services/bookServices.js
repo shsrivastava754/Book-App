@@ -35,11 +35,42 @@ const addNewBook = async(body)=>{
         donatedByEmail:user.email
     });
 
-    await newBook.save();
+    await newBook.save(); 
     return newBook;
 };
+
+const findBookById = async(id)=>{
+    const book = await Books.findById(id);
+    return book;
+}
+
+const updateBook = async(id,body)=>{
+    let book = await Books.findByIdAndUpdate(id,{
+        title:body.title,
+        author:body.author,
+        description:body.description,
+        price:body.price,
+        quantity:body.quantity
+    });
+
+    book.save();
+    return book;
+}
+
+const removeBook = async (id)=>{
+    const book = await Books.findByIdAndRemove(id);
+    return book;
+}
+
+const deleteAllBooks = async()=>{
+    await Books.deleteMany({});
+}
 
 module.exports.findBooks = findBooks;
 module.exports.findOneBook = findOneBook;
 module.exports.updateQuantity = updateQuantity;
 module.exports.addNewBook = addNewBook;
+module.exports.findBookById = findBookById;
+module.exports.updateBook = updateBook;
+module.exports.removeBook = removeBook;
+module.exports.deleteAllBooks = deleteAllBooks;

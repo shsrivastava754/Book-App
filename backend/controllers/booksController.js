@@ -45,7 +45,7 @@ const getById = async(req,res)=>{
     const id = req.params.id.slice(1);
     let book;
     try {
-        book = await Books.findById(id);
+        book = await bookServices.findBookById(id);
     } catch (error) {
         console.log(error);
     }
@@ -59,20 +59,11 @@ const getById = async(req,res)=>{
 
 // Function to update a book
 const updateBook = async(req,res)=>{
-    console.log(req.params.id, req.body);
     const id = req.params.id;
     let book;
 
     try {
-        book = await Books.findByIdAndUpdate(id,{
-            title:req.body.title,
-            author:req.body.author,
-            description:req.body.description,
-            price:req.body.price,
-            quantity:req.body.quantity
-        });
-
-        book.save();
+        book = await bookServices.updateBook(id,req.body);
     } catch (error) {
         console.log(error);
     }
@@ -90,7 +81,7 @@ const deleteBook = async(req,res)=>{
     let book;
 
     try {
-        book = await Books.findByIdAndRemove(id);
+        book = await bookServices.removeBook(id);
     } catch (error) {
         console.log(error);
     }
@@ -104,7 +95,7 @@ const deleteBook = async(req,res)=>{
 
 const deleteAllBooks = async (req,res)=>{
     try {
-        await Books.deleteMany({});
+        await bookServices.deleteAllBooks;
         return res.status(201).json({message:"Deleted all books"})
     } catch (error) {
         console.log(error);

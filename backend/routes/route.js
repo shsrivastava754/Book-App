@@ -5,6 +5,9 @@ const booksController = require('../controllers/booksController');
 const usersController = require('../controllers/usersController');
 const cartController = require('../controllers/cartsController');
 const bodyParser = require('body-parser').json();
+const passport = require('passport');
+const localStorage = require("localStorage");
+
 
 // Routes for CRUD of Books Model
 router.post('/books/getBooks',bodyParser,booksController.getBooks);
@@ -25,6 +28,47 @@ router.post('/cart/addToCart',bodyParser,cartController.addToCart);
 router.post('/cart/getCartItems',bodyParser,cartController.getCartItems);
 router.post('/cart/clearCart',bodyParser,cartController.clearCart);
 router.delete('/cart/clearCartModel',cartController.clearCartModel);
-router.delete('/cart/:itemId/:userId',cartController.deleteItem)
+router.delete('/cart/:itemId/:userId',cartController.deleteItem);
+
+router.get('/login/success',(req,res)=>{
+    // if(req.user){
+        res.status(200).json({
+            error:false,
+            message: "Successfully logged in",
+            user: localStorage.getItem('user')
+        });
+    // } else {
+    //     res.status(403).json({error:true,message:"Not authorized"});
+    // }
+});
+
+router.get('/failedLogin',(req,res)=>{
+    res.status(401).json({
+        error: true,
+        message: "Failed google login"
+    });
+});
+
+router.get(
+    "/auth/google/callback",
+    passport.authenticate("google",{
+        successRedirect: process.env.BOOK_PAGE,
+        failureRedirect: "/failedLogin"
+    })
+);
+
+router.get('/google',passport.authenticate("google",["profile","email"]));
+
+router.get('/auth/logout',(req,res)=>{
+    // console.log(req);
+    req.logout((err)=>{
+        if(err){
+          return next(err);
+        }
+        res.redirect(process.env.CLIENT_URL);
+    });
+});
+
+router.get('/getUserData/returnLocalstorage',usersController.returnlocalStorage);
 
 module.exports = router;

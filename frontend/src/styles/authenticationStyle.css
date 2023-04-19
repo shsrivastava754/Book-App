@@ -112,7 +112,7 @@ button {
 
 .login-card span, .register-card span{
   position: absolute;
-  top: 53%;
+  top: 46.5%;
   right: 3rem;
   cursor: pointer;
   padding: 5px;
@@ -132,7 +132,7 @@ button {
 }
 
 .register-card span{
-  top: 63.5%;
+  top: 65%;
 }
 
 #logout a{

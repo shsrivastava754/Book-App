@@ -24,7 +24,7 @@ const User = (props) => {
     <tr>
       <td>{props.user.name}</td>
       <td>{props.user.username}</td>
-      <td>Rs. {props.user.email}</td>
+      <td>{props.user.email}</td>
       <td>{donations}</td>
     </tr>
     </>

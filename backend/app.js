@@ -1,14 +1,26 @@
+require('dotenv').config();
+
 const express = require('express');
 const connection = require('./database/connection');
 const path = require('path');
 const cors = require('cors');
+const passportSetup = require('./passportConfig');
+const passport = require('passport');
+const expressSession = require('express-session');
+var LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./scratch');
 
 const app = express();
-const port = 3001;
 
 app.use(cors());
+
+app.use(expressSession({secret:"secret",resave:false,saveUninitialized:false}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/',require(path.join(__dirname,'routes/route.js')));
 
-app.listen(port,()=>{
-    console.log(`Backend server running on port ${port}`);
+app.listen(process.env.PORT,()=>{
+    console.log(`Backend server running on port ${process.env.PORT}`);
+    console.log(localStorage.getItem('user'));
 });

@@ -20,37 +20,6 @@ const Book = (props) => {
       handleDisplay(true);
   };
 
-  const buttonStyle = {
-      width: "10rem",
-      fontsize: "1.5rem",
-      height: "2rem",
-      padding: "5px",
-      borderRadius: "10px",
-      backgroundColor: "green",
-      color: "White",
-      border: "2px solid yellow",
-  };
-
-  const divStyle = {
-      display: "flex",
-      felxDirection: "row",
-      position: "absolute",
-      right: "0px",
-      bottom: "0px",
-      // padding: "1rem",
-  };
-  
-  const confirmButtonStyle = {
-      width: "5rem",
-      height: "1.5rem",
-      fontsize: "1rem",
-      backgroundColor: "grey",
-      color: "black",
-      margin: "5px",
-      borderRadius: "10px",
-      border: "1px solid black",
-  };
-
   // Function for editing book details
   const editBook = (book)=>{
     navigate(`/books/${book._id}`,{state:{name:book.title,author: book.author,description: book.description,price: book.price,quantity: book.quantity}});

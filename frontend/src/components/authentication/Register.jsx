@@ -26,7 +26,6 @@ const Register = () => {
      'minLengthRegExp'   : /.{8,}/
     };
 
-
     const handleToggle = ()=>{
         let pass = document.getElementById("password");
         let toggleBtn = document.getElementById("toggle");
@@ -134,7 +133,6 @@ const Register = () => {
             <input type="email" placeholder='Email' name='email' id='email'  value={email} onChange={checkEmail} />
             <p className='text-danger m-0 p-0'>{emailError}</p>
             <input type="password" placeholder='Password' name='password' id='password'  value={password} onChange={checkPassword} />
-            {/* <p className='text-danger m-0 p-0'>{passwordError}</p> */}
             <span className="fa-sharp fa-solid fa-eye toggle" id="toggle" onClick={handleToggle}></span>
             <p className='text-danger'>{message}</p>
             <Link to={"/login"}>Already have an account?</Link>

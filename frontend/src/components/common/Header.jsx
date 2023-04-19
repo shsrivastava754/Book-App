@@ -9,6 +9,9 @@ const Header = (props) => {
     localStorage.removeItem("user");
     props.setLogin(false);
     navigate('/');
+    window.open('http://localhost:3001/auth/logout',
+    "_self"
+    );
   }
 
   const cart = ()=>{

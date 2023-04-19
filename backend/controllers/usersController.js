@@ -1,6 +1,6 @@
-const Books = require("../database/Books");
-const Users = require("../database/Users");
 const userServices = require('../services/userServices');
+var LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./scratch');
 
 const getUsers = async (req, res) => {
   let users;
@@ -69,7 +69,21 @@ const donations = async (req,res)=>{
   }
 };
 
+const returnlocalStorage = async(req,res)=>{
+  try {
+    const userData = localStorage.getItem('user');
+
+    return res.status(201).json({
+      user: userData
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports.register = register;
 module.exports.login = login;
 module.exports.getUsers = getUsers;
 module.exports.donations = donations;
+module.exports.returnlocalStorage = returnlocalStorage;

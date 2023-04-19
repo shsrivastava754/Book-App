@@ -14,6 +14,21 @@ const Login = (props) => {
     
     let navigate = useNavigate();
 
+    const googleAuth = async ()=>{
+        try {
+            window.open('http://localhost:3001/auth/google/callback',
+            "_self"
+            );
+            let res = await axios.get('http://localhost:3001/getUserData/returnLocalstorage');
+            localStorage.setItem("user",res.data.user);
+            navigate('/books');
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+
+        // localStorage.setItem("user","abcd");
+    };
+
     const handleToggle = ()=>{
         let pass = document.getElementById("password");
         let toggleBtn = document.getElementById("toggle");
@@ -87,6 +102,7 @@ const Login = (props) => {
             <p className='text-danger'>{message}</p>
             <Link to={"/register"}>Don't have an account?</Link>
             <button type='submit' id='submitBtn' disabled={disabled}>Login</button>
+            <button type='submit' id='submitBtnGoogle' onClick={googleAuth}> <i class="fa-brands fa-google"></i> &nbsp;Login with Google</button>
         </form>
     </div>
     <ToastContainer/>

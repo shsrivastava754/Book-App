@@ -5,6 +5,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import googleLogo from '../../images/googleLogo.png';
 
 const Login = (props) => {
     const [username, setusername] = useState("");
@@ -25,8 +26,6 @@ const Login = (props) => {
         } catch (error) {
             toast.error(error.response.data.message);
         }
-
-        // localStorage.setItem("user","abcd");
     };
 
     const handleToggle = ()=>{
@@ -102,7 +101,8 @@ const Login = (props) => {
             <p className='text-danger'>{message}</p>
             <Link to={"/register"}>Don't have an account?</Link>
             <button type='submit' id='submitBtn' disabled={disabled}>Login</button>
-            <button type='submit' id='submitBtnGoogle' onClick={googleAuth}> <i class="fa-brands fa-google"></i> &nbsp;Login with Google</button>
+            <p className='or'>or</p>
+            <button type='submit' id='submitBtnGoogle' onClick={googleAuth}><img src={googleLogo} alt="jhb" width={32} /> &nbsp;Login with Google</button>
         </form>
     </div>
     <ToastContainer/>

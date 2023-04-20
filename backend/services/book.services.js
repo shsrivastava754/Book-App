@@ -1,15 +1,33 @@
+const { ObjectId } = require('mongodb');
 const Books = require('../database/Books');
 const User = require('../database/Users');
 
+/**
+ * Function to find books donated by the user
+ * @param {String} userId
+ * @returns books list donated by user
+ */
 const findBooks = async (userId)=>{
     let books = await Books.find({'donatedById': {$ne: userId}});
     return books;
 };
 
+/**
+ * Function to find a book by title
+ * @param {String} title  - Title of the book
+ * @returns a book with given title
+ */
 const findOneBook = async(title)=>{
     let book = await Books.findOne({title:title});
     return book;
 };
+
+/**
+ * Function to update the quantity of the book
+ * @param {Object} book 
+ * @param {Number} quantity 
+ * @returns updated book
+ */
 
 const updateQuantity = async(book,quantity)=>{
     await Books.updateOne({title:book.title},
@@ -22,6 +40,11 @@ const updateQuantity = async(book,quantity)=>{
     return book;
 }
 
+/**
+ * Function to add a new book
+ * @param {Object} body - A object with details of the book to be added 
+ * @returns object of the new book
+ */
 const addNewBook = async(body)=>{
     const user = await User.findOne({_id:body.donatedById});
     let newBook = new Books({
@@ -39,11 +62,22 @@ const addNewBook = async(body)=>{
     return newBook;
 };
 
+/**
+ * Function to find a book by id
+ * @param {ObjectId} id 
+ * @returns a book with given id
+ */
 const findBookById = async(id)=>{
     const book = await Books.findById(id);
     return book;
 }
 
+/**
+ * Function to update details of the book
+ * @param {ObjectId} id 
+ * @param {Object} body - Object of the book details
+ * @returns updated book
+ */
 const updateBook = async(id,body)=>{
     let book = await Books.findByIdAndUpdate(id,{
         title:body.title,
@@ -57,20 +91,23 @@ const updateBook = async(id,body)=>{
     return book;
 }
 
+/**
+ * Function to delete a book from collection by ID
+ * @param {ObjectId} id 
+ * @returns message of the removed book
+ */
 const removeBook = async (id)=>{
     const book = await Books.findByIdAndRemove(id);
     return book;
 }
 
+/**
+ * Function to delete all books at once
+ */
 const deleteAllBooks = async()=>{
     await Books.deleteMany({});
 }
 
-module.exports.findBooks = findBooks;
-module.exports.findOneBook = findOneBook;
-module.exports.updateQuantity = updateQuantity;
-module.exports.addNewBook = addNewBook;
-module.exports.findBookById = findBookById;
-module.exports.updateBook = updateBook;
-module.exports.removeBook = removeBook;
-module.exports.deleteAllBooks = deleteAllBooks;
+module.exports = {
+    findBooks, findOneBook, updateQuantity, addNewBook, findBookById, updateBook, removeBook, deleteAllBooks
+}

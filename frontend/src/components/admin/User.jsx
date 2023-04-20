@@ -1,8 +1,12 @@
-import React from 'react'
-import '../style.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, React } from 'react';
+import '../../styles/style.css';
 import axios from 'axios';
 
+/**
+ * Function to return user component
+ * @param {Object} props 
+ * @returns {React.Component} User component
+ */
 const User = (props) => {
   const [donations, setDonations] = useState(0);
   

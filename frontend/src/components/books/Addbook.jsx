@@ -1,43 +1,49 @@
 import React, { useState } from 'react';
-import './style.css';
+import '../../styles/style.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Form = (props) => {
+/**
+ * 
+ * @param {Object} props 
+ * @returns {React.Component} Add Book component
+ */
+const AddBook = (props) => {
     
     // States for form fields
-    const [title, settitle] = useState("");
-    const [author, setauthor] = useState("");
-    const [price, setprice] = useState("");
-    const [description, setdescription] = useState("");
-    const [quantity, setquantity] = useState("");
+    const [title, setTitle] = useState("");
+    const [author, setAuthor] = useState("");
+    const [price, setPrice] = useState("");
+    const [description, setDescription] = useState("");
+    const [quantity, setQuantity] = useState("");
     const [disabled, setDisabled] = useState(true);
+
     const navigate = useNavigate();
 
-    // Validating the form
+    /**
+     * Validating the form
+     * @param {Event} e 
+     */
     const formSubmit = (e)=>{
         e.preventDefault();
 
         addBook(title,author,price,description,quantity);
-        settitle("");
-        setauthor("");
-        setprice("");
-        setdescription("");
-        setquantity("");
-
+        setTitle("");
+        setAuthor("");
+        setPrice("");
+        setDescription("");
+        setQuantity("");
     };
 
-    const showToast = ()=>{
-        toast.success('Added book successfully');
-    };
-
-    const showerrorToast = ()=>{
-        toast.warning('Failed to add book');
-    };
-
-    // Sending post request to backend for adding book
+    /**
+     * Sending post request to backend for adding book
+     * @param {String} title 
+     * @param {String} author 
+     * @param {Number} price 
+     * @param {String} description 
+     * @param {Number} quantity 
+     */
     const addBook = async(title,author,price,description,quantity)=>{
         await axios.post('http://localhost:3001/',{
             title: title,
@@ -49,11 +55,9 @@ const Form = (props) => {
         })
         .then((res)=>{
             if(res){
-                // res = res.data;
-                // showToast();
                 navigate('/books');
             } else{
-                showerrorToast();
+                console.log("Some error in adding book");
             }
         });
 
@@ -68,27 +72,27 @@ const Form = (props) => {
     }
 
     const checkTitle = (e)=>{
-        settitle(e.target.value);
+        setTitle(e.target.value);
         checkToEnable();
     }
 
     const checkAuthor = (e)=>{
-        setauthor(e.target.value);
+        setAuthor(e.target.value);
         checkToEnable();
     }
 
     const checkPrice = (e)=>{
-        setprice(e.target.value);
+        setPrice(e.target.value);
         checkToEnable();
     }
 
     const checkQuantity = (e)=>{
-        setquantity(e.target.value);
+        setQuantity(e.target.value);
         checkToEnable();
     }
 
     const checkDescription = (e)=>{
-        setdescription(e.target.value);
+        setDescription(e.target.value);
         checkToEnable();
     }
 
@@ -118,9 +122,8 @@ const Form = (props) => {
             </div>
             <button className="btn p-2" disabled={disabled}>Add Book</button>
         </form>
-        <ToastContainer/>
     </div>
   )
 }
 
-export default Form;
+export default AddBook;

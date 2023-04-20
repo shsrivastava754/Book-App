@@ -1,21 +1,29 @@
-import React from 'react'
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,React } from 'react';
 import CartItem from './CartItem';
 import { useNavigate } from 'react-router-dom';
-import '../style.css';
+import '../../styles/style.css';
 
 const url = 'http://localhost:3001/cart/getCartItems';
+
+/**
+ * 
+ * @returns response after fetching the cart items
+ */
 const fetchHandler = async ()=>{
     return await axios.post(url,{
         id: JSON.parse(localStorage.getItem("user"))._id
     }).then((res)=>res.data);
-
 };
 
-
+/**
+ * 
+ * @returns {React.Component} Cart component
+ */
 const Cart = () => {
+    // State variable for items in the cart of user
     const [items, setItems] = useState();
+
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -24,7 +32,12 @@ const Cart = () => {
         });
     }, []);
     
+    // For cart total
     let total = 0;
+
+    /**
+     * Sending backend API request to clear the cart
+     */
     const clearCart = ()=>{
         axios.post('http://localhost:3001/cart/clearCart',{
             userId: JSON.parse(localStorage.getItem("user"))._id,

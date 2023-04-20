@@ -1,19 +1,30 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import '../style.css';
+import '../../styles/style.css';
 
+/**
+ * Function that returns the navbar component
+ * @param {Object} props 
+ * @returns {React.Component} Header component
+ */
 const Header = (props) => {
   const navigate = useNavigate();
 
+  /**
+   * Function to logout the user from current session
+   */
   const logout = ()=>{
-    localStorage.removeItem("user");
+    // Clear browser localStorage
+    localStorage.clear();
     props.setLogin(false);
     navigate('/');
-    window.open('http://localhost:3001/auth/logout',
-    "_self"
-    );
+    window.open('http://localhost:3001/auth/logout',"_self");
   }
 
+  
+  /**
+   * Function to navigate to carts section
+   */
   const cart = ()=>{
     navigate('/books/cart');
   }

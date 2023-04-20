@@ -1,13 +1,14 @@
 const express = require('express');
 const app = express();
 const router = express.Router();
-const booksController = require('../controllers/booksController');
-const usersController = require('../controllers/usersController');
-const cartController = require('../controllers/cartsController');
+const booksController = require('../controllers/books.controller');
+const usersController = require('../controllers/users.controller');
+const cartController = require('../controllers/cart.controller');
 const bodyParser = require('body-parser').json();
 const passport = require('passport');
-const localStorage = require("localStorage");
+const LocalStorage = require('node-localstorage').LocalStorage;
 
+localStorage = new LocalStorage('./scratch');
 
 // Routes for CRUD of Books Model
 router.post('/books/getBooks',bodyParser,booksController.getBooks);
@@ -60,11 +61,11 @@ router.get(
 router.get('/google',passport.authenticate("google",["profile","email"]));
 
 router.get('/auth/logout',(req,res)=>{
-    // console.log(req);
     req.logout((err)=>{
         if(err){
           return next(err);
         }
+        localStorage.clear();
         res.redirect(process.env.CLIENT_URL);
     });
 });

@@ -1,22 +1,33 @@
-import React from 'react'
 import Book from './Book';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import './style.css';
+import { useEffect, useState, React } from 'react';
+import '../../styles/style.css';
 import {Link} from 'react-router-dom';
 
 const url = 'http://localhost:3001/books/getBooks';
+
 const fetchHandler = async ()=>{
   return await axios.post(url,{
     userId: JSON.parse(localStorage.getItem("user"))._id
   }).then((res)=>res.data);
 };
 
+/**
+ * 
+ * @returns {React.Component} Book list compo 
+ */
+
 const Booklist = (props) => {
+  // State for books list
   const [books, setBooks] = useState();
+  
+  // State for books table
   const [tableBooks, setTableBooks] = useState(books);
+  
+  // State for search Text in the search bar
   const [search, setSearch] = useState();
   
+  // 
   useEffect(() => {
     fetchHandler().then((data)=>{
         setBooks(data.books);
@@ -24,27 +35,31 @@ const Booklist = (props) => {
     });
   }, []);
   
+  /**
+   * Function to handle the table according to filter applied from dropdown
+   * @param {Event} e 
+   */
   const handleFilter = (e)=>{  
     let newBooks;
 
-    if(e.target.value==0){
+    if(e.target.value===0){
       newBooks = [...books];
     }
 
-    if(e.target.value==1){
+    if(e.target.value===1){
       newBooks = books.filter((book)=>( 
         book.status==="available"
       ));
     }
 
-    if(e.target.value==2){
+    if(e.target.value===2){
       newBooks = books.filter((book)=>( 
-        book.status==="ready to pick"
+        book.status==="Ready to pick"
       ));
 
     }
 
-    if(e.target.value==3){
+    if(e.target.value===3){
       newBooks = books.filter((book)=>( 
         book.status==="sold"
       ));
@@ -52,7 +67,10 @@ const Booklist = (props) => {
     setTableBooks(newBooks);
   }
 
-  // Function to handle the search bar
+  /**
+   * Function to handle the search functionality
+   * @returns books list based on the search value
+   */
   const handleSearch = ()=>{
     if(search==null){
       return books;
@@ -88,9 +106,7 @@ const Booklist = (props) => {
             <th scope="col">Price</th>
             <th scope='col'>Donated by</th>
             <th scope="col">Status</th>
-            {/* {JSON.parse(localStorage.getItem("user"))["role"]=='Admin'? */}
             <th scope="col">Action</th>
-             {/* :null} */}
           </tr>
         </thead>
         <tbody>

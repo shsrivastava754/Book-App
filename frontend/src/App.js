@@ -1,8 +1,8 @@
 import Header from "./components/common/Header";
-import Booklist from "./components/Booklist";
-import Form from "./components/Form";
-import BookDetails from "./components/BookDetails";
-import EditBook from "./components/EditBook";
+import Booklist from "./components/books/Booklist";
+import AddBook from "./components/books/Addbook";
+import Bookdetails from "./components/books/Bookdetails";
+import Editbook from "./components/books/Editbook";
 import Login from "./components/authentication/Login";
 import Register from "./components/authentication/Register";
 import PrivateRoutes from "./routes/PrivateRoutes";
@@ -10,7 +10,6 @@ import ProtectLogin from "./routes/ProtectLogin";
 import ProtectAdmin from "./routes/ProtectAdmin";
 import Users from "./components/admin/Users";
 import Cart from "./components/cart/Cart";
-import DialogBox from "./components/DialogBox";
 import {
   BrowserRouter,
   Routes,
@@ -34,9 +33,9 @@ function App() {
         {/* Routes that only logged in normal user can access */}
         <Route element={<PrivateRoutes/>}>
           <Route path="/books" element={<Booklist/>} exact />
-          <Route path="/addBook" element={<Form/>} exact />
-          <Route path="/:id" element={<BookDetails/>} exact />
-          <Route path="/books/:id" element={<EditBook/>} exact />
+          <Route path="/addBook" element={<AddBook/>} exact />
+          <Route path="/:id" element={<Bookdetails/>} exact />
+          <Route path="/books/:id" element={<Editbook/>} exact />
           <Route path="/books/cart" element={<Cart/>} />
         </Route>
 

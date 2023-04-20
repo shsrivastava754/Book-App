@@ -1,12 +1,9 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'
+import { useEffect, useState, React } from 'react';
 import axios from 'axios';
 
-
 /**
- * 
+ * Function to return Book details component
  * @returns {React.Component} Details of book
  */
 const BookDetails = () => {
@@ -27,8 +24,13 @@ const BookDetails = () => {
     });
   }, []);
 
+  // Getting the id from url parameters
   const id = useParams().id;
 
+  /**
+   * Function to fetch data of book from backend
+   * @returns response from the API call at backend for details of the book
+   */
   const fetchHandler = async ()=>{
       return await axios.get(`http://localhost:3001/:${id}`).then((res)=>res.data);
   };

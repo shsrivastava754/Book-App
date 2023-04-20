@@ -1,43 +1,65 @@
 import React, { useState } from 'react'
-import './style.css';
-import { Link, useNavigate } from 'react-router-dom';
+import '../../styles/style.css';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 
 const Book = (props) => {
-  const [bookId, setBookId] = useState("");
-  const [openDialog, handleDisplay] = React.useState(false);
+  // State variables for dialog box of confirm delete
+  const [openDialog, handleDisplay] = useState(false);
+  
   const navigate = useNavigate();
     
+  /**
+   * Function to handle closing of the confirm delete dialog box
+   */
   const handleClose = () => {
       handleDisplay(false);
   };
   
+  /**
+   * Function to handle opening of the confirm delete dialog box 
+   */
   const openDialogBox = () => {
       handleDisplay(true);
   };
 
-  // Function for editing book details
+  /**
+   * Function to navigate to a route which shows a form for edit book
+   * @param {Object} book 
+   */
   const editBook = (book)=>{
     navigate(`/books/${book._id}`,{state:{name:book.title,author: book.author,description: book.description,price: book.price,quantity: book.quantity}});
   };
 
-  // Function for getting book details
+  /**
+   * Function to navigate to a route which shows details of book with given ID
+   * @param {Object} book 
+   */
   const getDetails = (book)=>{
     navigate(`/${book._id}`);
   };
 
+  /**
+   * Function to show notification in case of adding an item to cart
+   */
   const showToast = ()=>{
       toast.success('Added to cart');
   };
 
+  /**
+   * Function to show error notification in case of failure in addition to cart 
+   */
   const showerrorToast = ()=>{
       toast.warning('Failed to add to cart');
   };
 
+  /**
+   * Function that makes API call to add an item to cart
+   * @param {Object} book 
+   */
   const addToCart = async (book)=>{
     await axios.post('http://localhost:3001/cart/addToCart',{
       title: book.title,
@@ -48,7 +70,6 @@ const Book = (props) => {
     })
     .then((res)=>{
       if(res){
-          res = res.data;
           showToast();
       } else{
           showerrorToast();
@@ -56,7 +77,9 @@ const Book = (props) => {
   });
  }
 
-  // Function for deleting a book
+  /**
+   * Function for deleting a book
+   */
   const deleteBook = ()=>{
     axios.delete(`http://localhost:3001/${props.book._id}`).then(()=>navigate("/books"));
     window.location.reload();

@@ -4,7 +4,8 @@ button {
   text-decoration: none;
 }
 
-.login-card,.register-card {
+.login-card,
+.register-card {
   margin: auto;
   margin-top: 4rem;
   width: 100%;
@@ -14,52 +15,59 @@ button {
   text-align: center;
 }
 
-.register-card{
+.register-card {
   margin-top: 60px;
 }
 
 @media (width>=500px) {
-  .login-card,.register-card {
+  .login-card,
+  .register-card {
     width: 400px;
   }
 
-  .register-card{
+  .register-card {
     width: 550px;
   }
 }
 
-.login-card > h2,.register-card h2 {
+.login-card > h2,
+.register-card h2 {
   margin: 0 0 12px;
   font-size: 36px;
   font-weight: 600;
 }
 
-.login-card > h3,.register-card > h3 {
+.login-card > h3,
+.register-card > h3 {
   margin: 0 0 30px;
   font-weight: 500;
   font-size: 16px;
   color: rgba(0, 0, 0, 0.38);
 }
 
-.login-form, .register-form {
+.login-form,
+.register-form {
   width: 100%;
   margin: 0;
   display: grid;
   gap: 16px;
 }
 
-.login-form > input, .register-form > input {
+.login-form > input,
+.register-form > input {
   width: 100%;
   height: 56px;
   padding: 0 16px;
   border-radius: 8px;
 }
 
-.login-form > input, .register-form > input {
+.login-form > input,
+.register-form > input {
   border: 2px solid #ebebeb;
 }
 
-.login-form > button:enabled, .register-form > button:enabled {
+.login-form > button:enabled,
+.register-form > button:enabled {
   padding: 15px 25px;
   border: unset;
   border-radius: 15px;
@@ -75,7 +83,8 @@ button {
   overflow: hidden;
 }
 
-.login-form > button:disabled, .register-form > button:disabled{
+.login-form > button:disabled,
+.register-form > button:disabled {
   padding: 15px 25px;
   border: unset;
   border-radius: 15px;
@@ -87,7 +96,8 @@ button {
   font-size: 17px;
 }
 
-.login-form > button::before, .register-form > button::before {
+.login-form > button::before,
+.register-form > button::before {
   content: "";
   position: absolute;
   top: 0;
@@ -102,15 +112,18 @@ button {
   transition: all 250ms;
 }
 
-.login-form > button:enabled:hover, .register-form > button:hover:enabled {
+.login-form > button:enabled:hover,
+.register-form > button:hover:enabled {
   color: #e8e8e8;
 }
 
-.login-form > button:hover:enabled::before, .register-form > button:hover:enabled::before {
+.login-form > button:hover:enabled::before,
+.register-form > button:hover:enabled::before {
   width: 100%;
 }
 
-.login-card span, .register-card span{
+.login-card span,
+.register-card span {
   position: absolute;
   top: 43%;
   right: 3rem;
@@ -127,20 +140,21 @@ button {
   padding-right: 10px;
 }
 
-.login-card, .register-card{
+.login-card,
+.register-card {
   position: relative;
 }
 
-.register-card span{
+.register-card span {
   top: 65%;
 }
 
-#logout a{
+#logout a {
   text-decoration: none;
   color: #000;
 }
 
-#logout{
+#logout {
   margin-right: 30px;
   padding: 6px 22px 6px 22px;
   border-radius: 13px;
@@ -148,19 +162,19 @@ button {
 }
 
 .register-form #submitBtn:disabled,
-.register-form #submitBtn[disabled]{
+.register-form #submitBtn[disabled] {
   background-color: #dcd5d5;
   color: grey;
   cursor: not-allowed;
 }
 
 .login-form #submitBtn:disabled,
-.login-form #submitBtn[disabled]{
+.login-form #submitBtn[disabled] {
   background-color: #dcd5d5;
   color: grey;
   cursor: not-allowed;
 }
 
-.or{
+.or {
   margin-bottom: 0;
 }

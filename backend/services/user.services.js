@@ -1,17 +1,32 @@
 const Users = require('../database/Users');
 const Books = require('../database/Books');
 const bcrypt = require('bcrypt');
+const { ObjectId } = require('mongodb');
 
+/**
+ * 
+ * @returns list of all users in the users collection
+ */
 const getUsers = async ()=>{
     const users = await Users.find();
     return users;
 }
 
+/**
+ * Function to return a user from collection 
+ * @param {String} username 
+ * @returns user 
+ */
 const findUserByUsername = async(username)=>{
     const user = await Users.findOne({ username: username });
     return user;
 }
 
+/**
+ * Function to register a new user
+ * @param {Object} body 
+ * @returns an object of the added user
+ */
 const registerUser = async(body)=>{
     let saltRounds = 10;
     let hashedPass = bcrypt.hashSync(body.password,saltRounds);
@@ -27,25 +42,27 @@ const registerUser = async(body)=>{
     return newUser;
 };
 
+/**
+ * Function to check if the user has entered correct password or not
+ * @param {String} enteredPassword 
+ * @param {String} actualPassword 
+ * @returns a boolean value if password is right or not
+ */
 const verifyUser = (enteredPassword,actualPassword)=>{
     let verified = bcrypt.compareSync(enteredPassword,actualPassword);
     return verified;
 };
 
+/**
+ * Function to count the number of donations done by a user
+ * @param {ObjectId} id 
+ * @returns an integer value for the donations
+ */
 const countDonations = async(id)=>{
-    const donationsCount = await Books.count(
-        {
-          donatedById: id
-        }
-      );
-
-      return donationsCount;
+    const donationsCount = await Books.count({donatedById: id});
+    return donationsCount;
 }
 
-
-
-module.exports.getUsers = getUsers;
-module.exports.findUserByUsername = findUserByUsername;
-module.exports.registerUser = registerUser;
-module.exports.verifyUser = verifyUser;
-module.exports.countDonations = countDonations;
+module.exports = {
+    getUsers, findUserByUsername, registerUser, verifyUser, countDonations
+}

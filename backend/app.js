@@ -4,11 +4,9 @@ const express = require('express');
 const connection = require('./database/connection');
 const path = require('path');
 const cors = require('cors');
-const passportSetup = require('./passportConfig');
+const passportSetup = require('./passport');
 const passport = require('passport');
 const expressSession = require('express-session');
-var LocalStorage = require('node-localstorage').LocalStorage;
-localStorage = new LocalStorage('./scratch');
 
 const app = express();
 
@@ -22,5 +20,4 @@ app.use('/',require(path.join(__dirname,'routes/route.js')));
 
 app.listen(process.env.PORT,()=>{
     console.log(`Backend server running on port ${process.env.PORT}`);
-    console.log(localStorage.getItem('user'));
 });

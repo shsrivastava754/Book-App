@@ -1,20 +1,24 @@
-import React from 'react'
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useState, React } from 'react';
 
+/**
+ * Function to return the edit book component
+ * @returns {React.Component} edit book form
+ */
 const EditBook = () => {
-
-    // States for form fields
-    const [title, settitle] = useState(book?.title);
-    const [author, setauthor] = useState(book?.author);
-    const [price, setprice] = useState(book?.price);
-    const [description, setdescription] = useState(book?.subscription);
-    const [status, setstatus] = useState(book?.status);
-    const [quantity, setquantity] = useState(book?.quantity);
+    
+    // State for book list
     const [book, setBook] = useState();
+    
+    // States for form fields
+    const [title, setTitle] = useState(book?.title);
+    const [author, setAuthor] = useState(book?.author);
+    const [price, setPrice] = useState(book?.price);
+    const [description, setDescription] = useState(book?.subscription);
+    const [status, setStatus] = useState(book?.status);
+    const [quantity, setQuantity] = useState(book?.quantity);
+    
     const navigate = useNavigate();
     const location = useLocation();
     
@@ -29,23 +33,17 @@ const EditBook = () => {
         return await axios.put(`http://localhost:3001/${id}`).then((res)=>res.data);
     };
     
-    // Validate the form
+    // Validate the form before sending the API call
     const formSubmit = (e)=>{
         e.preventDefault();
 
-        // if(!title || !author || !price || !description || !status || !quantity){
-        //     alert("All fields are mandatory");
-        // }
-
-        // else{
-            editBook(title,author,price,description,status,quantity).then(()=>navigate('/books'));
-            settitle("");
-            setauthor("");
-            setprice("");
-            setdescription("");
-            setstatus("");
-            setquantity("");
-        // }
+        editBook(title,author,price,description,status,quantity).then(()=>navigate('/books'));
+        setTitle("");
+        setAuthor("");
+        setPrice("");
+        setDescription("");
+        setStatus("");
+        setQuantity("");
 
     };
 
@@ -66,30 +64,30 @@ const EditBook = () => {
         <form onSubmit={formSubmit}>
             <div className="mb-3">
                 <label htmlFor="title" className="form-label">Title</label>
-                <input type="text" defaultValue={location.state.name} className="form-control" id="title" onChange={(e)=>{settitle(e.target.value)}}/>
+                <input type="text" defaultValue={location.state.name} className="form-control" id="title" onChange={(e)=>{setTitle(e.target.value)}}/>
             </div>
             <div className="mb-3">
                 <label htmlFor="author" className="form-label">Author</label>
-                <input type="text" defaultValue={location.state.author} className="form-control" id="author" onChange={(e)=>{setauthor(e.target.value)}} />
+                <input type="text" defaultValue={location.state.author} className="form-control" id="author" onChange={(e)=>{setAuthor(e.target.value)}} />
             </div>
             <div className="mb-3">
                 <label htmlFor="price" className="form-label">Price</label>
-                <input type="number" value={location.state.price} className="form-control" id="price" onChange={(e)=>{setprice(e.target.value)}} />
+                <input type="number" value={location.state.price} className="form-control" id="price" onChange={(e)=>{setPrice(e.target.value)}} />
             </div>
             <div className="mb-3">
                 <label htmlFor="quantity" className="form-label">Quantity</label>
-                <input type="number" defaultValue={location.state.quantity} className="form-control" id="quantity" onChange={(e)=>{setquantity(e.target.value)}} />
+                <input type="number" defaultValue={location.state.quantity} className="form-control" id="quantity" onChange={(e)=>{setQuantity(e.target.value)}} />
             </div>
             <div className="mb-3">
                 <label htmlFor="status" className="form-label">Status</label>
-                <select className="form-select" id="status" onChange={(e)=>{setstatus(e.target.value)}} >
+                <select className="form-select" id="status" onChange={(e)=>{setStatus(e.target.value)}} >
                     <option value="1">Available</option>
                     <option value="2">Sold</option>
                 </select>
             </div>
             <div className="mb-3">
                 <label htmlFor="description" className="form-label">Description</label>
-                <textarea type="text" defaultValue={location.state.description} className="form-control" id="description" onChange={(e)=>{setdescription(e.target.value)}} />
+                <textarea type="text" defaultValue={location.state.description} className="form-control" id="description" onChange={(e)=>{setDescription(e.target.value)}} />
             </div>
             <button className="btn p-2">Save Book</button>
         </form>

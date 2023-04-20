@@ -1,20 +1,28 @@
-import React from 'react'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, React } from 'react';
 import axios from 'axios';
-
-import '../style.css';
+import '../../styles/style.css';
 import User from './User';
 import {Link} from 'react-router-dom';
 
 const url = 'http://localhost:3001/users/getUsers';
+
+/**
+ * Function to send API request at backend for the users data
+ * @returns {Array} list of users 
+ */
 const fetchHandler = async ()=>{
   return await axios.get(url).then((res)=>res.data);
 };
 
-
+/**
+ * 
+ * @returns {React.Component} Users list component
+ */
 const Users = () => {
-
+  // State variable for users list
   const [users, setUsers] = useState();
+  
+  // State variable for search text
   const [search, setSearch] = useState();
   
   useEffect(() => {
@@ -23,7 +31,10 @@ const Users = () => {
     });
   }, []);
 
-  // Function to handle the search bar
+  /**
+   * Function to handle the search bar
+   * @returns users list according to the search text
+   */
   const handleSearch = ()=>{
     if(search==null){
       return users;
@@ -33,7 +44,6 @@ const Users = () => {
       user.username.toLowerCase().includes(search.trim())
     ));
   }
-
 
   return (
     <>

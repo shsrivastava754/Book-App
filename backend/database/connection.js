@@ -1,14 +1,15 @@
-const mongoose = require('mongoose');
-mongoose.set('strictQuery',false);
-const uri = 'mongodb://127.0.0.1:27017/booksDb'
+const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
+const uri = "mongodb://127.0.0.1:27017/booksDb";
 
-mongoose.connect(uri,{
+mongoose
+  .connect(uri, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
-}).
-then(()=>{
+    useUnifiedTopology: true,
+  })
+  .then(() => {
     console.log("Connected to DB");
-}).catch((err)=>{
+  })
+  .catch((err) => {
     console.log(err);
-});
-
+  });

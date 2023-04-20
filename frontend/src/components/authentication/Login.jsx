@@ -1,28 +1,30 @@
-import React from "react";
 import "./authenticationStyle.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, React } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import googleLogo from "../../images/googleLogo.png";
+import bg1 from "../../images/bg1.jpg";
+import bg2 from "../../images/bg2.jpg";
+import bg3 from "../../images/vg3.jpg";
 
+/**
+ * Returns Login Form Component
+ * @param {Object} props 
+ * @returns {React.Component} login component
+ */
 const Login = (props) => {
-  const [username, setusername] = useState("");
-  const [password, setpassword] = useState("");
-  const [disabled, setdisabled] = useState(true);
-  const [message, setmessage] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [disabled, setDisabled] = useState(true);
+  const [message, setMessage] = useState("");
 
   let navigate = useNavigate();
 
-  const responseGoogleSuccess = (response) => {
-    console.log(response);
-  };
-
-  const responseGoogleFailure = (response) => {
-    console.log(response);
-  };
-
+  /**
+   * Function to send request to backend for google authentication
+   */
   const googleAuth = async () => {
     try {
       window.open("http://localhost:3001/auth/google/callback", "_self");
@@ -37,6 +39,9 @@ const Login = (props) => {
     }
   };
 
+  /**
+   * Function to handle hiding and showing password
+   */
   const handleToggle = () => {
     let pass = document.getElementById("password");
     let toggleBtn = document.getElementById("toggle");
@@ -51,21 +56,30 @@ const Login = (props) => {
     }
   };
 
+  /**
+   * Function to validate the form
+   * @param {Event} e 
+   */
   const login = async (e) => {
     e.preventDefault();
 
     // don't use not equal for if else
-    if (!username || !password) {
-      setmessage("All fields are mandatory");
-    } else {
-      setmessage("");
-      setdisabled(false);
+    if (username && password) {
+      setMessage("");
+      setDisabled(false);
       loginUser(username, password);
-      setusername("");
-      setpassword("");
+      setUsername("");
+      setPassword("");
+    } else {
+      setMessage("All fields are mandatory");
     }
   };
 
+  /**
+   * Function to send request to backend for logging user into the app
+   * @param {String} username 
+   * @param {String} password 
+   */
   const loginUser = async (username, password) => {
     try {
       let res = await axios.post("http://localhost:3001/login", {
@@ -81,22 +95,29 @@ const Login = (props) => {
   };
 
   const checkUsername = (e) => {
-    setusername(e.target.value);
+    setUsername(e.target.value);
     if (!username || !password) {
-      setdisabled(true);
+      setDisabled(true);
     } else {
-      setdisabled(false);
+      setDisabled(false);
     }
   };
 
   const checkPassword = (e) => {
-    setpassword(e.target.value);
+    setPassword(e.target.value);
     if (!username || !password) {
-      setdisabled(true);
+      setDisabled(true);
     } else {
-      setdisabled(false);
+      setDisabled(false);
     }
   };
+
+  function setBackground(bg) {
+    const body = document.querySelector('body');
+    body.style = `background: url(${bg});background-size:cover;background-repeat:no-repeat;`
+  }
+
+  setBackground(bg1);
 
   return (
     <>
@@ -137,7 +158,6 @@ const Login = (props) => {
             <img src={googleLogo} alt="jhb" width={32} /> &nbsp;Login with
             Google
           </button>
-          {/* <GoogleLoginBtn/> */}
         </form>
       </div>
       <ToastContainer />

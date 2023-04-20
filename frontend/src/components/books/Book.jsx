@@ -100,19 +100,19 @@ const Book = (props) => {
 
       {JSON.parse(localStorage.getItem("user"))["role"]==='Admin'?
       <td>
-        <button className="btn btn-danger mx-2 tooltips" id={props.book._id} onClick = {openDialogBox} >
+        <button className="btn btnAction mx-2 tooltips" id={props.book._id} onClick = {openDialogBox} >
           <i className="fa-solid fa-trash"></i><span class="tooltiptext">Delete Book</span>
         </button>
-        <button className="btn btn-warning mx-2 tooltips" onClick={()=>{editBook(props.book)}}>
+        <button className="btn btnAction mx-2 tooltips" onClick={()=>{editBook(props.book)}}>
           <i className="fa-solid fa-pen-to-square"></i><span class="tooltiptext">Edit Book</span>
         </button>
-        <button className="btn btn-primary mx-2 tooltips"  onClick={()=>{addToCart(props.book)}}>
+        <button className="btn btnAction mx-2 tooltips"  onClick={()=>{addToCart(props.book)}}>
         <i className="fa-solid fa-cart-shopping"></i><span class="tooltiptext">Add to Cart</span>
         </button>
       </td>
       : 
       <td>
-        <button className="btn btn-primary mx-2 tooltips"  onClick={()=>{addToCart(props.book)}}>
+        <button className="btn btnAction mx-2 tooltips"  onClick={()=>{addToCart(props.book)}}>
         <i className="fa-solid fa-cart-shopping"></i><span class="tooltiptext">Add to Cart</span>
         </button>
       </td>

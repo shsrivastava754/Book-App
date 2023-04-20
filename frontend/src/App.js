@@ -5,9 +5,9 @@ import Bookdetails from "./components/books/Bookdetails";
 import Editbook from "./components/books/Editbook";
 import Login from "./components/authentication/Login";
 import Register from "./components/authentication/Register";
-import PrivateRoutes from "./routes/PrivateRoutes";
-import ProtectLogin from "./routes/ProtectLogin";
-import ProtectAdmin from "./routes/ProtectAdmin";
+import PrivateRoutes from "./routes/Privateroutes";
+import ProtectLogin from "./routes/Protectlogin";
+import ProtectAdmin from "./routes/Protectadmin";
 import Users from "./components/admin/Users";
 import Cart from "./components/cart/Cart";
 import {

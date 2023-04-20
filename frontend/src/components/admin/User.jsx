@@ -8,6 +8,7 @@ import axios from 'axios';
  * @returns {React.Component} User component
  */
 const User = (props) => {
+  //State variable for setting the donations made by the user
   const [donations, setDonations] = useState(0);
   
   useEffect(() => {
@@ -19,6 +20,11 @@ const User = (props) => {
   const userId = props.user._id;
   
   const url = `http://localhost:3001/users/getDonations/${userId}`;
+  
+  /**
+   * Function that sends API request to backend for getting number of donations
+   * @returns {Number} 
+   */
   const fetchHandler = async ()=>{
     return await axios.get(url).then((res)=>res.data);
   };

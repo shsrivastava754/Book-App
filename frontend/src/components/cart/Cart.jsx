@@ -73,7 +73,7 @@ const Cart = () => {
             </table>
             {items?.length?
             <div className="components">
-                <button className='clearCart' onClick={clearCart}>Clear Cart</button>
+                <button className='btn clearCart' onClick={clearCart}>Clear Cart</button>
             </div>
             : null    
             }   

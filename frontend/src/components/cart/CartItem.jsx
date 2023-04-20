@@ -48,7 +48,7 @@ const CartItem = (props) => {
       <td>{props.item.price}</td>
       <td>{props.item.quantity}</td>
       <td>
-        <button className='btn btn-danger tooltips' id={props.item._id} onClick={openDialogBox}>
+        <button className='btn btnAction tooltips' id={props.item._id} onClick={openDialogBox}>
         <i className="fa-solid fa-trash"></i><span class="tooltiptext">Remove Item</span>
         </button>
       </td>

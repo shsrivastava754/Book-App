@@ -20,17 +20,6 @@ const GoogleLoginBtn = () => {
             cookiePolicy={'single_host_origin'}
         />
 
-{/* <GoogleOAuthProvider clientId="743741413482-q33cvp8cpahrug0j4009lga0f6eppbkn.apps.googleusercontent.com">
-    <GoogleLogin
-    onSuccess={credentialResponse => {
-        console.log(credentialResponse);
-    }}
-    onError={() => {
-        console.log('Login Failed');
-    }}
-    />    
-</GoogleOAuthProvider>; */}
-
     
     </div>
   )

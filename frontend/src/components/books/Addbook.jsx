@@ -3,6 +3,7 @@ import '../../styles/style.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
+import { addBook } from '../../services/app.services';
 
 /**
  * 
@@ -45,6 +46,12 @@ const AddBook = (props) => {
      * @param {Number} quantity 
      */
     const addBook = async(title,author,price,description,quantity)=>{
+        // const res = await addBook(title,author,price,description,quantity);
+        // if(res){
+        //     navigate('/books');
+        // } else {
+        //     console.log("Some error in adding book");
+        // }
         await axios.post('http://localhost:3001/',{
             title: title,
             author: author,
@@ -60,6 +67,7 @@ const AddBook = (props) => {
                 console.log("Some error in adding book");
             }
         });
+
 
     }
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 import '../../styles/style.css';
 import User from './User';
 import {Link} from 'react-router-dom';
+import { getUsers } from '../../services/app.services';
 
 const url = 'http://localhost:3001/users/getUsers';
 
@@ -11,7 +12,7 @@ const url = 'http://localhost:3001/users/getUsers';
  * @returns {Array} list of users 
  */
 const fetchHandler = async ()=>{
-  return await axios.get(url).then((res)=>res.data);
+  return await getUsers(url);
 };
 
 /**

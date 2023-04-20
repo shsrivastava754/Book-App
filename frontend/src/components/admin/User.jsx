@@ -1,6 +1,7 @@
 import { useEffect, useState, React } from 'react';
 import '../../styles/style.css';
 import axios from 'axios';
+import { getDonations } from '../../services/app.services';
 
 /**
  * Function to return user component
@@ -26,7 +27,7 @@ const User = (props) => {
    * @returns {Number} 
    */
   const fetchHandler = async ()=>{
-    return await axios.get(url).then((res)=>res.data);
+    return await getDonations(url);
   };
   
   return (

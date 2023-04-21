@@ -32,7 +32,7 @@ const BookDetails = () => {
    * @returns {Response} response from the API call at backend for details of the book
    */
   const fetchHandler = async ()=>{
-      return await axios.get(`http://localhost:3001/:${id}`).then((res)=>res.data);
+      return await axios.get(`${process.env.REACT_APP_API_URL}/:${id}`).then((res)=>res.data);
   };
   
     
@@ -51,4 +51,4 @@ const BookDetails = () => {
   )
 }
 
-export default BookDetails
+export default BookDetails;

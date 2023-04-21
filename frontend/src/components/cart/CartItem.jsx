@@ -1,7 +1,6 @@
 import React from 'react'
 import '../../styles/style.css';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { removeCartItem } from '../../services/app.services';
 // import Dialog from "@mui/material/Dialog";
 
 /**
@@ -13,16 +12,13 @@ const CartItem = (props) => {
   // State variable for handling the confirm delete dialog box
   const [openDialog, handleDisplay] = React.useState(false);
 
-  const navigate = useNavigate();
-
   const userId = JSON.parse(localStorage.getItem("user"))._id;
 
   /**
    * Function to remove an item from the cart
    */
   const removeItem = ()=>{
-    axios.delete(`http://localhost:3001/cart/${props.item._id}/${userId}`).then(()=>navigate("/books/cart"));
-    window.location.reload();
+    removeCartItem(props.item._id,userId);
   }
  
   /**

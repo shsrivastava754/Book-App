@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useEffect, useState,React } from 'react';
 import CartItem from './CartItem';
-import { useNavigate } from 'react-router-dom';
 import '../../styles/style.css';
+import { checkoutService, clearCartService } from '../../services/app.services';
 
-const url = 'http://localhost:3001/cart/getCartItems';
+const url = `${process.env.REACT_APP_API_URL}/cart/getCartItems`;
 
 /**
  * 
@@ -23,8 +23,6 @@ const fetchHandler = async ()=>{
 const Cart = () => {
     // State variable for items in the cart of user
     const [items, setItems] = useState();
-
-    const navigate = useNavigate();
     
     useEffect(() => {
         fetchHandler().then((data)=>{
@@ -39,12 +37,12 @@ const Cart = () => {
      * Sending backend API request to clear the cart
      */
     const clearCart = ()=>{
-        axios.post('http://localhost:3001/cart/clearCart',{
-            userId: JSON.parse(localStorage.getItem("user"))._id,
-            userEmail: JSON.parse(localStorage.getItem("user")).email
-        }).then(()=>navigate("/books"));
-        window.location.reload();
+        clearCartService();
     };
+
+    const checkout = ()=>{
+        checkoutService()
+    }
   return (
     <>
         <div className='container bookList'>
@@ -79,7 +77,7 @@ const Cart = () => {
             }   
             
             <div className='cartTotal'>Cart total: {total}</div>
-            <button className='checkout'>Proceed to checkout <i class="fa-regular fa-credit-card"></i></button>
+            <button className='checkout' onClick={checkout}>Proceed to checkout <i class="fa-regular fa-credit-card"></i></button>
         </div>
     </>
   )

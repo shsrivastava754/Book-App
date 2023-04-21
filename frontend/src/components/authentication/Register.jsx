@@ -1,9 +1,9 @@
 import "./authenticationStyle.css";
 import { Link } from "react-router-dom";
 import { useState, React } from "react";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { postUser } from "../../services/app.services";
 
 const Register = () => {
   // State variables for the form fields
@@ -76,19 +76,7 @@ const Register = () => {
    * @param {String} password
    */
   const registerUser = async (name, username, email, password) => {
-    try {
-      await axios
-        .post("http://localhost:3001/register", {
-          name: name,
-          email: email,
-          username: username,
-          password: password,
-        })
-        .then((res) => res.data);
-      toast.success("Registered new user");
-    } catch (error) {
-      toast.error("User already exists");
-    }
+    await postUser(name,username,email,password);
   };
 
   /**

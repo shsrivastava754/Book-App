@@ -30,6 +30,7 @@ router.post("/cart/getCartItems", bodyParser, cartController.getCartItems);
 router.post("/cart/clearCart", bodyParser, cartController.clearCart);
 router.delete("/cart/clearCartModel", cartController.clearCartModel);
 router.delete("/cart/:itemId/:userId", cartController.deleteItem);
+router.post("/cart/compareQuantity",bodyParser,cartController.compareQuantity);
 
 router.get("/login/success", (req, res) => {
   // if(req.user){

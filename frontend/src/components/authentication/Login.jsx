@@ -1,7 +1,6 @@
 import "./authenticationStyle.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, React } from "react";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import googleLogo from "../../images/googleLogo.png";
@@ -10,6 +9,7 @@ import bg2 from "../../images/bg2.jpg";
 import bg3 from "../../images/bg3.jpg";
 import bg4 from "../../images/bg4.jpg";
 import bg5 from "../../images/bg5.jpg";
+import { googleLogin, loginUserRequest } from "../../services/app.services";
 
 /**
  * Returns Login Form Component
@@ -29,10 +29,8 @@ const Login = (props) => {
    */
   const googleAuth = async () => {
     try {
-      window.open("http://localhost:3001/auth/google/callback", "_self");
-      let res = await axios.get(
-        "http://localhost:3001/getUserData/returnLocalstorage"
-      );
+      window.open(`${process.env.REACT_APP_API_URL}/auth/google/callback`, "_self");
+      let res = await googleLogin();
       console.log(res);
       localStorage.setItem("user", res.data.user);
       navigate("/books");
@@ -84,10 +82,7 @@ const Login = (props) => {
    */
   const loginUser = async (username, password) => {
     try {
-      let res = await axios.post("http://localhost:3001/login", {
-        username: username,
-        password: password,
-      });
+      let res = await loginUserRequest(username,password);
       props.setLogin(true);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       navigate("/books");

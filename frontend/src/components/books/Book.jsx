@@ -1,14 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../../styles/style.css';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import Dialog from "@mui/material/Dialog";
+import { postToCart, deleteCartItem, compareQuantity } from '../../services/app.services';
 
 const Book = (props) => {
+
   // State variables for dialog box of confirm delete
   const [openDialog, handleDisplay] = useState(false);
+
+  // State variable for setting cart button disable and enable
+  const [disabled, setDisabled] = useState(false);
+
+  // Check if item can be added to cart or not when the component loads
+  useEffect(() => {
+    compareBook();
+  });
   
   const navigate = useNavigate();
     
@@ -43,47 +52,39 @@ const Book = (props) => {
   };
 
   /**
-   * Function to show notification in case of adding an item to cart
-   */
-  const showToast = ()=>{
-      toast.success('Added to cart');
-  };
-
-  /**
-   * Function to show error notification in case of failure in addition to cart 
-   */
-  const showerrorToast = ()=>{
-      toast.warning('Failed to add to cart');
-  };
-
-  /**
    * Function that makes API call to add an item to cart
    * @param {Object} book 
    */
   const addToCart = async (book)=>{
-    await axios.post('http://localhost:3001/cart/addToCart',{
-      title: book.title,
-      price: book.price,
-      author: book.author,
-      userId: JSON.parse(localStorage.getItem("user"))._id,
-      userEmail: JSON.parse(localStorage.getItem("user")).email
-    })
-    .then((res)=>{
-      if(res){
-          showToast();
-      } else{
-          showerrorToast();
-      }
-  });
+    if(compareBook()){
+      postToCart(book);
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
  }
 
   /**
    * Function for deleting a book
    */
   const deleteBook = ()=>{
-    axios.delete(`http://localhost:3001/${props.book._id}`).then(()=>navigate("/books"));
-    window.location.reload();
+    deleteCartItem(props.book._id);
   };
+
+  /**
+   * Check if item can be added to cart
+   * @returns {Boolean} whether book quantity is greater than the book in cart
+   */
+  const compareBook = async ()=>{
+    const result = await compareQuantity(JSON.parse(localStorage.getItem("user"))._id,props.book._id);
+    if(result){
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+
+    return result;
+  }
 
   return (
     <>
@@ -94,7 +95,8 @@ const Book = (props) => {
       <td onClick={()=>{getDetails(props.book)}}>{props.book.donatedByEmail}</td>
       <td onClick={()=>{getDetails(props.book)}}>
         {
-          (props.book.status==="available" || String(props.book.status)==='1')? <span className='statusAvailable'>Available</span>: (props.book.status==="sold" || String(props.book.status)==='2') ? <span className='statusSold'>Sold</span> : <span className='statusRtp'>Ready to Pick</span>
+          (props.book.quantity>0)? <span className='statusAvailable'>Available</span>: <span className='statusSold'>Sold</span>
+          // (props.book.quantity>0 || String(props.book.status)==='1')? <span className='statusAvailable'>Available</span>: (props.book.status==="sold" || String(props.book.status)==='2') ? <span className='statusSold'>Sold</span> : <span className='statusRtp'>Ready to Pick</span>
         }
       </td>
 
@@ -106,13 +108,13 @@ const Book = (props) => {
         <button className="btn btnAction mx-2 tooltips" onClick={()=>{editBook(props.book)}}>
           <i className="fa-solid fa-pen-to-square"></i><span class="tooltiptext">Edit Book</span>
         </button>
-        <button className="btn btnAction mx-2 tooltips"  onClick={()=>{addToCart(props.book)}}>
+        <button className="btn btnAction mx-2 tooltips"  onClick={()=>{addToCart(props.book)}} disabled={disabled}>
         <i className="fa-solid fa-cart-shopping"></i><span class="tooltiptext">Add to Cart</span>
         </button>
       </td>
       : 
       <td>
-        <button className="btn btnAction mx-2 tooltips"  onClick={()=>{addToCart(props.book)}}>
+        <button className="btn btnAction mx-2 tooltips"  onClick={()=>{addToCart(props.book)}} disabled={disabled}>
         <i className="fa-solid fa-cart-shopping"></i><span class="tooltiptext">Add to Cart</span>
         </button>
       </td>

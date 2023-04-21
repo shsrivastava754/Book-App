@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import '../../styles/style.css';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import { addBook } from '../../services/app.services';
+import { postBook } from '../../services/app.services';
 
 /**
  * 
@@ -46,29 +45,12 @@ const AddBook = (props) => {
      * @param {Number} quantity 
      */
     const addBook = async(title,author,price,description,quantity)=>{
-        // const res = await addBook(title,author,price,description,quantity);
-        // if(res){
-        //     navigate('/books');
-        // } else {
-        //     console.log("Some error in adding book");
-        // }
-        await axios.post('http://localhost:3001/',{
-            title: title,
-            author: author,
-            price: price,
-            description: description,
-            quantity: quantity,
-            donatedById: JSON.parse(localStorage.getItem("user"))["_id"]
-        })
-        .then((res)=>{
-            if(res){
-                navigate('/books');
-            } else{
-                console.log("Some error in adding book");
-            }
-        });
-
-
+        const res = await postBook(title,author,price,description,quantity);
+        if(res){
+            navigate('/books');
+        } else {
+            console.log("Some error in adding book");
+        }
     }
 
     const checkToEnable = ()=>{

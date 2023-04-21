@@ -1,11 +1,10 @@
 import { useState, useEffect, React } from 'react';
-import axios from 'axios';
 import '../../styles/style.css';
 import User from './User';
 import {Link} from 'react-router-dom';
 import { getUsers } from '../../services/app.services';
 
-const url = 'http://localhost:3001/users/getUsers';
+const url = `${process.env.REACT_APP_API_URL}/users/getUsers`;
 
 /**
  * Function to send API request at backend for the users data

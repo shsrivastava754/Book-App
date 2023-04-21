@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState, React } from 'react';
+import { editBookDetails } from '../../services/app.services';
 
 /**
  * Function to return the edit book component
@@ -30,10 +31,13 @@ const EditBook = () => {
     
     const id = useParams().id;
     const fetchHandler = async ()=>{
-        return await axios.put(`http://localhost:3001/${id}`).then((res)=>res.data);
+        return await axios.put(`${process.env.REACT_APP_API_URL}/${id}`).then((res)=>res.data);
     };
     
-    // Validate the form before sending the API call
+    /**
+     * Validate the edit book form
+     * @param {Event} e 
+     */
     const formSubmit = (e)=>{
         e.preventDefault();
 
@@ -47,17 +51,20 @@ const EditBook = () => {
 
     };
 
-    // Sending put request to backend 
+    /**
+     * Edit Book Details
+     * @param {String} title 
+     * @param {String} author 
+     * @param {Number} price 
+     * @param {String} description 
+     * @param {String} status 
+     * @param {Number} quantity 
+     */
     const editBook = async(title,author,price,description,status,quantity)=>{
-        await axios.put(`http://localhost:3001/${id}`,{
-            title: title,
-            author: author,
-            price: price,
-            description: description,
-            status: status,
-            quantity: quantity
-        }).then((res)=>res.data);
+        let res = editBookDetails(title,author,price,description,status,quantity,id);
+        console.log(res);
     }
+    
     return (
     <div className='container mt-4 formContainer p-4'>
         <h3 className='text-center'>Edit Details</h3>

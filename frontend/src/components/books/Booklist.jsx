@@ -4,7 +4,7 @@ import { useEffect, useState, React } from 'react';
 import '../../styles/style.css';
 import {Link} from 'react-router-dom';
 
-const url = 'http://localhost:3001/books/getBooks';
+const url = `${process.env.REACT_APP_API_URL}/books/getBooks`;
 
 const fetchHandler = async ()=>{
   return await axios.post(url,{

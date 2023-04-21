@@ -1,6 +1,5 @@
 import { useEffect, useState, React } from 'react';
 import '../../styles/style.css';
-import axios from 'axios';
 import { getDonations } from '../../services/app.services';
 
 /**
@@ -20,7 +19,7 @@ const User = (props) => {
   
   const userId = props.user._id;
   
-  const url = `http://localhost:3001/users/getDonations/${userId}`;
+  const url = `${process.env.REACT_APP_API_URL}/users/getDonations/${userId}`;
   
   /**
    * Function that sends API request to backend for getting number of donations

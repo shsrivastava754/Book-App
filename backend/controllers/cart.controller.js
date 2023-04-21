@@ -99,10 +99,21 @@ const deleteItem = async (req, res) => {
   }
 };
 
+/**
+ * Compares the quantities of books in cart and books collection
+ * @param {Request} req 
+ * @param {Response} res 
+ */
+const compareQuantity = async (req,res)=>{
+  let result = await cartsServices.compareCartQuantity(req.body.userId,req.body.bookId);
+  return res.status(201).json({result: result});
+}
+
 module.exports = {
   addToCart,
   getCartItems,
   clearCart,
   clearCartModel,
   deleteItem,
+  compareQuantity
 };

@@ -49,7 +49,6 @@ const updateQuantity = async (book, quantity) => {
  */
 const addNewBook = async (body) => {
   const user = await User.findOne({ _id: body.donatedById });
-  console.log(user);
   let newBook = new Books({
     title: body.title,
     author: body.author,

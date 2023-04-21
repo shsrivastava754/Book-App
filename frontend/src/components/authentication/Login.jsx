@@ -7,7 +7,9 @@ import "react-toastify/dist/ReactToastify.css";
 import googleLogo from "../../images/googleLogo.png";
 import bg1 from "../../images/bg1.jpg";
 import bg2 from "../../images/bg2.jpg";
-import bg3 from "../../images/vg3.jpg";
+import bg3 from "../../images/bg3.jpg";
+import bg4 from "../../images/bg4.jpg";
+import bg5 from "../../images/bg5.jpg";
 
 /**
  * Returns Login Form Component
@@ -114,10 +116,10 @@ const Login = (props) => {
 
   function setBackground(bg) {
     const body = document.querySelector('body');
-    body.style = `background: url(${bg});background-size:cover;background-repeat:no-repeat;`
+    body.style = `background: url(${bg}) rgba(255, 0, 150, 0.3);background-size:cover;background-repeat:no-repeat;background-blend-mode: multiply;`
   }
 
-  setBackground(bg1);
+  setBackground(bg5);
 
   return (
     <>

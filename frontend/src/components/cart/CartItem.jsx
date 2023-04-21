@@ -2,7 +2,7 @@ import React from 'react'
 import '../../styles/style.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Dialog from "@mui/material/Dialog";
+// import Dialog from "@mui/material/Dialog";
 
 /**
  * 
@@ -48,12 +48,12 @@ const CartItem = (props) => {
       <td>{props.item.price}</td>
       <td>{props.item.quantity}</td>
       <td>
-        <button className='btn btnAction tooltips' id={props.item._id} onClick={openDialogBox}>
+        <button className='btn btnAction tooltips' id={props.item._id} onClick={removeItem}>
         <i className="fa-solid fa-trash"></i><span class="tooltiptext">Remove Item</span>
         </button>
       </td>
     </tr>
-    <Dialog onClose = {handleClose} open = {openDialog} className='dialogBox'>
+    {/* <Dialog onClose = {handleClose} open = {openDialog} className='dialogBox'>
       <h3>
               Are you sure to remove the item?
       </h3>
@@ -66,7 +66,7 @@ const CartItem = (props) => {
               Cancel
           </button>
       </div>
-    </Dialog>
+    </Dialog> */}
     </>
   )
 }

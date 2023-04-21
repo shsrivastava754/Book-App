@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Dialog from "@mui/material/Dialog";
+// import Dialog from "@mui/material/Dialog";
 
 const Book = (props) => {
   // State variables for dialog box of confirm delete
@@ -100,7 +100,7 @@ const Book = (props) => {
 
       {JSON.parse(localStorage.getItem("user"))["role"]==='Admin'?
       <td>
-        <button className="btn btnAction mx-2 tooltips" id={props.book._id} onClick = {openDialogBox} >
+        <button className="btn btnAction mx-2 tooltips" id={props.book._id} onClick = {deleteBook} >
           <i className="fa-solid fa-trash"></i><span class="tooltiptext">Delete Book</span>
         </button>
         <button className="btn btnAction mx-2 tooltips" onClick={()=>{editBook(props.book)}}>
@@ -119,7 +119,7 @@ const Book = (props) => {
       }
     
     </tr>
-    <Dialog onClose = {handleClose} open = {openDialog} className='dialogBox'>
+    {/* <Dialog onClose = {handleClose} open = {openDialog} className='dialogBox'>
       <h3 >
               Are you sure to delete the book?
       </h3>
@@ -131,7 +131,7 @@ const Book = (props) => {
               Cancel
           </button>
       </div>
-    </Dialog>
+    </Dialog> */}
     
     <ToastContainer/>
     </>

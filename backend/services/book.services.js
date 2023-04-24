@@ -110,6 +110,26 @@ const deleteAllBooks = async () => {
   await Books.deleteMany({});
 };
 
+/**
+ * Function for pagination
+ * @param {Number} skip 
+ * @param {Number} limit 
+ * @returns {Array} filtered books
+ */
+const returnFilteredBooks = async(skip,limit,query)=>{
+  let books = await Books.find({title: {$regex:query}}).skip(skip).limit(limit);
+  return books;
+}
+
+/**
+ * 
+ * @returns {Number} Total number of books in the collection
+ */
+const getBooksSize = async()=>{
+  let books = await Books.find();
+  return books.length;
+}
+
 module.exports = {
   findBooks,
   findOneBook,
@@ -119,4 +139,6 @@ module.exports = {
   updateBook,
   removeBook,
   deleteAllBooks,
+  returnFilteredBooks,
+  getBooksSize
 };

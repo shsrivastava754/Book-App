@@ -77,7 +77,7 @@ const Cart = () => {
             }   
             
             <div className='cartTotal'>Cart total: {total}</div>
-            <button className='checkout' onClick={checkout}>Proceed to checkout <i class="fa-regular fa-credit-card"></i></button>
+            <button className='checkout' onClick={checkout}>Proceed to checkout <i className="fa-regular fa-credit-card"></i></button>
         </div>
     </>
   )

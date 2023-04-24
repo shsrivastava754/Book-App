@@ -386,3 +386,20 @@
     color: #7967c8;
     padding: 3px;
   }
+
+  .btnPaginationActive{
+    background-color: #6f5cc4;
+    color: #f6f4fb;   
+  }
+
+  .btnPaginationInactive{
+    outline: #6f5cc4;
+    background-color: transparent;
+    color: #6f5cc4;
+  }
+
+  .btnPaginationActive:hover, .btnPaginationInactive:hover{
+    border: 1px solid #6f5cc4;
+    outline: #6f5cc4;
+    color: #6f5cc4;
+  }

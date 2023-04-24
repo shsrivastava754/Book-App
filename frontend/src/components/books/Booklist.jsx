@@ -4,83 +4,66 @@ import { useEffect, useState, React } from 'react';
 import '../../styles/style.css';
 import {Link} from 'react-router-dom';
 
-const url = `${process.env.REACT_APP_API_URL}/books/getBooks`;
-
-const fetchHandler = async ()=>{
-  return await axios.post(url,{
-    userId: JSON.parse(localStorage.getItem("user"))._id
-  }).then((res)=>res.data);
-};
 
 /**
  * 
- * @returns {React.Component} Book list compo 
- */
+ * @returns {React.Component} Book list component
+*/
 
 const Booklist = (props) => {
   // State for books list
   const [books, setBooks] = useState();
   
-  // State for books table
-  const [tableBooks, setTableBooks] = useState(books);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(3);
+  const [totalPages, setTotalPages] = useState(1);
   
   // State for search Text in the search bar
   const [search, setSearch] = useState();
   
-  // 
+  const [larrDisabled, setLarrDisabled] = useState(true);
+  const [rarrDisabled, setRarrDisabled] = useState(false);
+  
+  
+  // const url = `${process.env.REACT_APP_API_URL}/books/getPaginatedBooks`;
+  const url = `${process.env.REACT_APP_API_URL}/books/getBooks`;
+  const fetchHandler = async ()=>{
+    return await axios.post(url,{
+      userId: JSON.parse(localStorage.getItem("user"))._id
+    }).then((res)=>res.data);
+  
+    // if(page&&limit){
+    //   return await axios.get(url,{ params: { page: page, limit: limit }}).then((res)=>res.data);
+    // }
+  
+    // else {
+    //   return await axios.get(url);
+    // }
+  };
   useEffect(() => {
     fetchHandler().then((data)=>{
         setBooks(data.books);
-        setTableBooks(data.books);
+        
+        setTotalPages(setTotalNumberPages(data.booksSize));
+
+        // page>totalPages?setPage(1):setPage(page);
     });
-  }, []);
-  
-  /**
-   * Function to handle the table according to filter applied from dropdown
-   * @param {Event} e 
-   */
-  const handleFilter = (e)=>{  
-    let newBooks;
-
-    if(e.target.value===0){
-      newBooks = [...books];
-    }
-
-    if(e.target.value===1){
-      newBooks = books.filter((book)=>( 
-        book.status==="available"
-      ));
-    }
-
-    if(e.target.value===2){
-      newBooks = books.filter((book)=>( 
-        book.status==="Ready to pick"
-      ));
-
-    }
-
-    if(e.target.value===3){
-      newBooks = books.filter((book)=>( 
-        book.status==="sold"
-      ));
-    } 
-    setTableBooks(newBooks);
-  }
+  }, [page,limit]);
 
   /**
-   * Function to handle the search functionality
-   * @returns books list based on the search value
+   * Function to get the total number of pages
+   * @param {Number} size 
+   * @returns Total number of pages for books
    */
-  const handleSearch = ()=>{
-    if(search==null){
-      return books;
+  const setTotalNumberPages = (size)=>{
+    if(size%limit===0){
+      return(parseInt(size/limit));
+    } else{
+      return(parseInt(size/limit +1));
     }
-
-    return books.filter((book)=>(     
-      book.author.toLowerCase().includes(search.trim()) || book.title.toLowerCase().includes(search.trim())
-    ));
   }
 
+  // Function to set different backgrounds in booklist and login page
   function setBackground() {
     const body = document.querySelector('body');
     body.style.background = '#f7f7f7';
@@ -88,15 +71,54 @@ const Booklist = (props) => {
 
   setBackground();
 
-  return (
+  // When left arrow is clicked
+  const moveLeft = async ()=>{
+    setRarrDisabled(false);
+    setPage(page-1);
 
+    let currBooks = await axios.get('http://localhost:3001/books/getPaginatedBooks',{ params: { page: page-1, limit: limit }});
+    setBooks(currBooks.data.books);
+
+    page-1==1?setLarrDisabled(true):setLarrDisabled(false);
+  };
+
+  // When right arrow is clicked
+  const moveRight = async ()=>{
+    setLarrDisabled(false);
+    setPage(page+1);
+
+    let currBooks = await axios.get('http://localhost:3001/books/getPaginatedBooks',{ params: { page: page+1, limit: limit }});
+    setBooks(currBooks.data.books);
+
+    page>setTotalNumberPages(totalPages)?setRarrDisabled(true):setRarrDisabled(false);
+  };
+
+  // Change the limit of pagination
+  const changeLimit = async (e)=>{
+    setLimit(e.target.value);
+
+    let currBooks = await axios.get('http://localhost:3001/books/getPaginatedBooks',{ params: { page: page, limit: e.target.value }});
+    setBooks(currBooks.data.books);
+
+    setTotalNumberPages(currBooks.length);
+  }
+
+  const searchBook = async(e)=>{
+    setSearch(e.target.value);
+
+    let currBooks = await axios.get('http://localhost:3001/books/getPaginatedBooks',{ params: { search: e.target.value}});
+    console.log(currBooks);
+    setBooks(currBooks.data.books);
+  }
+
+  return (
     <>
     <div className='container bookList'>
         <h3 className='text-center my-3'>Books List</h3>
         <div className="components">
-          <input className='searchBar' placeholder='Search here...' onChange={(e)=>setSearch(e.target.value)} />
+          <input className='searchBar' placeholder='Search here...' onChange={searchBook} />
           <label htmlFor="filterTable mx-2">Filter by:</label>
-          <select name="filterTable" id="filterTable" onChange={handleFilter}>
+          <select name="filterTable" id="filterTable">
             <option value="0">No filter</option>
             <option value="1">Available</option>
             <option value="2">Ready to Pick</option>
@@ -117,7 +139,7 @@ const Booklist = (props) => {
         </thead>
         <tbody>
             {
-              tableBooks&&tableBooks.map((book)=>{
+              books&&books.map((book)=>{
                 return (
                 <Book book={book} key={book.title} srno={books.indexOf(book)+1} />
                 )
@@ -125,6 +147,25 @@ const Booklist = (props) => {
             }
         </tbody>
         </table>
+        {/* <div className='pagination'>
+          <button className='leftArrow' onClick={moveLeft} disabled={larrDisabled}>
+            &larr;
+          </button>
+
+          <div className='detailsPaginate'>
+            {page} of {totalPages} pages
+          </div>
+
+          <button className='rightArrow' onClick={moveRight} disabled={rarrDisabled}>
+            &rarr;
+          </button>
+
+          <select onChange={changeLimit}>
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+          </select>
+        </div> */}
     </div>
     </>
   )

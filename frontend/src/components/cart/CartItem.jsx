@@ -45,7 +45,7 @@ const CartItem = (props) => {
       <td>{props.item.quantity}</td>
       <td>
         <button className='btn btnAction tooltips' id={props.item._id} onClick={removeItem}>
-        <i className="fa-solid fa-trash"></i><span class="tooltiptext">Remove Item</span>
+        <i className="fa-solid fa-trash"></i><span className="tooltiptext">Remove Item</span>
         </button>
       </td>
     </tr>

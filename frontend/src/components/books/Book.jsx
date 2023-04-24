@@ -103,19 +103,19 @@ const Book = (props) => {
       {JSON.parse(localStorage.getItem("user"))["role"]==='Admin'?
       <td>
         <button className="btn btnAction mx-2 tooltips" id={props.book._id} onClick = {deleteBook} >
-          <i className="fa-solid fa-trash"></i><span class="tooltiptext">Delete Book</span>
+          <i className="fa-solid fa-trash"></i><span className="tooltiptext">Delete Book</span>
         </button>
         <button className="btn btnAction mx-2 tooltips" onClick={()=>{editBook(props.book)}}>
-          <i className="fa-solid fa-pen-to-square"></i><span class="tooltiptext">Edit Book</span>
+          <i className="fa-solid fa-pen-to-square"></i><span className="tooltiptext">Edit Book</span>
         </button>
         <button className="btn btnAction mx-2 tooltips"  onClick={()=>{addToCart(props.book)}} disabled={disabled}>
-        <i className="fa-solid fa-cart-shopping"></i><span class="tooltiptext">Add to Cart</span>
+        <i className="fa-solid fa-cart-shopping"></i><span className="tooltiptext">Add to Cart</span>
         </button>
       </td>
       : 
       <td>
         <button className="btn btnAction mx-2 tooltips"  onClick={()=>{addToCart(props.book)}} disabled={disabled}>
-        <i className="fa-solid fa-cart-shopping"></i><span class="tooltiptext">Add to Cart</span>
+        <i className="fa-solid fa-cart-shopping"></i><span className="tooltiptext">Add to Cart</span>
         </button>
       </td>
       }

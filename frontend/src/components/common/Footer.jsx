@@ -9,7 +9,7 @@ const Footer = () => {
   return (
         <>
           <footer>
-            <p class="copyright">Made with &#10084;&#65039; by Shaan</p>
+            <p className="copyright">Made with &#10084;&#65039; by Shaan</p>
           </footer>
         </>
   )

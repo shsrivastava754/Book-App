@@ -17,6 +17,7 @@ router.get("/:id", booksController.getById);
 router.put("/:id", bodyParser, booksController.updateBook);
 router.delete("/:id", booksController.deleteBook);
 router.delete("/books/deleteAllBooks", booksController.deleteAllBooks);
+router.get("/books/getPaginatedBooks",booksController.findFilteredBooks);
 
 // Routes for authentication of users
 router.get("/users/getUsers", usersController.getUsers);
@@ -33,15 +34,11 @@ router.delete("/cart/:itemId/:userId", cartController.deleteItem);
 router.post("/cart/compareQuantity",bodyParser,cartController.compareQuantity);
 
 router.get("/login/success", (req, res) => {
-  // if(req.user){
   res.status(200).json({
     error: false,
     message: "Successfully logged in",
     user: localStorage.getItem("user"),
   });
-  // } else {
-  //     res.status(403).json({error:true,message:"Not authorized"});
-  // }
 });
 
 router.get("/failedLogin", (req, res) => {

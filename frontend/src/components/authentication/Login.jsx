@@ -9,6 +9,7 @@ import bg2 from "../../images/bg2.jpg";
 import bg3 from "../../images/bg3.jpg";
 import bg4 from "../../images/bg4.jpg";
 import bg5 from "../../images/bg5.jpg";
+import bg6 from "../../images/bg6.jpg";
 import { googleLogin, loginUserRequest } from "../../services/app.services";
 
 /**
@@ -110,11 +111,11 @@ const Login = (props) => {
   };
 
   function setBackground(bg) {
-    const body = document.querySelector('body');
+    let body = document.querySelector('body');
     body.style = `background: url(${bg}) rgba(255, 0, 150, 0.3);background-size:cover;background-repeat:no-repeat;background-blend-mode: multiply;`
   }
 
-  setBackground(bg5);
+  setBackground(bg6);
 
   return (
     <>

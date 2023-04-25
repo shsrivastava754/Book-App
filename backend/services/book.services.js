@@ -117,7 +117,7 @@ const deleteAllBooks = async () => {
  * @returns {Array} filtered books
  */
 const returnFilteredBooks = async(skip,limit,query)=>{
-  let books = await Books.find({title: {$regex:query}}).skip(skip).limit(limit);
+  let books = await Books.find().skip(skip).limit(limit);
   return books;
 }
 

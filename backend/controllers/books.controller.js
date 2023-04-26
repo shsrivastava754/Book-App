@@ -1,4 +1,4 @@
-const bookServices = require("../services/book.service");
+const BookService = require("../services/book.service");
 
 /**
  * Class for Books Controller
@@ -13,7 +13,7 @@ class BookController {
   static async getBooks(req, res) {
     let books;
     try {
-      books = await bookServices.findBooks(req.body.userId);
+      books = await BookService.findBooks(req.body.userId);
     } catch (err) {
       console.log(err);
     }
@@ -36,13 +36,13 @@ class BookController {
 
     try {
       // Check if the book exists or not
-      const book = await bookServices.findOneBook(req.body.title);
+      const book = await BookService.findOneBook(req.body.title);
 
       // If it exists then just update the quantity
       if (book) {
-        newBook = bookServices.updateQuantity(book, req.body.quantity);
+        newBook = BookService.updateQuantity(book, req.body.quantity);
       } else {
-        newBook = bookServices.addNewBook(req.body);
+        newBook = BookService.addNewBook(req.body);
       }
     } catch (error) {
       console.log(error);
@@ -65,7 +65,7 @@ class BookController {
     const id = req.params.id.slice(1);
     let book;
     try {
-      book = await bookServices.findBookById(id);
+      book = await BookService.findBookById(id);
     } catch (error) {
       console.log(error);
     }
@@ -88,7 +88,7 @@ class BookController {
     let book;
 
     try {
-      book = await bookServices.updateBook(id, req.body);
+      book = await BookService.updateBook(id, req.body);
     } catch (error) {
       console.log(error);
     }
@@ -111,7 +111,7 @@ class BookController {
     let book;
 
     try {
-      book = await bookServices.removeBook(id);
+      book = await BookService.removeBook(id);
     } catch (error) {
       console.log(error);
     }
@@ -142,10 +142,10 @@ class BookController {
       // Formula for pagination, skip is the number of documents to skip from the collection
       let skip = (page - 1) * limit;
 
-      let books = await bookServices.returnFilteredBooks(skip, limit, query);
+      let books = await BookService.returnFilteredBooks(skip, limit, query);
 
       // Get total number of books
-      let totalBooks = await bookServices.getBooksSize();
+      let totalBooks = await BookService.getBooksSize();
       res
         .status(200)
         .json({ books: books, nbHits: books.length, booksSize: totalBooks });

@@ -3,150 +3,136 @@ const Books = require("../database/Books");
 const User = require("../database/Users");
 
 /**
- * Function to find books donated by the user
- * @param {String} userId
- * @returns {Array} books list donated by user
+ * Class for Books Services
  */
-const findBooks = async (userId) => {
-  let books = await Books.find({ donatedById: { $ne: userId }, isDeleted: false });
-  return books;
-};
+class BookService {
+  /**
+   * Function to find books donated by the user
+   * @param {String} userId
+   * @returns {Array} books list donated by user
+   */
+  static async findBooks(userId) {
+    let books = await Books.find({
+      donatedById: { $ne: userId },
+      isDeleted: false,
+    });
+    return books;
+  }
 
-/**
- * Function to find a book by title
- * @param {String} title  - Title of the book
- * @returns {Object} a book with given title
- */
-const findOneBook = async (title) => {
-  let book = await Books.findOne({ title: title });
-  return book;
-};
+  /**
+   * Function to find a book by title
+   * @param {String} title  - Title of the book
+   * @returns {Object} a book with given title
+   */
+  static async findOneBook(title) {
+    let book = await Books.findOne({ title: title });
+    return book;
+  }
 
-/**
- * Function to update the quantity of the book
- * @param {Object} book
- * @param {Number} quantity
- * @returns {Object} updated book
- */
+  /**
+   * Function to update the quantity of the book
+   * @param {Object} book
+   * @param {Number} quantity
+   * @returns {Object} updated book
+   */
+  static async updateQuantity(book, quantity) {
+    await Books.updateOne(
+      { title: book.title },
+      {
+        $set: {
+          quantity: quantity + book.quantity,
+        },
+      }
+    );
 
-const updateQuantity = async (book, quantity) => {
-  await Books.updateOne(
-    { title: book.title },
-    {
-      $set: {
-        quantity: quantity + book.quantity,
-      },
-    }
-  );
+    return book;
+  }
 
-  return book;
-};
+  /**
+   * Function to add a new book
+   * @param {Object} body - A object with details of the book to be added
+   * @returns {Object} object of the new book
+   */
+  static async addNewBook(body) {
+    const user = await User.findOne({ _id: body.donatedById });
+    let newBook = new Books({
+      title: body.title,
+      author: body.author,
+      description: body.description,
+      price: body.price,
+      quantity: body.quantity,
+      status: "available",
+      donatedById: user._id,
+      donatedByEmail: user.email,
+      isDeleted: false,
+    });
 
-/**
- * Function to add a new book
- * @param {Object} body - A object with details of the book to be added
- * @returns {Object} object of the new book
- */
-const addNewBook = async (body) => {
-  const user = await User.findOne({ _id: body.donatedById });
-  let newBook = new Books({
-    title: body.title,
-    author: body.author,
-    description: body.description,
-    price: body.price,
-    quantity: body.quantity,
-    status: "available",
-    donatedById: user._id,
-    donatedByEmail: user.email,
-    isDeleted: false
-  });
+    await newBook.save();
+    return newBook;
+  }
 
-  await newBook.save();
-  return newBook;
-};
+  /**
+   * Function to find a book by id
+   * @param {ObjectId} id
+   * @returns {Object} a book with given id
+   */
+  static async findBookById(id) {
+    const book = await Books.findById(id);
+    return book;
+  }
 
-/**
- * Function to find a book by id
- * @param {ObjectId} id
- * @returns {Object} a book with given id
- */
-const findBookById = async (id) => {
-  const book = await Books.findById(id);
-  return book;
-};
+  /**
+   * Function to update details of the book
+   * @param {ObjectId} id
+   * @param {Object} body - Object of the book details
+   * @returns {Object} updated book
+   */
+  static async updateBook(id, body) {
+    let book = await Books.findByIdAndUpdate(id, {
+      title: body.title,
+      author: body.author,
+      description: body.description,
+      price: body.price,
+      quantity: body.quantity,
+    });
 
-/**
- * Function to update details of the book
- * @param {ObjectId} id
- * @param {Object} body - Object of the book details
- * @returns {Object} updated book
- */
-const updateBook = async (id, body) => {
-  let book = await Books.findByIdAndUpdate(id, {
-    title: body.title,
-    author: body.author,
-    description: body.description,
-    price: body.price,
-    quantity: body.quantity,
-  });
+    book.save();
+    return book;
+  }
 
-  book.save();
-  return book;
-};
+  /**
+   * Function to delete a book from collection by ID
+   * @param {ObjectId} id
+   * @returns {Object} message of the removed book
+   */
+  static async removeBook(id) {
+    let book = await Books.findByIdAndUpdate(id, {
+      isDeleted: true,
+    });
 
-/**
- * Function to delete a book from collection by ID
- * @param {ObjectId} id
- * @returns {Object} message of the removed book
- */
-const removeBook = async (id) => {
-  // const book = await Books.findByIdAndRemove(id);
-  // return book;
+    book.save();
+    return book;
+  }
 
-  let book = await Books.findByIdAndUpdate(id, {
-   isDeleted: true
-  });
+  /**
+   * Function for pagination
+   * @param {Number} skip
+   * @param {Number} limit
+   * @returns {Array} filtered books
+   */
+  static async returnFilteredBooks(skip, limit, query) {
+    let books = await Books.find().skip(skip).limit(limit);
+    return books;
+  }
 
-  book.save();
-  return book;
-};
+  /**
+   *
+   * @returns {Number} Total number of books in the collection
+   */
+  static async getBooksSize() {
+    let books = await Books.find();
+    return books.length;
+  }
+}
 
-/**
- * Function to delete all books at once
- */
-const deleteAllBooks = async () => {
-  await Books.deleteMany({});
-};
-
-/**
- * Function for pagination
- * @param {Number} skip
- * @param {Number} limit
- * @returns {Array} filtered books
- */
-const returnFilteredBooks = async (skip, limit, query) => {
-  let books = await Books.find().skip(skip).limit(limit);
-  return books;
-};
-
-/**
- *
- * @returns {Number} Total number of books in the collection
- */
-const getBooksSize = async () => {
-  let books = await Books.find();
-  return books.length;
-};
-
-module.exports = {
-  findBooks,
-  findOneBook,
-  updateQuantity,
-  addNewBook,
-  findBookById,
-  updateBook,
-  removeBook,
-  deleteAllBooks,
-  returnFilteredBooks,
-  getBooksSize,
-};
+module.exports = BookService;

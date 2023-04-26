@@ -1,4 +1,4 @@
-const userServices = require("../services/user.service");
+const UserService = require("../services/user.service");
 const LocalStorage = require("node-localstorage").LocalStorage;
 localStorage = new LocalStorage("./scratch");
 
@@ -15,7 +15,7 @@ class UserController {
   static async getUsers(req, res) {
     let users;
     try {
-      users = await userServices.getUsers();
+      users = await UserService.getUsers();
       if (!users) {
         return res.status(400).json({ message: "No users found" });
       }
@@ -37,7 +37,7 @@ class UserController {
 
     try {
       // Check if the user already exists or not
-      const user = await userServices.findUserByUsername(req.body.username);
+      const user = await UserService.findUserByUsername(req.body.username);
 
       // If user exists the return a message
       if (user) {
@@ -46,7 +46,7 @@ class UserController {
 
       // Else add the new user to the users collection
       else {
-        newUser = await userServices.registerUser(req.body);
+        newUser = await UserService.registerUser(req.body);
         if (!newUser) {
           return res.status(500).json({ message: "No user added, some error" });
         }
@@ -67,7 +67,7 @@ class UserController {
   static async login(req, res) {
     try {
       // First find the user in the users collection
-      const user = await userServices.findUserByUsername(req.body.username);
+      const user = await UserService.findUserByUsername(req.body.username);
 
       // If user does not exists then return 500 internal server error
       if (!user) {
@@ -76,7 +76,7 @@ class UserController {
 
       // Else verify the user and his/her password
       else {
-        let verified = userServices.verifyUser(
+        let verified = UserService.verifyUser(
           req.body.password,
           user.password
         );
@@ -99,7 +99,7 @@ class UserController {
    */
   static async donations(req, res) {
     try {
-      const donationsCount = await userServices.countDonations(req.params.id);
+      const donationsCount = await UserService.countDonations(req.params.id);
       return res.status(201).json({ donations: donationsCount });
     } catch (error) {
       return res.status(500).json({ message: error });

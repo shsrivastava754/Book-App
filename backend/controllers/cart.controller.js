@@ -1,4 +1,4 @@
-const cartsServices = require("../services/cart.service");
+const CartService = require("../services/cart.service");
 
 /**
  * Class for Cart Controller
@@ -14,19 +14,19 @@ class CartController {
     let cartItem;
     try {
       // First check if item already exists or not in the cart
-      const item = await cartsServices.returnItem(
+      const item = await CartService.returnItem(
         req.body.userId,
         req.body.title
       );
 
       // If it exists in the collection, then just update the quantity
       if (item) {
-        cartItem = cartsServices.updateItemQuantity(item);
+        cartItem = CartService.updateItemQuantity(item);
       }
 
       // Else add new item to the collection
       else {
-        await cartsServices.addNewItem(req.body);
+        await CartService.addNewItem(req.body);
       }
 
       if (!cartItem) {
@@ -48,7 +48,7 @@ class CartController {
   static async getCartItems(req, res) {
     let items;
     try {
-      items = await cartsServices.returnCartItems(req.body.id);
+      items = await CartService.returnCartItems(req.body.id);
       if (!items) {
         return res.status(400).json({ message: "No cart items" });
       }
@@ -66,7 +66,7 @@ class CartController {
    */
   static async clearCart(req, res) {
     try {
-      await cartsServices.clearCart(req.body.userId);
+      await CartService.clearCart(req.body.userId);
       return res.status(201).json({ message: "Deleted cart items" });
     } catch (error) {
       return res.status(500).json({ message: error });
@@ -81,7 +81,7 @@ class CartController {
    */
   static async clearCartModel(req, res) {
     try {
-      await cartsServices.clearCartModel();
+      await CartService.clearCartModel();
       return res.status(201).json({ message: "Deleted cart model items" });
     } catch (error) {
       return res.status(500).json({ message: error });
@@ -96,7 +96,7 @@ class CartController {
    */
   static async deleteItem(req, res) {
     try {
-      await cartsServices.deleteItem(req.params.userId, req.params.itemId);
+      await CartService.deleteItem(req.params.userId, req.params.itemId);
       return res.status(201).json({ message: "Deleted cart model item" });
     } catch (error) {
       return res.status(500).json({ message: error });
@@ -109,7 +109,7 @@ class CartController {
    * @param {Response} res
    */
   static async compareQuantity(req, res) {
-    let result = await cartsServices.compareCartQuantity(
+    let result = await CartService.compareCartQuantity(
       req.body.userId,
       req.body.bookId
     );

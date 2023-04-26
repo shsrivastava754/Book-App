@@ -110,7 +110,7 @@ const AddBook = (props) => {
                 <label htmlFor="description" className="form-label">Description</label>
                 <textarea type="text" value={description} className="form-control" id="description" onChange={checkDescription} />
             </div>
-            <button className="btn p-2" disabled={disabled}>Add Book</button>
+            <button className="btn p-2" disabled={disabled}>Donate Book</button>
         </form>
     </div>
   )

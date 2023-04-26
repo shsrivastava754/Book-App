@@ -8,7 +8,7 @@ const User = require("../database/Users");
  * @returns {Array} books list donated by user
  */
 const findBooks = async (userId) => {
-  let books = await Books.find({ donatedById: { $ne: userId } });
+  let books = await Books.find({ donatedById: { $ne: userId }, isDeleted: false });
   return books;
 };
 
@@ -58,6 +58,7 @@ const addNewBook = async (body) => {
     status: "available",
     donatedById: user._id,
     donatedByEmail: user.email,
+    isDeleted: false
   });
 
   await newBook.save();
@@ -99,7 +100,14 @@ const updateBook = async (id, body) => {
  * @returns {Object} message of the removed book
  */
 const removeBook = async (id) => {
-  const book = await Books.findByIdAndRemove(id);
+  // const book = await Books.findByIdAndRemove(id);
+  // return book;
+
+  let book = await Books.findByIdAndUpdate(id, {
+   isDeleted: true
+  });
+
+  book.save();
   return book;
 };
 
@@ -112,23 +120,23 @@ const deleteAllBooks = async () => {
 
 /**
  * Function for pagination
- * @param {Number} skip 
- * @param {Number} limit 
+ * @param {Number} skip
+ * @param {Number} limit
  * @returns {Array} filtered books
  */
-const returnFilteredBooks = async(skip,limit,query)=>{
+const returnFilteredBooks = async (skip, limit, query) => {
   let books = await Books.find().skip(skip).limit(limit);
   return books;
-}
+};
 
 /**
- * 
+ *
  * @returns {Number} Total number of books in the collection
  */
-const getBooksSize = async()=>{
+const getBooksSize = async () => {
   let books = await Books.find();
   return books.length;
-}
+};
 
 module.exports = {
   findBooks,
@@ -140,5 +148,5 @@ module.exports = {
   removeBook,
   deleteAllBooks,
   returnFilteredBooks,
-  getBooksSize
+  getBooksSize,
 };

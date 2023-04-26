@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../../styles/style.css';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import { postBook } from '../../services/app.services';
+import { postBook } from '../../services/app.service';
 
 /**
  * 

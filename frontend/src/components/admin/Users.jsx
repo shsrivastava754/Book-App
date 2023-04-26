@@ -2,7 +2,7 @@ import { useState, useEffect, React } from 'react';
 import '../../styles/style.css';
 import User from './User';
 import {Link} from 'react-router-dom';
-import { getUsers } from '../../services/app.services';
+import { getUsers } from '../../services/app.service';
 
 const url = `${process.env.REACT_APP_API_URL}/users/getUsers`;
 

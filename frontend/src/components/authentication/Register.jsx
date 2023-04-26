@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState, React } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { postUser } from "../../services/app.services";
+import { postUser } from "../../services/app.service";
 
 const Register = () => {
   // State variables for the form fields

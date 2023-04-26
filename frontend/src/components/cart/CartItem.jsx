@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../styles/style.css';
-import { removeCartItem } from '../../services/app.services';
+import { removeCartItem } from '../../services/app.service';
 // import Dialog from "@mui/material/Dialog";
 
 /**

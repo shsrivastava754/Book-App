@@ -2,7 +2,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
 const LocalStorage = require("node-localstorage").LocalStorage;
 localStorage = new LocalStorage("./scratch");
-const userServices = require("./services/user.services");
+const userServices = require("../services/user.service");
 
 passport.use(
   new GoogleStrategy(

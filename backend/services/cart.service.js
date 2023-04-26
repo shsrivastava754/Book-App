@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const Cart = require("../database/Cart");
-const Books = require('../database/Books');
+const Books = require("../database/Books");
 
 /**
  * Function to return a single item from cart of a particular user
@@ -88,27 +88,27 @@ const deleteItem = async (userId, itemId) => {
 };
 
 /**
- * 
- * @param {String} userId 
- * @param {String} bookId 
+ *
+ * @param {String} userId
+ * @param {String} bookId
  * @returns {Boolean} whether book is left or not
  */
-const compareCartQuantity = async (userId,bookId)=>{
-  const book = await Books.findOne({_id:bookId});
-  const cartItem = await Cart.findOne({userId:userId,title:book.title});
+const compareCartQuantity = async (userId, bookId) => {
+  const book = await Books.findOne({ _id: bookId });
+  const cartItem = await Cart.findOne({ userId: userId, title: book.title });
   let res;
-  if(cartItem!=null){
-    if(cartItem.quantity+1<book.quantity){
+  if (cartItem != null) {
+    if (cartItem.quantity + 1 < book.quantity) {
       res = true;
-    }else{
-      res =false;
-    } 
+    } else {
+      res = false;
+    }
   } else {
     res = true;
   }
 
   return res;
-}
+};
 
 module.exports = {
   returnItem,
@@ -118,5 +118,5 @@ module.exports = {
   clearCart,
   clearCartModel,
   deleteItem,
-  compareCartQuantity
+  compareCartQuantity,
 };

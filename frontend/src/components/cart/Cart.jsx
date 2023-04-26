@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState,React } from 'react';
 import CartItem from './CartItem';
 import '../../styles/style.css';
-import { checkoutService, clearCartService } from '../../services/app.services';
+import { checkoutService, clearCartService } from '../../services/app.service';
 
 const url = `${process.env.REACT_APP_API_URL}/cart/getCartItems`;
 

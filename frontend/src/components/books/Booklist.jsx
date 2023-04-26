@@ -102,7 +102,7 @@ const Booklist = (props) => {
 
     const arr = [];
     const newData = books?.map((item) => {
-      if (item.title.toLowerCase().includes(e.target.value.toLowerCase())) {
+      if ((item.title.toLowerCase().includes(e.target.value.toLowerCase()))||(item.author.toLowerCase().includes(e.target.value.toLowerCase()))) {
         arr.push(item);
       }
     });
@@ -131,13 +131,6 @@ const Booklist = (props) => {
             <button className="btn btnAdd">Donate a Book</button>
           </Link>
         </div>
-        <select className="form-select" onChange={(e) => handlePageSize(e)}>
-          <option>Books to display</option>
-          <option value="3">3</option>
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="15">15</option>
-        </select>
         <table className="table table-borderless table-responsive booksTable">
           <thead>
             <tr>
@@ -199,6 +192,16 @@ const Booklist = (props) => {
               Next{" "}
             </button>
           </div>
+        </div>
+        <div>
+        <span htmlFor="rowsPerPage">Rows per page:</span>
+          <select className="form-select" onChange={(e) => handlePageSize(e)} id="rowsPerPage" style={{display:"inline"}}>
+            <option value="5">5</option>
+            <option value="3">3</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+          </select>
+
         </div>
       </div>
     </>

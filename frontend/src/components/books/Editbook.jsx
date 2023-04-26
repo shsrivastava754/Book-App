@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState, React } from 'react';
-import { editBookDetails } from '../../services/app.services';
+import { editBookDetails } from '../../services/app.service';
 
 /**
  * Function to return the edit book component

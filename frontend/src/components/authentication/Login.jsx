@@ -10,7 +10,7 @@ import bg3 from "../../images/bg3.jpg";
 import bg4 from "../../images/bg4.jpg";
 import bg5 from "../../images/bg5.jpg";
 import bg6 from "../../images/bg6.jpg";
-import { googleLogin, loginUserRequest } from "../../services/app.services";
+import { googleLogin, loginUserRequest } from "../../services/app.service";
 
 /**
  * Returns Login Form Component

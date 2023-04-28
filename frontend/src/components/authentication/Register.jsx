@@ -1,4 +1,4 @@
-import "./authenticationStyle.css";
+import "./authenticationStyle.scss";
 import { Link } from "react-router-dom";
 import { useState, React } from "react";
 import { ToastContainer, toast } from "react-toastify";
@@ -14,7 +14,6 @@ const Register = () => {
 
   //   State variable for email validation and password validation
   const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
 
   //   State variable for disabling the submit button
   const [disabled, setDisabled] = useState(true);
@@ -23,13 +22,6 @@ const Register = () => {
   const [message, setMessage] = useState("");
 
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-  const passwordRegex = {
-    uppercaseRegExp: /(?=.*?[A-Z])/,
-    lowercaseRegExp: /(?=.*?[a-z])/,
-    digitsRegExp: /(?=.*?[0-9])/,
-    specialCharRegExp: /(?=.*?[#?!@$%^&*-])/,
-    minLengthRegExp: /.{8,}/,
-  };
 
   /**
    * Function to handle view and hide password
@@ -58,10 +50,6 @@ const Register = () => {
       setMessage("");
       setDisabled(false);
       registerUser(name, username, email, password);
-      setName("");
-      setPassword("");
-      setUsername("");
-      setEmail("");
     } else {
       setMessage("All fields are mandatory");
       setDisabled(true);
@@ -99,16 +87,6 @@ const Register = () => {
       setEmailError("");
       return true;
     }
-  };
-
-  const checkPasswordRegex = (password) => {
-    return (
-      passwordRegex.digitsRegExp.test(password) &&
-      passwordRegex.lowercaseRegExp.test(password) &&
-      passwordRegex.minLengthRegExp.test(password) &&
-      passwordRegex.specialCharRegExp.test(password) &&
-      passwordRegex.uppercaseRegExp.test(password)
-    );
   };
 
   /**

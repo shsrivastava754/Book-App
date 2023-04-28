@@ -133,6 +133,21 @@ class BookService {
     let books = await Books.find();
     return books.length;
   }
+
+  /**
+   * Updated the quantities of book after checkout
+   * @param {String} bookId 
+   * @param {Number} quantity 
+   */
+  static async updateQuantities(bookId,quantity){
+    const book = await Books.findOne({_id:bookId});
+
+    let updatedBook = await Books.findByIdAndUpdate(bookId, {
+      quantity: book.quantity - quantity
+    });
+
+    updatedBook.save();
+  }
 }
 
 module.exports = BookService;

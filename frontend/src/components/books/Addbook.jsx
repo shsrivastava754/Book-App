@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../styles/style.css';
+import '../../styles/style.scss';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { postBook } from '../../services/app.service';
@@ -88,7 +88,7 @@ const AddBook = (props) => {
 
   return (
     <div className='container mt-4 formContainer p-4 donationForm'>
-        <h3 className='text-center'>Donate a Book</h3>
+        <h3>Donate a Book</h3>
         <form onSubmit={formSubmit} autoComplete="off">
             <div className="mb-3">
                 <label htmlFor="title" className="form-label">Title</label>

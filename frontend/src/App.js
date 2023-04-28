@@ -10,6 +10,7 @@ import ProtectLogin from "./routes/ProtectLogin";
 import ProtectAdmin from "./routes/ProtectAdmin";
 import Users from "./components/admin/Users";
 import Cart from "./components/cart/Cart";
+import Profile from "./components/profile/Profile";
 import {
   BrowserRouter,
   Routes,
@@ -37,6 +38,7 @@ function App() {
           <Route path="/:id" element={<Bookdetails/>} exact />
           <Route path="/books/:id" element={<Editbook/>} exact />
           <Route path="/books/cart" element={<Cart/>} />
+          <Route path="/profile/:id" element={<Profile/>} />
         </Route>
 
       {/* Routes that is accessed by not logged in user */}

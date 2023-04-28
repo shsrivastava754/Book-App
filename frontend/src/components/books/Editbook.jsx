@@ -40,15 +40,7 @@ const EditBook = () => {
      */
     const formSubmit = (e)=>{
         e.preventDefault();
-
         editBook(title,author,price,description,status,quantity).then(()=>navigate('/books'));
-        setTitle("");
-        setAuthor("");
-        setPrice("");
-        setDescription("");
-        setStatus("");
-        setQuantity("");
-
     };
 
     /**

@@ -124,6 +124,21 @@ class UserController {
       console.log(error);
     }
   }
+
+  /**
+   * Returns the user details
+   * @param {Request} req 
+   * @param {Response} res 
+   */
+  static async getUser (req,res){
+    try {
+      let user;
+      user = await UserService.getUserDetails(req.params.id);
+      return res.status(201).json({message:user});
+    } catch (error) {
+      return  res.status(501).json({message:"No user found"});
+    }
+  }
 }
 
 module.exports = UserController;

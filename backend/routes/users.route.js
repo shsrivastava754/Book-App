@@ -9,5 +9,6 @@ router.get("/users/getUsers", UsersController.getUsers);
 router.post("/register", bodyParser, UsersController.register);
 router.post("/login", bodyParser, UsersController.login);
 router.get("/users/getDonations/:id", UsersController.donations);
+router.get("/users/:id",UsersController.getUser);
 
 module.exports = router;

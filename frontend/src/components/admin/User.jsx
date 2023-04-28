@@ -1,5 +1,5 @@
 import { useEffect, useState, React } from 'react';
-import '../../styles/style.css';
+import '../../styles/style.scss';
 import { getDonations } from '../../services/app.service';
 
 /**

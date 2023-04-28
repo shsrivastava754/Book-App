@@ -9,6 +9,10 @@ const Cartschema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  bookId: {
+    type: ObjectId,
+    required: true,
+  },
   author: {
     require: true,
     type: String,

@@ -1,14 +1,9 @@
-import "./authenticationStyle.css";
+import "./authenticationStyle.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, React } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import googleLogo from "../../images/googleLogo.png";
-import bg1 from "../../images/bg1.jpg";
-import bg2 from "../../images/bg2.jpg";
-import bg3 from "../../images/bg3.jpg";
-import bg4 from "../../images/bg4.jpg";
-import bg5 from "../../images/bg5.jpg";
 import bg6 from "../../images/bg6.jpg";
 import { googleLogin, loginUserRequest } from "../../services/app.service";
 
@@ -69,8 +64,6 @@ const Login = (props) => {
       setMessage("");
       setDisabled(false);
       loginUser(username, password);
-      setUsername("");
-      setPassword("");
     } else {
       setMessage("All fields are mandatory");
     }

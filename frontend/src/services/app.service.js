@@ -71,6 +71,7 @@ export const postToCart = async (book) => {
       title: book.title,
       price: book.price,
       author: book.author,
+      bookId: book._id,
       userId: JSON.parse(localStorage.getItem("user"))._id,
       userEmail: JSON.parse(localStorage.getItem("user")).email,
     })
@@ -193,7 +194,18 @@ export const postUser = async(name,username,email,password)=>{
 };
 
 export const checkoutService = async()=>{
+  try{
+    let result;
+    let userId = JSON.parse(localStorage.getItem("user"))._id;
+    result = await axios
+    .post(`${process.env.REACT_APP_API_URL}/cart/checkout`, {
+        userId: userId
+    });
 
+    return result;
+} catch (error){
+    console.log(error);
+}
 };
 
 export const compareQuantity = async(userId, bookId)=>{

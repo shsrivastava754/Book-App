@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import '../../styles/style.css';
+import '../../styles/style.scss';
+import { Dropdown } from 'react-bootstrap';
 
 /**
  * Function that returns the navbar component
@@ -28,6 +29,14 @@ const Header = (props) => {
   const cart = ()=>{
     navigate('/books/cart');
   }
+
+  /**
+   * Function to navigate to a route which shows details of user with given ID
+   * @param {Object} user 
+   */
+  const getDetails = (id)=>{
+    navigate(`/profile/${id}`);
+  };
 
   return (
     <nav className="navbar navbar-expand-lg sticky-top">
@@ -58,10 +67,25 @@ const Header = (props) => {
         
         <button id='cartIcon' onClick={cart}>
           <i className="fa-solid fa-cart-shopping"></i>
-        </button>  
-        <button id='logout' onClick={logout}>
-          <div>Logout</div>
         </button>
+        <Dropdown>
+          <Dropdown.Toggle className='navDropdown'>
+            <i className="fa-solid fa-user"></i>
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu className='dropdownMenu'>
+            {/* <p>Hello {JSON.parse(localStorage.getItem("user"))["username"]}</p> */}
+            {
+              JSON.parse(localStorage.getItem("user"))?
+              <p>Hello {JSON.parse(localStorage.getItem("user"))["username"]}</p>
+              : null
+            }
+            <Dropdown.Item className='dropdownItem' onClick={()=>{getDetails(JSON.parse(localStorage.getItem("user"))._id)}}><i className="fa-solid fa-user"></i>&nbsp;&nbsp;Profile</Dropdown.Item>
+            <Dropdown.Item href="/books" className='dropdownItem'><i className="fa-solid fa-book"></i>&nbsp;&nbsp;Books</Dropdown.Item>
+            <Dropdown.Item href="/books/cart" className='dropdownItem'><i className="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;Cart</Dropdown.Item>
+            <Dropdown.Item className='dropdownItem' onClick={logout}><i className="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Logout</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
         
     </nav>
   )

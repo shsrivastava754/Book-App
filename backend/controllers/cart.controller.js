@@ -16,7 +16,7 @@ class CartController {
       // First check if item already exists or not in the cart
       const item = await CartService.returnItem(
         req.body.userId,
-        req.body.title
+        req.body.bookId
       );
 
       // If it exists in the collection, then just update the quantity
@@ -113,6 +113,17 @@ class CartController {
       req.body.userId,
       req.body.bookId
     );
+    return res.status(201).json({ result: result });
+  }
+
+  /**
+   * Function to complete the shopping of the user
+   * @param {Request} req 
+   * @param {Response} res 
+   * @returns 
+   */
+  static async checkout(req,res){
+    let result = await CartService.checkoutUser(req.body.userId);
     return res.status(201).json({ result: result });
   }
 }

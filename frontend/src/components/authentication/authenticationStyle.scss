@@ -1,3 +1,5 @@
+@import "../../styles/variables";
+
 a,
 button {
   cursor: pointer;
@@ -11,7 +13,7 @@ button {
   width: 100%;
   padding: 70px 30px 44px;
   border-radius: 24px;
-  background: #ffffff;
+  background: $white;
   text-align: center;
 }
 
@@ -34,13 +36,13 @@ button {
 .register-card h2 {
   margin: 0 0 12px;
   font-size: 36px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .login-card > h3,
 .register-card > h3 {
   margin: 0 0 30px;
-  font-weight: 500;
+  font-weight: 700;
   font-size: 16px;
   color: rgba(0, 0, 0, 0.38);
 }
@@ -59,11 +61,12 @@ button {
   height: 56px;
   padding: 0 16px;
   border-radius: 8px;
+  font-weight: 700;
 }
 
 .login-form > input,
 .register-form > input {
-  border: 2px solid #ebebeb;
+  border: 2px solid $input-color;
 }
 
 .login-form > button:enabled,
@@ -71,14 +74,14 @@ button {
   padding: 15px 25px;
   border: unset;
   border-radius: 15px;
-  color: #212121;
+  color: $button-color;
   z-index: 1;
-  background: #e8e8e8;
+  background: $authentication-button-background;
   position: relative;
   font-weight: 1000;
   font-size: 17px;
-  -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
-  box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+  -webkit-box-shadow: 4px 8px 19px -3px $box-shadow-color;
+  box-shadow: 4px 8px 19px -3px $box-shadow-color;
   transition: all 250ms;
   overflow: hidden;
 }
@@ -88,9 +91,9 @@ button {
   padding: 15px 25px;
   border: unset;
   border-radius: 15px;
-  color: #212121;
+  color: $button-color;
   z-index: 1;
-  background: #e8e8e8;
+  background: $authentication-button-background;
   position: relative;
   font-weight: 1000;
   font-size: 17px;
@@ -105,16 +108,16 @@ button {
   height: 100%;
   width: 0;
   border-radius: 15px;
-  background-color: #212121;
+  background-color: $button-color;
   z-index: -1;
-  -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
-  box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+  -webkit-box-shadow: 4px 8px 19px -3px $box-shadow-color;
+  box-shadow: 4px 8px 19px -3px $box-shadow-color;
   transition: all 250ms;
 }
 
 .login-form > button:enabled:hover,
 .register-form > button:hover:enabled {
-  color: #e8e8e8;
+  color: $authentication-button-background;
 }
 
 .login-form > button:hover:enabled::before,
@@ -130,8 +133,8 @@ button {
   cursor: pointer;
   padding: 5px;
   font-size: 17px;
-  background-color: #000;
-  color: #fff;
+  background-color: $black;
+  color: $white;
   outline: none;
   border: none;
   font-weight: 400;
@@ -151,26 +154,26 @@ button {
 
 #logout a {
   text-decoration: none;
-  color: #000;
+  color: $black;
 }
 
 #logout {
   margin-right: 30px;
   padding: 6px 22px 6px 22px;
   border-radius: 13px;
-  color: #000;
+  color: $black;
 }
 
 .register-form #submitBtn:disabled,
 .register-form #submitBtn[disabled] {
-  background-color: #dcd5d5;
+  background-color: $disabled-button-bg;
   color: grey;
   cursor: not-allowed;
 }
 
 .login-form #submitBtn:disabled,
 .login-form #submitBtn[disabled] {
-  background-color: #dcd5d5;
+  background-color: $disabled-button-bg;
   color: grey;
   cursor: not-allowed;
 }

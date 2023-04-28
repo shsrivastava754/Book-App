@@ -1,5 +1,7 @@
 const Cart = require("../database/Cart");
 const Books = require("../database/Books");
+const Users = require("../database/Users");
+const BookService = require("./book.service");
 
 /**
  * Class for Cart Services
@@ -11,10 +13,10 @@ class CartService {
    * @param {String} title
    * @returns {Object} the item from the cart collection
    */
-  static async returnItem(userId, title) {
+  static async returnItem(userId, bookId) {
     const item = await Cart.findOne({
       userId: userId,
-      title: title,
+      bookId: bookId,
     });
 
     return item;
@@ -27,7 +29,7 @@ class CartService {
    */
   static async updateItemQuantity(item) {
     await Cart.updateOne(
-      { title: item.title, userId: item.userId },
+      { bookId: item.bookId, userId: item.userId },
       {
         $set: {
           quantity: item.quantity + 1,
@@ -45,6 +47,7 @@ class CartService {
   static async addNewItem(body) {
     let cartItem = new Cart({
       title: body.title,
+      bookId: body.bookId,
       author: body.author,
       price: body.price,
       quantity: 1,
@@ -98,7 +101,7 @@ class CartService {
    */
   static async compareCartQuantity(userId, bookId) {
     const book = await Books.findOne({ _id: bookId });
-    const cartItem = await Cart.findOne({ userId: userId, title: book.title });
+    const cartItem = await Cart.findOne({ userId: userId, bookId: book.bookId });
     let res;
     if (cartItem != null) {
       if (cartItem.quantity + 1 < book.quantity) {
@@ -111,6 +114,21 @@ class CartService {
     }
 
     return res;
+  }
+
+  /**
+   * Update the cart and books collection after checkout
+   * @param {String} userId 
+   */
+  static async checkoutUser(userId){
+    let cartItems = await Cart.find({userId:userId});
+    cartItems.map(async (item)=>{
+
+      // Update the quantity of each book in the books collection
+      await BookService.updateQuantities(item.bookId,item.quantity);
+    });
+
+    this.clearCart(userId);
   }
 }
 

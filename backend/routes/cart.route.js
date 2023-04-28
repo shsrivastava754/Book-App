@@ -15,5 +15,6 @@ router.post(
   bodyParser,
   CartController.compareQuantity
 );
+router.post("/cart/checkout",bodyParser,CartController.checkout);
 
 module.exports = router;

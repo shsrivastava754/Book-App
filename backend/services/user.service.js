@@ -1,6 +1,7 @@
 const Users = require("../database/Users");
 const Books = require("../database/Books");
 const bcrypt = require("bcrypt");
+const Donations = require('../database/Cart');
 
 /**
  * Class for users service
@@ -64,6 +65,16 @@ class UsersService {
   static async countDonations(id) {
     const donationsCount = await Books.count({ donatedById: id });
     return donationsCount;
+  }
+
+  /**
+   * Get details of a user from collection
+   * @param {String} id 
+   * @returns 
+   */
+  static async getUserDetails(id){
+    const user = await Users.findOne({_id:id});
+    return user;
   }
 }
 

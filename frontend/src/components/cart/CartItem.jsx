@@ -1,5 +1,5 @@
 import React from 'react'
-import '../../styles/style.css';
+import '../../styles/style.scss';
 import { removeCartItem } from '../../services/app.service';
 // import Dialog from "@mui/material/Dialog";
 

@@ -1,0 +1,597 @@
+@import "./variables";
+
+.navbar {
+  background-color: $nav-bg-color;
+  color: $white;
+}
+
+.navbar-brand,
+.nav-link {
+  color: $white;
+  font-weight: 500;
+}
+
+.navbar-brand:hover {
+  color: $white;
+}
+
+.nav-link:hover {
+  color: $nav-link-hover;
+}
+
+.nav-link:focus, .navbar-brand:focus {
+  color: $white;
+}
+
+.navDropdown {
+  background-color: transparent;
+  border: transparent;
+  outline: none;
+}
+
+.navDropdown:hover {
+  background-color: transparent;
+  color: #6854c2;
+}
+
+.navDropdown:visited {
+  background-color: transparent;
+}
+
+.navDropdown:focus {
+  background-color: transparent;
+}
+
+.dropdownMenu {
+  padding: 0;
+}
+
+.dropdownItem {
+  border-bottom: 1px solid #d8dbe0;
+  color: $primary-color;
+  font-weight: 500;
+}
+
+.dropdownMenu p {
+  padding: 15px;
+  font-weight: 800;
+  color: $primary-color;
+}
+
+.dropdownItem:hover {
+  background-color: $primary-color;
+  color: $white;
+}
+
+.formContainer,
+.detailsContainer {
+  background-color: $white;
+  margin: auto;
+  box-sizing: border-box;
+  color: $paragraph-color;
+  width: 50%;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+
+.formContainer h3 {
+  color: $heading-color;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.formContainer label {
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: $content-text-color;
+}
+
+.formContainer input,
+.formContainer textarea {
+  background-color: transparent;
+  border: 1px solid #d9c6ed;
+  font-weight: 600;
+  color: $primary-color;
+}
+
+.formContainer input.form-control:focus,
+.formContainer textarea.form-control:focus {
+  box-shadow: 0 0;
+  outline: 0 none;
+  background-color: transparent;
+  color: $primary-color;
+  font-weight: 600;
+}
+
+.formContainer option,
+select {
+  color: $primary-color;
+  font-weight: 600;
+}
+
+.formContainer button.btn {
+  background-color: $primary-color;
+  color: $btn-color;
+  width: 20%;
+  display: block;
+  margin: auto;
+}
+
+.formContainer button.btn:hover {
+  background-color: transparent;
+}
+
+.donationForm button.btn:disabled,
+.donationForm button.btn[disabled] {
+  background-color: rgb(123, 162, 174);
+  outline: none;
+  border: none;
+  cursor: not-allowed;
+}
+
+.statusAvailable {
+  background-color: #d2ebd3;
+  padding: 7px;
+  border-radius: 10px;
+  font-weight: 700;
+  color: $status-available-color;
+}
+
+.statusSold {
+  background-color: #f5d0cd;
+  padding: 7px;
+  border-radius: 10px;
+  color: $status-sold-color;
+  font-weight: 700;
+}
+
+.detailsContainer h3 {
+  border-bottom: 1px solid rgb(181, 191, 185);
+  padding-bottom: 10px;
+  color: $heading-color;
+  font-weight: 700;
+}
+
+.details {
+  margin-top: 30px;
+}
+
+.detailsContainer h5 {
+  margin-top: 20px;
+  font-weight: 600;
+  color: $content-text-color;
+}
+
+.detailsContainer span {
+  color: $heading-color;
+  font-weight: 700;
+}
+
+.detailsContainer button.btn {
+  background-color: $primary-color;
+  color: $btn-color;
+  width: 20%;
+  display: block;
+  margin: auto;
+  font-weight: 500;
+}
+
+.detailsContainer button.btn:hover,
+.formContainer button.btn:hover {
+  background-color: transparent;
+  border: 1px solid $primary-color;
+  color: $primary-color;
+}
+
+.searchBar {
+  width: 50%;
+  background-color: $white;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 0.375rem;
+  border: 2px solid #d6cfdb;
+  color: $primary-color;
+  font-weight: 700;
+}
+
+.bookList h3 {
+  color: #6854c2;
+  font-weight: bolder;
+}
+
+.btnAdd {
+  right: 0;
+  margin-left: 45px;
+  width: 19%;
+  background-color: $primary-color;
+  color: $btn-color;
+  font-weight: 600;
+}
+
+.btnAdd:hover {
+  color: $primary-color;
+  background-color: #fdfdfd;
+  border: 1px solid $primary-color;
+}
+
+.bookList label {
+  margin-right: 10px;
+  margin-left: 30px;
+  font-size: 17px;
+  color: $content-text-color;
+  font-weight: 600;
+}
+
+.bookList select {
+  padding: 4px;
+  font-size: 17px;
+  background-color: $primary-color;
+  color: $btn-color;
+  text-align: center;
+  width: 18%;
+}
+
+.bookList select:hover,
+.bookList option:hover {
+  cursor: pointer;
+}
+
+.bookList option:hover {
+  background-color: $heading-color;
+}
+
+.bookList #rowsPerPage {
+  width: 90%;
+}
+
+.buttons {
+  display: flex;
+  margin-left: 16%;
+  flex-wrap: nowrap;
+  padding: 1rem;
+}
+
+.buttons button {
+  width: 40%;
+  border-radius: 40px;
+  outline: none;
+  border: none;
+  padding: 10px;
+  color: $white;
+  font-weight: 700;
+}
+
+.buttons .btnConfirmYes {
+  background-color: rgb(21, 156, 21);
+  margin-right: 30px;
+}
+
+.modal button:hover {
+  color: $white;
+  background-color: inherit;
+  outline: 1px solid $white;
+}
+
+.buttons .btnConfirmNo {
+  background-color: red;
+}
+
+.dialogBox h3 {
+  padding: 2rem;
+}
+
+@media screen and (max-width: 1400px) {
+  .components {
+    display: flex;
+  }
+
+  .components select,
+  .btnAdd {
+    max-height: 47.2px;
+  }
+
+  .btnAdd {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .components select,
+  .btnAdd {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .components {
+    display: flex;
+  }
+
+  .components select,
+  .btnAdd {
+    max-height: 57.2px;
+    /* width: 100%; */
+  }
+
+  .btnAdd {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 769px) {
+  .components {
+    display: flex;
+  }
+
+  .components label {
+    display: none;
+  }
+
+  .components select {
+    width: 30%;
+    margin-left: 10px;
+    margin-right: 0;
+    max-height: 47.2px;
+  }
+
+  .components .btnAdd {
+    height: 49.2px;
+    width: 70%;
+    padding: 7px;
+    padding-top: 1px;
+  }
+}
+
+.tooltips {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltips .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: $heading-color;
+  color: $white;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltips:hover .tooltiptext {
+  visibility: visible;
+}
+
+footer {
+  padding: 12px 10px;
+  background-color: #000;
+  color: grey;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+#cartIcon {
+  color: $white;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  font-size: 1.4rem;
+  margin-right: 20px;
+}
+
+.cartTotal,
+.checkout {
+  color: $white;
+  text-align: center;
+  background-color: $primary-color;
+  padding: 14px;
+  width: 40%;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  margin: auto;
+}
+
+.checkout {
+  display: block;
+  margin-top: 30px;
+  border-radius: 30px;
+  border: none;
+  outline: none;
+  font-weight: 600;
+}
+
+.clearCart {
+  padding: 10px;
+  border: 1px solid $primary-color;
+  outline: none;
+  display: block;
+  margin: auto;
+  width: 30%;
+  background-color: inherit;
+  color: $primary-color;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.clearCart:hover {
+  color: $white;
+  background-color: $primary-color;
+}
+
+.fa-google {
+  color: #0f9d58;
+}
+
+.btnAction {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  color: $heading-color;
+  padding: 3px;
+}
+
+.btnPaginationActive {
+  background-color: $primary-color;
+  color: $btn-color;
+}
+
+.btnPaginationInactive {
+  outline: $primary-color;
+  background-color: transparent;
+  color: $primary-color;
+}
+
+.btnPaginationActive:hover {
+  background-color: $primary-color;
+  color: $btn-color;
+}
+
+.btnPaginationInactive:hover {
+  border: 1px solid $primary-color;
+  color: $primary-color;
+}
+
+.btnPaginationControls {
+  outline: $primary-color;
+  background-color: transparent;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  margin-left: auto;
+}
+
+.btnPaginationControls:hover {
+  color: $btn-color;
+  background-color: $primary-color;
+  transition: 0.5s;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pagination ul {
+  margin-bottom: 0;
+}
+
+.right-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 20%;
+}
+
+.pagination span {
+  width: 100%;
+  padding-top: 0;
+  margin-right: 10px;
+  font-size: 17px;
+  color: $content-text-color;
+  font-weight: 600;
+}
+
+/* Table CSS */
+
+table {
+  border: 1px solid $white;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+  overflow: auto;
+  color: $content-text-color;
+  margin-bottom: 20px;
+}
+
+table tr {
+  background-color: $white;
+  border: 1px solid #ddd;
+  padding: 0.35em;
+  font-weight: 600;
+}
+
+table tbody tr:hover {
+  background-color: $td-row-hover;
+  cursor: pointer;
+}
+
+table th,
+table td {
+  padding: 0.625em;
+  text-align: center;
+  font-weight: 600;
+}
+
+table th {
+  font-weight: 800;
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.booksTable, .usersTable {
+  height: 317px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: 0.625em;
+  }
+
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 0.8em;
+    text-align: right;
+  }
+
+  table td::before {
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  table td:last-child {
+    border-bottom: 0;
+  }
+}

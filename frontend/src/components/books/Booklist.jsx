@@ -1,7 +1,7 @@
 import Book from "./Book";
 import axios from "axios";
 import { useEffect, useState, React } from "react";
-import "../../styles/style.css";
+import "../../styles/style.scss";
 import { Link } from "react-router-dom";
 
 /**
@@ -18,7 +18,7 @@ const Booklist = (props) => {
 
   const url = `${process.env.REACT_APP_API_URL}/books/getBooks`;
 
-  // Fetches the data from Server 
+  // Fetches the data from Server
   const fetchHandler = async () => {
     return await axios
       .post(url, {
@@ -36,7 +36,7 @@ const Booklist = (props) => {
 
   const indexOfLastRowOfCurrentPage = currentPage * rowPerPage;
   const indexOfFirstRowOfCurrentPage = indexOfLastRowOfCurrentPage - rowPerPage;
-  
+
   // Show specific part of data
   let currentRows = tableBooks?.slice(
     indexOfFirstRowOfCurrentPage,
@@ -102,7 +102,10 @@ const Booklist = (props) => {
 
     const arr = [];
     const newData = books?.map((item) => {
-      if ((item.title.toLowerCase().includes(e.target.value.toLowerCase()))||(item.author.toLowerCase().includes(e.target.value.toLowerCase()))) {
+      if (
+        item.title.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        item.author.toLowerCase().includes(e.target.value.toLowerCase())
+      ) {
         arr.push(item);
       }
     });
@@ -112,7 +115,7 @@ const Booklist = (props) => {
   return (
     <>
       <div className="container bookList">
-        <h3 className="text-center my-3">Books List</h3>
+        <h3 className="my-3 heading">Books</h3>
         <div className="components">
           <input
             type="text"
@@ -131,13 +134,14 @@ const Booklist = (props) => {
             <button className="btn btnAdd">Donate a Book</button>
           </Link>
         </div>
-        <table className="table table-borderless table-responsive booksTable">
+        <div className="booksTable">
+        <table>
           <thead>
             <tr>
               <th scope="col">Title</th>
               <th scope="col">Author</th>
               <th scope="col">Price</th>
-              <th scope="col">Donated by</th>
+              <th scope="col">Donated By</th>
               <th scope="col">Status</th>
               <th scope="col">Action</th>
             </tr>
@@ -155,18 +159,31 @@ const Booklist = (props) => {
               })}
           </tbody>
         </table>
+        </div>
         <div className="pagination">
-          <div className="col-3 col-xm-12 text-start">
+          <div className="left-pagination">
+            <span htmlFor="rowsPerPage">Rows per page:</span>
+            <select
+              className="form-select"
+              onChange={(e) => handlePageSize(e)}
+              id="rowsPerPage"
+              style={{ display: "inline" }}
+              >
+              <option value="5">5</option>
+              <option value="3">3</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </select>
+          </div>
+          <div className="right-pagination">
             <button
-              className="btn btnPaginationActive align-self-start"
+              className="btn btnPaginationControls previous"
               onClick={() => handlePrevious()}
             >
               {" "}
               Previous{" "}
             </button>
-          </div>
-          <div className="col-6 col-xm-12">
-            <ul className="text-center">
+            <ul className="">
               {pageNumbers.map((number) => {
                 let btnClass = " btn btnPaginationInactive mx-1";
                 if (number === currentPage)
@@ -182,26 +199,14 @@ const Booklist = (props) => {
                 );
               })}
             </ul>
-          </div>
-          <div className="col-3 col-xm-12 text-end">
             <button
-              className="btn btnPaginationActive ml-2 align-self-"
+              className="btn btnPaginationControls float-right"
               onClick={() => handleNext()}
             >
               {" "}
               Next{" "}
             </button>
           </div>
-        </div>
-        <div>
-        <span htmlFor="rowsPerPage">Rows per page:</span>
-          <select className="form-select" onChange={(e) => handlePageSize(e)} id="rowsPerPage" style={{display:"inline"}}>
-            <option value="5">5</option>
-            <option value="3">3</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-          </select>
-
         </div>
       </div>
     </>

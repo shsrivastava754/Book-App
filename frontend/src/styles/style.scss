@@ -201,8 +201,7 @@ select {
 
 .btnAdd {
   right: 0;
-  margin-left: 45px;
-  width: 19%;
+  width: 220px;
   background-color: $primary-color;
   color: $btn-color;
   font-weight: 600;
@@ -229,6 +228,7 @@ select {
   color: $btn-color;
   text-align: center;
   width: 18%;
+  border-radius: 0.375rem;
 }
 
 .bookList select:hover,
@@ -468,7 +468,7 @@ footer {
   transition: 0.5s;
 }
 
-.pagination {
+.pagination, .table-heading {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -478,13 +478,13 @@ footer {
   margin-bottom: 0;
 }
 
-.right-pagination {
+.right-pagination, .right-heading {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.left-pagination {
+.left-pagination, .left-heading {
   display: flex;
   justify-content: space-between;
   align-items: center;

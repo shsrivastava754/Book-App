@@ -1,6 +1,6 @@
 import { useEffect, useState, React } from 'react';
 import '../../styles/style.scss';
-import { getDonations } from '../../services/app.service';
+import { getDonations } from '../../services/user.service';
 
 /**
  * Function to return user component

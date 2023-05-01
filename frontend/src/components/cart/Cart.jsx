@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState, React } from "react";
 import CartItem from "./CartItem";
 import "../../styles/style.scss";
-import { checkoutService, clearCartService } from "../../services/app.service";
+import { checkoutService, clearCartService } from "../../services/cart.service";
 
 const url = `${process.env.REACT_APP_API_URL}/cart/getCartItems`;
 
@@ -60,6 +60,10 @@ const Cart = () => {
             </tr>
           </thead>
           <tbody>
+
+            {items?.length ? null : (
+              <h4 className="my-4 text-center" style={{marginLeft: "auto",textAlign:"center"}}>Add some books to the cart</h4>
+            )}
             {items &&
               items.map((item) => {
                 total = total + item.quantity * item.price;
@@ -68,17 +72,18 @@ const Cart = () => {
           </tbody>
         </table>
         {items?.length ? (
-          <div className="components">
-            <button className="btn clearCart" onClick={clearCart}>
-              Clear Cart
+          <>
+            <div className="components">
+              <button className="btn clearCart" onClick={clearCart}>
+                Clear Cart
+              </button>
+            </div>
+            <div className="cartTotal">Cart total: {total}</div>
+            <button className="checkout" onClick={checkout}>
+              Proceed to checkout <i className="fa-regular fa-credit-card"></i>
             </button>
-          </div>
+          </>
         ) : null}
-
-        <div className="cartTotal">Cart total: {total}</div>
-        <button className="checkout" onClick={checkout}>
-          Proceed to checkout <i className="fa-regular fa-credit-card"></i>
-        </button>
       </div>
     </>
   );

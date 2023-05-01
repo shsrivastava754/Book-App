@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import googleLogo from "../../images/googleLogo.png";
 import bg6 from "../../images/bg6.jpg";
-import { googleLogin, loginUserRequest } from "../../services/app.service";
+import { googleLogin, loginUserRequest } from "../../services/user.service";
 
 /**
  * Returns Login Form Component
@@ -16,7 +16,6 @@ const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(true);
-  const [message, setMessage] = useState("");
 
   let navigate = useNavigate();
 
@@ -61,11 +60,8 @@ const Login = (props) => {
 
     // don't use not equal for if else
     if (username && password) {
-      setMessage("");
       setDisabled(false);
       loginUser(username, password);
-    } else {
-      setMessage("All fields are mandatory");
     }
   };
 
@@ -139,7 +135,6 @@ const Login = (props) => {
             onClick={handleToggle}
           ></span>
 
-          <p className="text-danger">{message}</p>
           <Link to={"/register"}>Don't have an account?</Link>
           <button type="submit" id="submitBtn" disabled={disabled}>
             Login

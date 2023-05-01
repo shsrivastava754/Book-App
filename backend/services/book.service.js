@@ -3,7 +3,7 @@ const Books = require("../database/Books");
 const User = require("../database/Users");
 
 /**
- * Class for Books Services
+ * Class representing a book service.
  */
 class BookService {
   /**

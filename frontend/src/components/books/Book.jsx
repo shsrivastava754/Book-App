@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import Dialog from "@mui/material/Dialog";
-import { postToCart, deleteCartItem, compareQuantity } from '../../services/app.service';
+import { compareQuantity } from '../../services/book.service';
+import { postToCart, deleteCartItem } from '../../services/cart.service';
 
 const Book = (props) => {
 

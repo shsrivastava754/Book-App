@@ -53,8 +53,6 @@ function App() {
           <Route path="/users" element={<Users/>} exact/>
         </Route>
       </Routes>
-
-      {/* <Footer/> */}
     </BrowserRouter>
   );
 }

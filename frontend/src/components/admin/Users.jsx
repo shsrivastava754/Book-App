@@ -1,7 +1,7 @@
 import { useState, useEffect, React } from "react";
 import "../../styles/style.scss";
 import User from "./User";
-import { getUsers } from "../../services/app.service";
+import { getUsers } from "../../services/user.service";
 
 const url = `${process.env.REACT_APP_API_URL}/users/getUsers`;
 

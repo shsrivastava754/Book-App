@@ -1,6 +1,5 @@
 const Cart = require("../database/Cart");
 const Books = require("../database/Books");
-const Users = require("../database/Users");
 const BookService = require("./book.service");
 
 /**

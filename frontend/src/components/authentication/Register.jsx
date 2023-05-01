@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState, React } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { postUser } from "../../services/app.service";
+import { postUser } from "../../services/user.service";
 
 const Register = () => {
   // State variables for the form fields
@@ -17,9 +17,6 @@ const Register = () => {
 
   //   State variable for disabling the submit button
   const [disabled, setDisabled] = useState(true);
-
-  //   State variable for the message if fields are empty
-  const [message, setMessage] = useState("");
 
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
@@ -47,11 +44,9 @@ const Register = () => {
   const register = (e) => {
     e.preventDefault();
     if (name && email && username && password) {
-      setMessage("");
       setDisabled(false);
       registerUser(name, username, email, password);
     } else {
-      setMessage("All fields are mandatory");
       setDisabled(true);
     }
   };
@@ -64,7 +59,7 @@ const Register = () => {
    * @param {String} password
    */
   const registerUser = async (name, username, email, password) => {
-    await postUser(name,username,email,password);
+    await postUser(name, username, email, password);
   };
 
   /**
@@ -172,7 +167,6 @@ const Register = () => {
             id="toggle"
             onClick={handleToggle}
           ></span>
-          <p className="text-danger">{message}</p>
           <Link to={"/login"}>Already have an account?</Link>
           <button type="submit" id="submitBtn" disabled={disabled}>
             Register

@@ -1,7 +1,7 @@
 const BookService = require("../services/book.service");
 
 /**
- * Class for Books Controller
+ * Class that contains methods to handle CRUD operations on books.
  */
 class BookController {
   /**

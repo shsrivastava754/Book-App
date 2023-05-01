@@ -3,11 +3,11 @@ const LocalStorage = require("node-localstorage").LocalStorage;
 localStorage = new LocalStorage("./scratch");
 
 /**
- * Class for Users controller
+ * Controller class for Users related operations.
  */
 class UserController {
   /**
-   * Function to get the list of users
+   * Retrieves the list of users from the database.
    * @param {Object} req
    * @param {Object} res
    * @returns {Response} status code with a message if users list is found or not
@@ -27,7 +27,7 @@ class UserController {
   }
 
   /**
-   * Function to register a new user
+   * Registers a new user in the database.
    * @param {Object} req
    * @param {Object} res
    * @returns {Response} status code with a message or new user
@@ -59,7 +59,7 @@ class UserController {
   }
 
   /**
-   * Function to login a user
+   * Logs in a user using their credentials.
    * @param {Object} req
    * @param {Object} res
    * @returns {Response} status code with a message if logged in successfully or not
@@ -92,7 +92,7 @@ class UserController {
   }
 
   /**
-   * Function to get the number of donations done by the user
+   * Gets the number of donations made by a user.
    * @param {Object} req
    * @param {Object} res
    * @returns {Response} status code with a message
@@ -107,7 +107,7 @@ class UserController {
   }
 
   /**
-   * Function to send the details of the user from scratch folder in case of google authentication
+   * Sends the details of the user from scratch folder in case of Google authentication.
    * @param {Object} req
    * @param {Object} res
    * @returns {Response} the data in the scratch folder for google authentication

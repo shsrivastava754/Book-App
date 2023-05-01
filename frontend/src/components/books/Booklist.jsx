@@ -101,7 +101,7 @@ const Booklist = (props) => {
     setTableBooks(books);
 
     const arr = [];
-    const newData = books?.map((item) => {
+    books?.map((item) => {
       if (
         item.title.toLowerCase().includes(e.target.value.toLowerCase()) ||
         item.author.toLowerCase().includes(e.target.value.toLowerCase())
@@ -115,7 +115,16 @@ const Booklist = (props) => {
   return (
     <>
       <div className="container bookList">
-        <h3 className="my-3 heading">Books</h3>
+        <div className="table-heading">
+          <div className="left-heading">
+            <h3 className="my-3 heading">Books</h3>
+          </div>
+          <div className="right-heading">
+            <Link to="/addBook">
+              <button className="btn btnAdd">Donate a Book</button>
+            </Link>
+          </div>
+        </div>
         <div className="components">
           <input
             type="text"
@@ -130,35 +139,35 @@ const Booklist = (props) => {
             <option value="2">Ready to Pick</option>
             <option value="3">Sold</option>
           </select>
-          <Link to="/addBook">
+          {/* <Link to="/addBook">
             <button className="btn btnAdd">Donate a Book</button>
-          </Link>
+          </Link> */}
         </div>
         <div className="booksTable">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Title</th>
-              <th scope="col">Author</th>
-              <th scope="col">Price</th>
-              <th scope="col">Donated By</th>
-              <th scope="col">Status</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentRows &&
-              currentRows.map((book) => {
-                return (
-                  <Book
-                    book={book}
-                    key={book.title}
-                    srno={books.indexOf(book) + 1}
-                  />
-                );
-              })}
-          </tbody>
-        </table>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Price</th>
+                <th scope="col">Donated By</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentRows &&
+                currentRows.map((book) => {
+                  return (
+                    <Book
+                      book={book}
+                      key={book.title}
+                      srno={books.indexOf(book) + 1}
+                    />
+                  );
+                })}
+            </tbody>
+          </table>
         </div>
         <div className="pagination">
           <div className="left-pagination">
@@ -168,7 +177,7 @@ const Booklist = (props) => {
               onChange={(e) => handlePageSize(e)}
               id="rowsPerPage"
               style={{ display: "inline" }}
-              >
+            >
               <option value="5">5</option>
               <option value="3">3</option>
               <option value="10">10</option>

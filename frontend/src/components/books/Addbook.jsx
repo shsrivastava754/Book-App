@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../../styles/style.scss';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import { postBook } from '../../services/app.service';
+import { postBook } from '../../services/book.service';
 
 /**
  * 
@@ -90,25 +90,27 @@ const AddBook = (props) => {
     <div className='container mt-4 formContainer p-4 donationForm'>
         <h3>Donate a Book</h3>
         <form onSubmit={formSubmit} autoComplete="off">
-            <div className="mb-3">
-                <label htmlFor="title" className="form-label">Title</label>
-                <input type="text" value={title} className="form-control" id="title" onChange={checkTitle} />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="author" className="form-label">Author</label>
-                <input type="text" value={author} className="form-control" id="author" onChange={checkAuthor} />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="price" className="form-label">Price</label>
-                <input type="number" value={price} className="form-control" id="price" onChange={checkPrice} min={1} />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="price" className="form-label">Quantity</label>
-                <input type="number" value={quantity} className="form-control" id="quantity" onChange={checkQuantity} min={1} />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="description" className="form-label">Description</label>
-                <textarea type="text" value={description} className="form-control" id="description" onChange={checkDescription} />
+            <div className="row">
+                <div className="col-md-6 mb-3">
+                    <label htmlFor="title" className="form-label">Title</label>
+                    <input type="text" value={title} className="form-control" id="title" onChange={checkTitle} />
+                </div>
+                <div className="col-md-6 mb-3">
+                    <label htmlFor="author" className="form-label">Author</label>
+                    <input type="text" value={author} className="form-control" id="author" onChange={checkAuthor} />
+                </div>
+                <div className="col-md-6 mb-3">
+                    <label htmlFor="price" className="form-label">Price</label>
+                    <input type="number" value={price} className="form-control" id="price" onChange={checkPrice} min={1} />
+                </div>
+                <div className="col-md-6 mb-3">
+                    <label htmlFor="price" className="form-label">Quantity</label>
+                    <input type="number" value={quantity} className="form-control" id="quantity" onChange={checkQuantity} min={1} />
+                </div>
+                <div className="col-12 mb-3">
+                    <label htmlFor="description" className="form-label">Description</label>
+                    <textarea type="text" value={description} className="form-control" id="description" onChange={checkDescription} />
+                </div>
             </div>
             <button className="btn p-2" disabled={disabled}>Donate Book</button>
         </form>

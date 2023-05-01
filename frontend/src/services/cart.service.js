@@ -1,0 +1,90 @@
+import axios from "axios";
+import { toast } from "react-toastify";
+
+/**
+ * Function to show notification in case of adding an item to cart
+ */
+const showToast = () => {
+  toast.success("Added to cart");
+};
+
+/**
+ * Function to show error notification in case of failure in addition to cart
+ */
+const showerrorToast = () => {
+  toast.warning("Failed to add to cart");
+};
+
+/**
+ * Post book details to cart collection
+ * @param {Object} book
+ */
+export const postToCart = async (book) => {
+  await axios
+    .post(`${process.env.REACT_APP_API_URL}/cart/addToCart`, {
+      title: book.title,
+      price: book.price,
+      author: book.author,
+      bookId: book._id,
+      userId: JSON.parse(localStorage.getItem("user"))._id,
+      userEmail: JSON.parse(localStorage.getItem("user")).email,
+    })
+    .then((res) => {
+      if (res) {
+        showToast();
+      } else {
+        showerrorToast();
+      }
+    });
+};
+
+/**
+ * Deletes an item from the cart of a user
+ * @param {ObjectId} id
+ */
+export const deleteCartItem = async (id) => {
+  await axios.delete(`${process.env.REACT_APP_API_URL}/${id}`);
+  window.location.reload();
+};
+
+/**
+ * Clear cart API called at backend
+ */
+export const clearCartService = async () => {
+  axios.post(`${process.env.REACT_APP_API_URL}/cart/clearCart`, {
+    userId: JSON.parse(localStorage.getItem("user"))._id,
+    userEmail: JSON.parse(localStorage.getItem("user")).email,
+  });
+  window.location.reload();
+};
+
+/**
+ * Removes a single item from cart
+ * @param {ObjectId} itemId
+ * @param {ObjectId} userId
+ */
+export const removeCartItem = async (itemId, userId) => {
+  axios.delete(`${process.env.REACT_APP_API_URL}/cart/${itemId}/${userId}`);
+  window.location.reload();
+};
+
+/**
+ * Service for checking out
+ * @returns result after the checkout
+ */
+export const checkoutService = async () => {
+  try {
+    let result;
+    let userId = JSON.parse(localStorage.getItem("user"))._id;
+    result = await axios.post(
+      `${process.env.REACT_APP_API_URL}/cart/checkout`,
+      {
+        userId: userId,
+      }
+    );
+
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};

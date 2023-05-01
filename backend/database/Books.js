@@ -4,7 +4,7 @@ mongoose.set("strictQuery", false);
 const schema = mongoose.Schema;
 const ObjectId = schema.ObjectId;
 
-const Bookschema = new mongoose.Schema({
+const BookSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -22,5 +22,5 @@ const Bookschema = new mongoose.Schema({
   isDeleted: Boolean
 });
 
-const Books = new mongoose.model("Books", Bookschema);
-module.exports = Books;
+const BooksModel = new mongoose.model("Books", BookSchema);
+module.exports = BooksModel;

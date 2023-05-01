@@ -223,3 +223,8 @@ const Booklist = (props) => {
 };
 
 export default Booklist;
+
+// REACT_APP_API_URL = "http://localhost:3001"
+// REACT_APP_API_REGISTER_USER = "http://localhost:3001/register"
+// REACT_APP_GET_DONATIONS = ${REACT_APP_API_URL}/users/getDonations
+// REACT_APP_GET_USERS = ${REACT_APP_API_URL}/users/getUsers

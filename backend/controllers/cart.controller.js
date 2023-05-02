@@ -21,12 +21,12 @@ class CartController {
 
       // If it exists in the collection, then just update the quantity
       if (item) {
-        cartItem = CartService.updateItemQuantity(item);
+        cartItem = await CartService.updateItemQuantity(item);
       }
 
       // Else add new item to the collection
       else {
-        await CartService.addNewItem(req.body);
+        cartItem = await CartService.addNewItem(req.body);
       }
 
       if (!cartItem) {
@@ -35,6 +35,7 @@ class CartController {
 
       return res.status(201).json({ cartItem });
     } catch (error) {
+      console.log(error);
       return res.status(500).json({ message: error });
     }
   }
@@ -118,11 +119,11 @@ class CartController {
 
   /**
    * Function to complete the shopping of the user
-   * @param {Request} req 
-   * @param {Response} res 
-   * @returns 
+   * @param {Request} req
+   * @param {Response} res
+   * @returns
    */
-  static async checkout(req,res){
+  static async checkout(req, res) {
     let result = await CartService.checkoutUser(req.body.userId);
     return res.status(201).json({ result: result });
   }

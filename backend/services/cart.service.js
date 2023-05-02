@@ -56,6 +56,7 @@ class CartService {
     });
 
     await cartItem.save();
+    return cartItem;
   }
 
   /**
@@ -100,10 +101,10 @@ class CartService {
    */
   static async compareCartQuantity(userId, bookId) {
     const book = await Books.findOne({ _id: bookId });
-    const cartItem = await Cart.findOne({ userId: userId, bookId: book.bookId });
+    const cartItem = await Cart.findOne({ userId: userId, bookId: bookId });
     let res;
     if (cartItem != null) {
-      if (cartItem.quantity + 1 < book.quantity) {
+      if (cartItem.quantity < book.quantity) {
         res = true;
       } else {
         res = false;
@@ -117,14 +118,13 @@ class CartService {
 
   /**
    * Update the cart and books collection after checkout
-   * @param {String} userId 
+   * @param {String} userId
    */
-  static async checkoutUser(userId){
-    let cartItems = await Cart.find({userId:userId});
-    cartItems.map(async (item)=>{
-
+  static async checkoutUser(userId) {
+    let cartItems = await Cart.find({ userId: userId });
+    cartItems.map(async (item) => {
       // Update the quantity of each book in the books collection
-      await BookService.updateQuantities(item.bookId,item.quantity);
+      await BookService.updateQuantities(item.bookId, item.quantity);
     });
 
     this.clearCart(userId);

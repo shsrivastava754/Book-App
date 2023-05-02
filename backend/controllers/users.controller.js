@@ -76,10 +76,7 @@ class UserController {
 
       // Else verify the user and his/her password
       else {
-        let verified = UserService.verifyUser(
-          req.body.password,
-          user.password
-        );
+        let verified = UserService.verifyUser(req.body.password, user.password);
         if (verified) {
           return res.status(201).json({ user });
         } else {
@@ -127,16 +124,16 @@ class UserController {
 
   /**
    * Returns the user details
-   * @param {Request} req 
-   * @param {Response} res 
+   * @param {Request} req
+   * @param {Response} res
    */
-  static async getUser (req,res){
+  static async getUser(req, res) {
     try {
       let user;
       user = await UserService.getUserDetails(req.params.id);
-      return res.status(201).json({message:user});
+      return res.status(201).json({ message: user });
     } catch (error) {
-      return  res.status(501).json({message:"No user found"});
+      return res.status(501).json({ message: "No user found" });
     }
   }
 }

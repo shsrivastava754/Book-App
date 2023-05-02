@@ -89,7 +89,7 @@ export const compareQuantity = async (userId, bookId) => {
       `${process.env.REACT_APP_API_URL}/cart/compareQuantity`,
       {
         userId: userId,
-        bookId: bookId,
+        bookId: bookId
       }
     );
 

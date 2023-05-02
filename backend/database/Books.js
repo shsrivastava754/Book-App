@@ -19,7 +19,7 @@ const BookSchema = new mongoose.Schema({
   status: String,
   donatedById: ObjectId,
   donatedByEmail: String,
-  isDeleted: Boolean
+  isDeleted: Boolean,
 });
 
 const BooksModel = new mongoose.model("Books", BookSchema);

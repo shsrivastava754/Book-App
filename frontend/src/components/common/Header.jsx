@@ -19,7 +19,8 @@ const Header = (props) => {
     localStorage.clear();
     props.setLogin(false);
     navigate('/');
-    window.open(`${process.env.REACT_APP_API_URL}/auth/logout`,"_self");
+    window.location.reload();
+    // window.open(`${process.env.REACT_APP_API_URL}/auth/logout`,"_self");
   }
 
   

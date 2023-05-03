@@ -4,11 +4,19 @@ import axios from "axios";
  *
  * @param {String} title
  * @param {String} author
- * @param {String} price
+ * @param {Number} price
  * @param {String} description
  * @param {String} quantity
+ * @param {Number} sale_price
  */
-export const postBook = async (title, author, price, description, quantity) => {
+export const postBook = async (
+  title,
+  author,
+  price,
+  description,
+  quantity,
+  sale_price
+) => {
   let result;
   await axios
     .post(process.env.REACT_APP_API_URL, {
@@ -17,6 +25,7 @@ export const postBook = async (title, author, price, description, quantity) => {
       price: price,
       description: description,
       quantity: quantity,
+      sale_price: sale_price,
       donatedById: JSON.parse(localStorage.getItem("user"))["_id"],
     })
     .then((res) => {
@@ -56,7 +65,8 @@ export const editBookDetails = async (
   description,
   status,
   quantity,
-  id
+  id,
+  sale_price
 ) => {
   let result;
   await axios
@@ -67,6 +77,7 @@ export const editBookDetails = async (
       description: description,
       status: status,
       quantity: quantity,
+      sale_price: sale_price,
     })
     .then((res) => {
       if (res) {
@@ -89,7 +100,7 @@ export const compareQuantity = async (userId, bookId) => {
       `${process.env.REACT_APP_API_URL}/cart/compareQuantity`,
       {
         userId: userId,
-        bookId: bookId
+        bookId: bookId,
       }
     );
 

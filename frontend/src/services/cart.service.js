@@ -26,6 +26,7 @@ export const postToCart = async (book) => {
       price: book.price,
       author: book.author,
       bookId: book._id,
+      sale_price: book.sale_price,
       userId: JSON.parse(localStorage.getItem("user"))._id,
       userEmail: JSON.parse(localStorage.getItem("user")).email,
     })
@@ -83,6 +84,40 @@ export const checkoutService = async () => {
       }
     );
 
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+/**
+ * Increments the quantity at the backend
+ * @param {String} itemId
+ */
+export const incrementQuantity = async (itemId) => {
+  try {
+    let userId = JSON.parse(localStorage.getItem("user"))._id;
+    let result = await axios.put(
+      `${process.env.REACT_APP_API_URL}/cart/updateQuantity/${userId}/${itemId}`,
+      { action: "increment" }
+    );
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+/**
+ * Increments the quantity at the backend
+ * @param {String} itemId
+ */
+export const decrementQuantity = async (itemId) => {
+  try {
+    let userId = JSON.parse(localStorage.getItem("user"))._id;
+    let result = await axios.put(
+      `${process.env.REACT_APP_API_URL}/cart/updateQuantity/${userId}/${itemId}`,
+      { action: "decrement" }
+    );
     return result;
   } catch (error) {
     console.log(error);

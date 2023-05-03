@@ -47,15 +47,17 @@ class CartController {
    * @returns {Response} cart items of the user
    */
   static async getCartItems(req, res) {
-    let items;
+    let items, totalPrice;
     try {
       items = await CartService.returnCartItems(req.body.id);
+      totalPrice = await CartService.returnTotalPrice(req.body.id);
       if (!items) {
         return res.status(400).json({ message: "No cart items" });
       }
-      return res.status(200).json({ items });
+      return res.status(200).json({ items: items, totalPrice: totalPrice });
     } catch (err) {
-      return res.status(500).json({ message: error });
+      console.log(err);
+      return res.status(500).json({ message: err });
     }
   }
 
@@ -126,6 +128,30 @@ class CartController {
   static async checkout(req, res) {
     let result = await CartService.checkoutUser(req.body.userId);
     return res.status(201).json({ result: result });
+  }
+
+  /**
+   * Increment the quantity of item in the cart
+   * @param {Request} req
+   * @param {Response} res
+   * @returns
+   */
+  static async changeQuantity(req, res) {
+    let result;
+    if (req.body.action === "increment") {
+      result = await CartService.incrementQuantity(
+        req.params.userId,
+        req.params.itemId
+      );
+    } else {
+      result = await CartService.decrementQuantity(
+        req.params.userId,
+        req.params.itemId
+      );
+    }
+    return res
+      .status(201)
+      .json({ quantity: result.quantity, sale_price: result.sale_price });
   }
 }
 

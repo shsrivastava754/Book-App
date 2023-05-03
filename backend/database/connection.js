@@ -8,12 +8,11 @@ const uri = process.env.MONGO_URI;
 /**
  * A utility class that provides a static method to connect to a MongoDB database using Mongoose.
  */
-class DbUtil{
-
+class DbUtil {
   /**
    * Establishes a connection to a MongoDB database using Mongoose.
    */
-  static connect(){
+  static connect() {
     mongoose
       .connect(uri, {
         useNewUrlParser: true,
@@ -29,4 +28,3 @@ class DbUtil{
 }
 
 module.exports = DbUtil;
-

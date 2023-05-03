@@ -1,5 +1,5 @@
-const Cart = require("../database/Cart");
-const Books = require("../database/Books");
+const CartModel = require("../database/schema/cart.schema");
+const BookModel = require("../database/schema/book.schema");
 const BookService = require("./book.service");
 
 /**
@@ -13,7 +13,7 @@ class CartService {
    * @returns {Object} the item from the cart collection
    */
   static async returnItem(userId, bookId) {
-    const item = await Cart.findOne({
+    const item = await CartModel.findOne({
       userId: userId,
       bookId: bookId,
     });
@@ -27,7 +27,7 @@ class CartService {
    * @returns {Object} the updated item
    */
   static async updateItemQuantity(item) {
-    await Cart.updateOne(
+    await CartModel.updateOne(
       { bookId: item.bookId, userId: item.userId },
       {
         $set: {
@@ -44,11 +44,12 @@ class CartService {
    * @param {Object} body
    */
   static async addNewItem(body) {
-    let cartItem = new Cart({
+    let cartItem = new CartModel({
       title: body.title,
       bookId: body.bookId,
       author: body.author,
       price: body.price,
+      sale_price: body.sale_price,
       quantity: 1,
       totalPrice: body.price,
       userId: body.userId,
@@ -65,8 +66,22 @@ class CartService {
    * @returns {Array} cart items of a user
    */
   static async returnCartItems(id) {
-    let items = await Cart.find({ userId: id });
+    let items = await CartModel.find({ userId: id });
     return items;
+  }
+
+  /**
+   * Returns the total price in cart of the user
+   * @param {String} id
+   * @returns {Number} total price
+   */
+  static async returnTotalPrice(id) {
+    let items = await CartModel.find({ userId: id });
+    let totalPrice = 0;
+    items.map((item) => {
+      totalPrice = totalPrice + item.sale_price * item.quantity;
+    });
+    return totalPrice;
   }
 
   /**
@@ -74,14 +89,14 @@ class CartService {
    * @param {ObjectId} id
    */
   static async clearCart(id) {
-    await Cart.deleteMany({ userId: id });
+    await CartModel.deleteMany({ userId: id });
   }
 
   /**
    * Function to clear the cart collection at once
    */
   static async clearCartModel() {
-    await Cart.deleteMany({});
+    await CartModel.deleteMany({});
   }
 
   /**
@@ -90,7 +105,7 @@ class CartService {
    * @param {ObjectId} itemId
    */
   static async deleteItem(userId, itemId) {
-    await Cart.deleteOne({ userId: userId, _id: itemId });
+    await CartModel.deleteOne({ userId: userId, _id: itemId });
   }
 
   /**
@@ -100,8 +115,11 @@ class CartService {
    * @returns {Boolean} whether book is left or not
    */
   static async compareCartQuantity(userId, bookId) {
-    const book = await Books.findOne({ _id: bookId });
-    const cartItem = await Cart.findOne({ userId: userId, bookId: bookId });
+    const book = await BookModel.findOne({ _id: bookId });
+    const cartItem = await CartModel.findOne({
+      userId: userId,
+      bookId: bookId,
+    });
     let res;
     if (cartItem != null) {
       if (cartItem.quantity < book.quantity) {
@@ -121,13 +139,39 @@ class CartService {
    * @param {String} userId
    */
   static async checkoutUser(userId) {
-    let cartItems = await Cart.find({ userId: userId });
+    let cartItems = await CartModel.find({ userId: userId });
     cartItems.map(async (item) => {
       // Update the quantity of each book in the books collection
       await BookService.updateQuantities(item.bookId, item.quantity);
     });
 
     this.clearCart(userId);
+  }
+
+  /**
+   * Increment the quantity of item in the cart
+   * @param {String} userId
+   * @param {String} itemId
+   */
+  static async incrementQuantity(userId, itemId) {
+    let cartItem = await CartModel.findOne({ _id: itemId, userId: userId });
+    cartItem.quantity += 1;
+    await cartItem.save();
+
+    return cartItem;
+  }
+
+  /**
+   * Decrement the quantity of item in the cart
+   * @param {String} userId
+   * @param {String} itemId
+   */
+  static async decrementQuantity(userId, itemId) {
+    let cartItem = await CartModel.findOne({ _id: itemId, userId: userId });
+    cartItem.quantity -= 1;
+    await cartItem.save();
+
+    return cartItem;
   }
 }
 

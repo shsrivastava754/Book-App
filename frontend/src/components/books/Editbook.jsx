@@ -16,6 +16,7 @@ const EditBook = () => {
     const [title, setTitle] = useState(book?.title);
     const [author, setAuthor] = useState(book?.author);
     const [price, setPrice] = useState(book?.price);
+    const [sale_price, setSalePrice] = useState(book?.sale_price);
     const [description, setDescription] = useState(book?.subscription);
     const [status, setStatus] = useState(book?.status);
     const [quantity, setQuantity] = useState(book?.quantity);
@@ -40,7 +41,7 @@ const EditBook = () => {
      */
     const formSubmit = (e)=>{
         e.preventDefault();
-        editBook(title,author,price,description,status,quantity).then(()=>navigate('/books'));
+        editBook(title,author,price,description,status,quantity,sale_price).then(()=>navigate('/books'));
     };
 
     /**
@@ -51,9 +52,10 @@ const EditBook = () => {
      * @param {String} description 
      * @param {String} status 
      * @param {Number} quantity 
+     * @param {Number} sale_price 
      */
-    const editBook = async(title,author,price,description,status,quantity)=>{
-        let res = editBookDetails(title,author,price,description,status,quantity,id);
+    const editBook = async(title,author,price,description,status,quantity,sale_price)=>{
+        let res = editBookDetails(title,author,price,description,status,quantity,id,sale_price);
         console.log(res);
     }
     
@@ -72,7 +74,11 @@ const EditBook = () => {
                 </div>
                 <div className="col-6 mb-3">
                     <label htmlFor="price" className="form-label">Price</label>
-                    <input type="number" value={location.state.price} className="form-control" id="price" onChange={(e)=>{setPrice(e.target.value)}} />
+                    <input type="number" defaultValue={location.state.price} className="form-control" id="price" onChange={(e)=>{setPrice(e.target.value)}} />
+                </div>
+                <div className="col-6 mb-3">
+                    <label htmlFor="sale_price" className="form-label">Sale Price</label>
+                    <input type="number" defaultValue={location.state.sale_price} className="form-control" id="sale_price" onChange={(e)=>{setSalePrice(e.target.value)}} />
                 </div>
                 <div className="col-6 mb-3">
                     <label htmlFor="quantity" className="form-label">Quantity</label>

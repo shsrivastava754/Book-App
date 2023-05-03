@@ -150,6 +150,7 @@ const Booklist = (props) => {
                 <th scope="col">Title</th>
                 <th scope="col">Author</th>
                 <th scope="col">Price</th>
+                <th scope="col">Sale Price</th>
                 <th scope="col">Donated By</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>

@@ -7,7 +7,7 @@ const cors = require("cors");
 const passport = require("passport");
 
 const passportSetup = require("./config/passport");
-const DbUtil = require('./database/connection');
+const DbUtil = require("./database/connection");
 
 // Initializing the express app
 const app = express();
@@ -30,8 +30,6 @@ app.use("/", require(path.join(__dirname, "routes/google.route.js")));
 app.use("/", require(path.join(__dirname, "routes/cart.route.js")));
 app.use("/", require(path.join(__dirname, "routes/users.route.js")));
 app.use("/", require(path.join(__dirname, "routes/books.route.js")));
-
-
 
 // Creating the server for backend
 app.listen(process.env.PORT, () => {

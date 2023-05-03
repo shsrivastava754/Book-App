@@ -1,7 +1,6 @@
-const Users = require("../database/Users");
-const Books = require("../database/Books");
+const UserModel = require("../database/schema/user.schema");
+const BookModel = require("../database/schema/book.schema");
 const bcrypt = require("bcrypt");
-const Donations = require('../database/Cart');
 
 /**
  * Class for users service
@@ -12,7 +11,7 @@ class UsersService {
    * @returns {Array} list of all users in the users collection
    */
   static async getUsers() {
-    const users = await Users.find();
+    const users = await UserModel.find();
     return users;
   }
 
@@ -22,7 +21,7 @@ class UsersService {
    * @returns {Object} user
    */
   static async findUserByUsername(username) {
-    const user = await Users.findOne({ username: username });
+    const user = await UserModel.findOne({ username: username });
     return user;
   }
 
@@ -34,7 +33,7 @@ class UsersService {
   static async registerUser(body) {
     let saltRounds = 10;
     let hashedPass = bcrypt.hashSync(body.password, saltRounds);
-    let newUser = new Users({
+    let newUser = new UserModel({
       name: body.name,
       username: body.username,
       password: hashedPass,
@@ -63,17 +62,17 @@ class UsersService {
    * @returns {Number} a value for the donations
    */
   static async countDonations(id) {
-    const donationsCount = await Books.count({ donatedById: id });
+    const donationsCount = await BookModel.count({ donatedById: id });
     return donationsCount;
   }
 
   /**
    * Get details of a user from collection
-   * @param {String} id 
-   * @returns 
+   * @param {String} id
+   * @returns
    */
-  static async getUserDetails(id){
-    const user = await Users.findOne({_id:id});
+  static async getUserDetails(id) {
+    const user = await UserModel.findOne({ _id: id });
     return user;
   }
 }

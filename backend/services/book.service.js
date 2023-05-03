@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
-const Books = require("../database/Books");
-const User = require("../database/Users");
+const BookModel = require("../database/schema/book.schema");
+const UserModel = require("../database/schema/user.schema");
 
 /**
  * Class representing a book service.
@@ -12,7 +12,7 @@ class BookService {
    * @returns {Array} books list donated by user
    */
   static async findBooks(userId) {
-    let books = await Books.find({
+    let books = await BookModel.find({
       donatedById: { $ne: userId },
       isDeleted: false,
     });
@@ -25,7 +25,7 @@ class BookService {
    * @returns {Object} a book with given title
    */
   static async findOneBook(title) {
-    let book = await Books.findOne({ title: title });
+    let book = await BookModel.findOne({ title: title });
     return book;
   }
 
@@ -36,7 +36,7 @@ class BookService {
    * @returns {Object} updated book
    */
   static async updateQuantity(book, quantity) {
-    await Books.updateOne(
+    await BookModel.updateOne(
       { title: book.title },
       {
         $set: {
@@ -54,12 +54,13 @@ class BookService {
    * @returns {Object} object of the new book
    */
   static async addNewBook(body) {
-    const user = await User.findOne({ _id: body.donatedById });
-    let newBook = new Books({
+    const user = await UserModel.findOne({ _id: body.donatedById });
+    let newBook = new BookModel({
       title: body.title,
       author: body.author,
       description: body.description,
       price: body.price,
+      sale_price: body.sale_price,
       quantity: body.quantity,
       status: "available",
       donatedById: user._id,
@@ -77,7 +78,7 @@ class BookService {
    * @returns {Object} a book with given id
    */
   static async findBookById(id) {
-    const book = await Books.findById(id);
+    const book = await BookModel.findById(id);
     return book;
   }
 
@@ -88,10 +89,11 @@ class BookService {
    * @returns {Object} updated book
    */
   static async updateBook(id, body) {
-    let book = await Books.findByIdAndUpdate(id, {
+    let book = await BookModel.findByIdAndUpdate(id, {
       title: body.title,
       author: body.author,
       description: body.description,
+      sale_price: body.sale_price,
       price: body.price,
       quantity: body.quantity,
     });
@@ -106,7 +108,7 @@ class BookService {
    * @returns {Object} message of the removed book
    */
   static async removeBook(id) {
-    let book = await Books.findByIdAndUpdate(id, {
+    let book = await BookModel.findByIdAndUpdate(id, {
       isDeleted: true,
     });
 
@@ -121,7 +123,7 @@ class BookService {
    * @returns {Array} filtered books
    */
   static async returnFilteredBooks(skip, limit, query) {
-    let books = await Books.find().skip(skip).limit(limit);
+    let books = await BookModel.find().skip(skip).limit(limit);
     return books;
   }
 
@@ -130,20 +132,20 @@ class BookService {
    * @returns {Number} Total number of books in the collection
    */
   static async getBooksSize() {
-    let books = await Books.find();
+    let books = await BookModel.find();
     return books.length;
   }
 
   /**
    * Updated the quantities of book after checkout
-   * @param {String} bookId 
-   * @param {Number} quantity 
+   * @param {String} bookId
+   * @param {Number} quantity
    */
-  static async updateQuantities(bookId,quantity){
-    const book = await Books.findOne({_id:bookId});
+  static async updateQuantities(bookId, quantity) {
+    const book = await BookModel.findOne({ _id: bookId });
 
-    let updatedBook = await Books.findByIdAndUpdate(bookId, {
-      quantity: book.quantity - quantity
+    let updatedBook = await BookModel.findByIdAndUpdate(bookId, {
+      quantity: book.quantity - quantity,
     });
 
     updatedBook.save();

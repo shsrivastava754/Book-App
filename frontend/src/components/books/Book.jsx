@@ -122,6 +122,7 @@ const Book = (props) => {
         description: book.description,
         price: book.price,
         quantity: book.quantity,
+        sale_price: book.sale_price
       },
     });
   };
@@ -204,6 +205,13 @@ const Book = (props) => {
           }}
         >
           Rs. {props.book.price}
+        </td>
+        <td
+          onClick={() => {
+            getDetails(props.book);
+          }}
+        >
+          Rs. {props.book.sale_price}
         </td>
         <td
           onClick={() => {

@@ -15,6 +15,7 @@ const AddBook = (props) => {
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [price, setPrice] = useState("");
+    const [sale_price, setSalePrice] = useState("");
     const [description, setDescription] = useState("");
     const [quantity, setQuantity] = useState("");
     const [disabled, setDisabled] = useState(true);
@@ -28,12 +29,13 @@ const AddBook = (props) => {
     const formSubmit = (e)=>{
         e.preventDefault();
 
-        addBook(title,author,price,description,quantity);
+        addBook(title,author,price,description,quantity,sale_price);
         setTitle("");
         setAuthor("");
         setPrice("");
         setDescription("");
         setQuantity("");
+        setSalePrice("");
     };
 
     /**
@@ -43,9 +45,10 @@ const AddBook = (props) => {
      * @param {Number} price 
      * @param {String} description 
      * @param {Number} quantity 
+     * @param {Number} sale_price 
      */
-    const addBook = async(title,author,price,description,quantity)=>{
-        const res = await postBook(title,author,price,description,quantity);
+    const addBook = async(title,author,price,description,quantity,sale_price)=>{
+        const res = await postBook(title,author,price,description,quantity,sale_price);
         if(res){
             navigate('/books');
         } else {
@@ -54,7 +57,7 @@ const AddBook = (props) => {
     }
 
     const checkToEnable = ()=>{
-        if(!title || !author || !description || !price || !quantity){
+        if(!title || !author || !description || !price || !quantity || !sale_price){
             setDisabled(true);
         } else {
             setDisabled(false);
@@ -73,6 +76,11 @@ const AddBook = (props) => {
 
     const checkPrice = (e)=>{
         setPrice(e.target.value);
+        checkToEnable();
+    }
+
+    const checkSalePrice = (e)=>{
+        setSalePrice(e.target.value);
         checkToEnable();
     }
 
@@ -102,6 +110,10 @@ const AddBook = (props) => {
                 <div className="col-md-6 mb-3">
                     <label htmlFor="price" className="form-label">Price</label>
                     <input type="number" value={price} className="form-control" id="price" onChange={checkPrice} min={1} />
+                </div>
+                <div className="col-md-6 mb-3">
+                    <label htmlFor="sale_price" className="form-label">Sale Price</label>
+                    <input type="number" value={sale_price} className="form-control" id="sale_price" onChange={checkSalePrice} min={1} />
                 </div>
                 <div className="col-md-6 mb-3">
                     <label htmlFor="price" className="form-label">Quantity</label>

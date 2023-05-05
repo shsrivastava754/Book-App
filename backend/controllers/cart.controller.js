@@ -1,4 +1,5 @@
 const CartService = require("../services/cart.service");
+const EmailService = require("../services/email.service");
 
 /**
  * Controller class for handling operations related to the user cart
@@ -167,7 +168,7 @@ class CartController {
    * @param {Response} res 
    */
   static async sendEmail(req,res){
-    let result = await CartService.sendEmailToUser(req.body);
+    let result = await EmailService.sendEmailToUser(req.body);
     console.log(result);
     res.status(201).json(result);
   }
@@ -178,7 +179,7 @@ class CartController {
    * @param {Response} res 
    */
   static async informAdmin(req,res){
-    let result = await CartService.sendEmailToAdmin(req.body);
+    let result = await EmailService.sendEmailToAdmin(req.body);
     res.status(201).json({result});
   }
 }

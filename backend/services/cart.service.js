@@ -233,13 +233,20 @@ class CartService {
     }
   }
 
+  /**
+   * Sends an email to the admin and user when user completes the purchase
+   * @param {Object} body 
+   * @returns 
+   */
   static async sendEmailToAdmin(body){
     try{
     let userEmail = body.email;
     let name = body.name;
 
+    // Find the cart items of the user
     let cartItems = await CartModel.find({userId: body.userId},{ _id: 0, title: 1, author: 1, quantity: 1, sale_price: 1 });
 
+    // Provide email and password to the nodemailer
     let config = {
       service: 'gmail',
       auth: {
@@ -248,8 +255,10 @@ class CartService {
       }
     };
 
+    // Creates a transporter to transport the mail
     let transporter = nodemailer.createTransport(config);
 
+    // Creates an object of MailGen class
     let mailGenerator = new MailGen({
       theme: 'default',
       product: {
@@ -260,6 +269,7 @@ class CartService {
 
     let tableData = [];
 
+    // Creates the data array of objects with cart items
     cartItems.map((item)=>{
       let obj = {
         Title: item.title,
@@ -270,6 +280,7 @@ class CartService {
       tableData.push(obj);
     });
 
+    // Response to be sent to the user
     let userResponse = {
       body:{
         name: name,
@@ -281,6 +292,7 @@ class CartService {
       }
     };
 
+    // Response to be sent to the admin
     let adminResponse = {
       body:{
         name: "Admin",
@@ -292,9 +304,11 @@ class CartService {
       }
     }
 
+    // Generates mail for user and admin
     let mailToUser = mailGenerator.generate(userResponse);
     let mailToAdmin = mailGenerator.generate(adminResponse);
 
+    // Messages for the mail
     let userMessage = {
       from: process.env.EMAIL,
       to: userEmail,
@@ -310,12 +324,15 @@ class CartService {
     };
 
     let result;
+
+    // Finally sends the mail to user
     await transporter.sendMail(userMessage).then(()=>{
       result = "Success"
     }).catch(()=>{
       result = "Failure"
     });
 
+    // Sends the mail to admin
     await transporter.sendMail(adminMessage).then(()=>{
       result = "Success"
     }).catch(()=>{

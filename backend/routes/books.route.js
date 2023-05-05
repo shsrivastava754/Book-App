@@ -10,5 +10,6 @@ router.get("/:id", BooksController.getById);
 router.put("/:id", bodyParser, BooksController.updateBook);
 router.delete("/:id", BooksController.deleteBook);
 router.get("/books/getPaginatedBooks", BooksController.findFilteredBooks);
+router.post("/books/requestBook", bodyParser, BooksController.requestNewBook);
 
 module.exports = router;

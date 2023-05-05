@@ -163,11 +163,11 @@ class CartController {
   }
 
   /**
-   * 
-   * @param {Request} req 
-   * @param {Response} res 
+   *
+   * @param {Request} req
+   * @param {Response} res
    */
-  static async sendEmail(req,res){
+  static async sendEmail(req, res) {
     let result = await EmailService.sendEmailToUser(req.body);
     console.log(result);
     res.status(201).json(result);
@@ -175,12 +175,12 @@ class CartController {
 
   /**
    * Send an email to admin informing the purchase of user
-   * @param {Request} req 
-   * @param {Response} res 
+   * @param {Request} req
+   * @param {Response} res
    */
-  static async informAdmin(req,res){
+  static async informAdmin(req, res) {
     let result = await EmailService.sendEmailToAdmin(req.body);
-    res.status(201).json({result});
+    res.status(201).json({ result });
   }
 }
 

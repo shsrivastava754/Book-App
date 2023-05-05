@@ -1,4 +1,5 @@
 const BookService = require("../services/book.service");
+const EmailService = require("../services/email.service");
 
 /**
  * Class that contains methods to handle CRUD operations on books.
@@ -153,6 +154,16 @@ class BookController {
       console.log(error);
       res.status(501).json({ message: "Some error" });
     }
+  }
+
+  /**
+   * Request a new book from admin
+   * @param {Request} req
+   * @param {Response} res
+   */
+  static async requestNewBook(req, res) {
+    let result = await EmailService.requestBook(req.body);
+    res.status(201).json({ result });
   }
 }
 

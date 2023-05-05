@@ -1,6 +1,8 @@
-const CartModel = require("../database/schema/cart.schema");
 const nodemailer = require("nodemailer");
 const MailGen = require("mailgen");
+
+const CartModel = require("../database/schema/cart.schema");
+const UserModel = require("../database/schema/user.schema");
 
 class EmailService {
   /**
@@ -152,6 +154,84 @@ class EmailService {
         });
 
       // Sends the mail to admin
+      await transporter
+        .sendMail(adminMessage)
+        .then(() => {
+          result = "Success";
+        })
+        .catch(() => {
+          result = "Failure";
+        });
+
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /**
+   * Sends an email to the admin for new book
+   * @param {Object} body
+   */
+  static async requestBook(body) {
+    try {
+      let bookName = body.bookName;
+      let author = body.author;
+
+      // Find the cart items of the user
+      let user = await UserModel.findOne({ _id: body.userId });
+
+      // Provide email and password to the nodemailer
+      let config = {
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.PASSWORD,
+        },
+      };
+
+      // Creates a transporter to transport the mail
+      let transporter = nodemailer.createTransport(config);
+
+      // Creates an object of MailGen class
+      let mailGenerator = new MailGen({
+        theme: "default",
+        product: {
+          name: "Book App",
+          link: "https://mailgen.js/",
+        },
+      });
+
+      // Response to be sent to the admin
+      let adminResponse = {
+        body: {
+          name: "Admin",
+          intro: `${user.name} requested a book`,
+          table: {
+            data: [
+              {
+                Name: bookName,
+                Author: author,
+              },
+            ],
+          },
+          outro: `New Book Requested by ${user.email}`,
+        },
+      };
+
+      // Generates mail for user and admin
+      let mailToAdmin = mailGenerator.generate(adminResponse);
+
+      let adminMessage = {
+        from: process.env.EMAIL,
+        to: process.env.EMAIL,
+        subject: "Someone requested a book",
+        html: mailToAdmin,
+      };
+
+      let result;
+
+      // Sends the mail to admin with details of the book requested
       await transporter
         .sendMail(adminMessage)
         .then(() => {

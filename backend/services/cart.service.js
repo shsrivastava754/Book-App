@@ -1,6 +1,8 @@
 const CartModel = require("../database/schema/cart.schema");
 const BookModel = require("../database/schema/book.schema");
 const BookService = require("./book.service");
+const nodemailer = require('nodemailer');
+const MailGen = require('mailgen');
 
 /**
  * Class for Cart Services
@@ -32,7 +34,6 @@ class CartService {
       {
         $set: {
           quantity: item.quantity + 1,
-          totalPrice: item.totalPrice + item.price,
         },
       }
     );
@@ -51,7 +52,6 @@ class CartService {
       price: body.price,
       sale_price: body.sale_price,
       quantity: 1,
-      totalPrice: body.price,
       userId: body.userId,
       userEmail: body.userEmail,
     });
@@ -93,13 +93,6 @@ class CartService {
   }
 
   /**
-   * Function to clear the cart collection at once
-   */
-  static async clearCartModel() {
-    await CartModel.deleteMany({});
-  }
-
-  /**
    * Function to delete an item from the cart of a user
    * @param {ObjectId} userId
    * @param {ObjectId} itemId
@@ -135,6 +128,27 @@ class CartService {
   }
 
   /**
+   * Returns the quantities of book in cart model and book in books model
+   * @param {String} userId
+   * @param {String} itemId
+   * @param {String} bookId
+   * @returns {Array} of quantities
+   */
+  static async returnQuantities(userId, itemId, bookId) {
+    try {
+      let cartItem = await CartModel.findOne({ userId: userId, _id: itemId });
+      let book = await BookModel.findOne({ _id: bookId });
+      if (cartItem && book) {
+        return [cartItem.quantity, book.quantity];
+      } else {
+        return [null, null];
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /**
    * Update the cart and books collection after checkout
    * @param {String} userId
    */
@@ -160,18 +174,160 @@ class CartService {
 
     return cartItem;
   }
-
+  
   /**
    * Decrement the quantity of item in the cart
    * @param {String} userId
    * @param {String} itemId
-   */
-  static async decrementQuantity(userId, itemId) {
+  */
+ static async decrementQuantity(userId, itemId) {
     let cartItem = await CartModel.findOne({ _id: itemId, userId: userId });
     cartItem.quantity -= 1;
     await cartItem.save();
-
+    
     return cartItem;
+  }
+  
+  /**
+   * Sends an email to the admin when user completes the purchase
+   * @param {Object} body
+   */
+  static async sendEmailToUser(body) {
+    try {
+      
+      let testAccount = await nodemailer.createTestAccount();
+    
+      // create reusable transporter object using the default SMTP transport
+      let transporter = nodemailer.createTransport({
+        host: "smtp.ethereal.email",
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+          user: testAccount.user, // generated ethereal user
+          pass: testAccount.pass, // generated ethereal password
+        },
+      });
+    
+      // send mail with defined transport object
+      let message = {
+        from: '"Fred Foo 👻" <foo@example.com>', // sender address
+        to: "bar@example.com, baz@example.com", // list of receivers
+        subject: "Hello ✔", // Subject line
+        text: "Hello world with shaannnn", // plain text body
+        html: "<b>Hello world with Shaannnn</b>", // html body
+      };
+    
+      let result;
+      await transporter.sendMail(message).then((info)=>{
+        result = {
+          msg: "You should receive an email",
+          info: info.messageId,
+          preview: nodemailer.getTestMessageUrl(info)
+        }
+      });
+
+      
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async sendEmailToAdmin(body){
+    try{
+    let userEmail = body.email;
+    let name = body.name;
+
+    let cartItems = await CartModel.find({userId: body.userId},{ _id: 0, title: 1, author: 1, quantity: 1, sale_price: 1 });
+
+    let config = {
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
+      }
+    };
+
+    let transporter = nodemailer.createTransport(config);
+
+    let mailGenerator = new MailGen({
+      theme: 'default',
+      product: {
+        name: "Book App",
+        link: 'https://mailgen.js/'
+      }
+    });
+
+    let tableData = [];
+
+    cartItems.map((item)=>{
+      let obj = {
+        Title: item.title,
+        Author: item.author,
+        Quantity: item.quantity,
+        Price: item.sale_price
+      };
+      tableData.push(obj);
+    });
+
+    let userResponse = {
+      body:{
+        name: name,
+        intro: "Your Order Placed",
+        table :{
+          data: tableData
+        },
+        outro: `Thank you for the purchase. \n\n Total price: Rs. ${body.totalPrice}.\n\n You will receive your books shortly.`
+      }
+    };
+
+    let adminResponse = {
+      body:{
+        name: "Admin",
+        intro: `${name} placed an order of Rs. ${body.totalPrice}`,
+        table :{
+          data: tableData
+        },
+        outro: `Purchase successful`
+      }
+    }
+
+    let mailToUser = mailGenerator.generate(userResponse);
+    let mailToAdmin = mailGenerator.generate(adminResponse);
+
+    let userMessage = {
+      from: process.env.EMAIL,
+      to: userEmail,
+      subject: "Your purchase on the Book App",
+      html: mailToUser
+    };
+
+    let adminMessage = {
+      from: process.env.EMAIL,
+      to: process.env.EMAIL,
+      subject: "Someone made a purchase",
+      html: mailToAdmin
+    };
+
+    let result;
+    await transporter.sendMail(userMessage).then(()=>{
+      result = "Success"
+    }).catch(()=>{
+      result = "Failure"
+    });
+
+    await transporter.sendMail(adminMessage).then(()=>{
+      result = "Success"
+    }).catch(()=>{
+      result = "Failure"
+    });
+
+    return result;
+  }
+
+    catch(error) {
+      console.log(error);
+    }
   }
 }
 

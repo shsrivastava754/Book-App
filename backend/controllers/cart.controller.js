@@ -54,6 +54,7 @@ class CartController {
       if (!items) {
         return res.status(400).json({ message: "No cart items" });
       }
+
       return res.status(200).json({ items: items, totalPrice: totalPrice });
     } catch (err) {
       console.log(err);
@@ -71,21 +72,6 @@ class CartController {
     try {
       await CartService.clearCart(req.body.userId);
       return res.status(201).json({ message: "Deleted cart items" });
-    } catch (error) {
-      return res.status(500).json({ message: error });
-    }
-  }
-
-  /**
-   * Function to completely empty the cart collection
-   * @param {Object} req
-   * @param {Object} res
-   * @returns {Response} a status code if the collection is cleared or not
-   */
-  static async clearCartModel(req, res) {
-    try {
-      await CartService.clearCartModel();
-      return res.status(201).json({ message: "Deleted cart model items" });
     } catch (error) {
       return res.status(500).json({ message: error });
     }
@@ -117,6 +103,27 @@ class CartController {
       req.body.bookId
     );
     return res.status(201).json({ result: result });
+  }
+
+  /**
+   * To get the quantities of book in cart and books model
+   * @param {Request} req
+   * @param {Response} res
+   * @returns quantity of book in books model and cart model
+   */
+  static async getQuantities(req, res) {
+    try {
+      let result = await CartService.returnQuantities(
+        req.params.userId,
+        req.params.itemId,
+        req.params.bookId
+      );
+      return res
+        .status(201)
+        .json({ cartQuantity: result[0], bookQuantity: result[1] });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   /**
@@ -152,6 +159,27 @@ class CartController {
     return res
       .status(201)
       .json({ quantity: result.quantity, sale_price: result.sale_price });
+  }
+
+  /**
+   * 
+   * @param {Request} req 
+   * @param {Response} res 
+   */
+  static async sendEmail(req,res){
+    let result = await CartService.sendEmailToUser(req.body);
+    console.log(result);
+    res.status(201).json(result);
+  }
+
+  /**
+   * Send an email to admin informing the purchase of user
+   * @param {Request} req 
+   * @param {Response} res 
+   */
+  static async informAdmin(req,res){
+    let result = await CartService.sendEmailToAdmin(req.body);
+    res.status(201).json({result});
   }
 }
 

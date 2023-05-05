@@ -35,9 +35,6 @@ const CartSchema = new mongoose.Schema({
   // Selling price of the book
   sale_price: Number,
 
-  // Total price of the books in the cart
-  totalPrice: Number,
-
   // ID of the user that has added the book in the cart
   userId: ObjectId,
 

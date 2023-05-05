@@ -139,9 +139,6 @@ const Booklist = (props) => {
             <option value="2">Ready to Pick</option>
             <option value="3">Sold</option>
           </select>
-          {/* <Link to="/addBook">
-            <button className="btn btnAdd">Donate a Book</button>
-          </Link> */}
         </div>
         <div className="booksTable">
           <table>

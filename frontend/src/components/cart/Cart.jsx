@@ -43,8 +43,9 @@ const Cart = () => {
     clearCartService();
   };
 
-  const checkout = () => {
-    checkoutService();
+  const checkout = async () => {
+    console.log(await checkoutService(totalPrice));
+    clearCartService();
   };
 
   // Passed as a prop to update the total price
@@ -55,7 +56,14 @@ const Cart = () => {
   return (
     <>
       <div className="container bookList">
-        <h3 className="my-3">Your Cart</h3>
+        <div className="cart-heading mt-2">
+          <div className="left-heading">
+            <h3 className="my-3">Your Cart</h3>
+          </div>
+          <div className="right-heading" style={{width:600}}>
+            <span className="cartTotal">Cart total: Rs. {totalPrice}</span>
+          </div>
+        </div>
         <table>
           <thead>
             <tr>
@@ -90,15 +98,14 @@ const Cart = () => {
         </table>
         {items?.length ? (
           <>
-            <div className="components">
+            <div className="components cartBottom">
               <button className="btn clearCart" onClick={clearCart}>
                 Clear Cart
               </button>
+              <button className="checkout" onClick={checkout}>
+                Proceed to checkout <i className="fa-regular fa-credit-card"></i>
+              </button>
             </div>
-            <div className="cartTotal">Cart total: Rs. {totalPrice}</div>
-            <button className="checkout" onClick={checkout}>
-              Proceed to checkout <i className="fa-regular fa-credit-card"></i>
-            </button>
           </>
         ) : null}
       </div>

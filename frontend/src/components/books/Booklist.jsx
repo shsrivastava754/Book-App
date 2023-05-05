@@ -124,6 +124,11 @@ const Booklist = (props) => {
               <button className="btn btnAdd">Donate a Book</button>
             </Link>
           </div>
+          <div className="right-heading">
+            <Link to="/books/requestBook">
+              <button className="btn btnAdd">Request a Book</button>
+            </Link>
+          </div>
         </div>
         <div className="components">
           <input

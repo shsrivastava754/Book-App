@@ -109,3 +109,26 @@ export const compareQuantity = async (userId, bookId) => {
     console.log(error);
   }
 };
+
+/**
+ * Request a book at backend to admin
+ * @param {String} bookName 
+ * @param {String} author 
+ * @returns 
+ */
+export const requestBook = async (bookName,author)=>{
+  let result;
+  await axios
+    .post(`${process.env.REACT_APP_API_URL}/books/requestBook`, {
+      bookName: bookName,
+      author: author,
+      userId: JSON.parse(localStorage.getItem("user"))["_id"],
+    })
+    .then((res) => {
+      if (res) {
+        result = res;
+      }
+    });
+
+  return result;
+}

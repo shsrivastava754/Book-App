@@ -9,7 +9,7 @@ import { postBook } from '../../services/book.service';
  * @param {Object} props 
  * @returns {React.Component} Add Book component
  */
-const AddBook = (props) => {
+const AddBook = () => {
     
     // States for form fields
     const [title, setTitle] = useState("");

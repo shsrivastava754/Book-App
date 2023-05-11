@@ -225,11 +225,13 @@ select {
 .bookList select {
   padding: 4px;
   font-size: 17px;
-  background-color: $primary-color;
-  color: $btn-color;
+  background-color: $white;
+  color: $primary-color;
   text-align: center;
   width: 18%;
   border-radius: 0.375rem;
+  outline: none;
+  border: 1px solid $td-row-hover;
 }
 
 .bookList select:hover,
@@ -433,6 +435,11 @@ footer {
 .clearCart:hover {
   color: $white;
   background-color: $primary-color;
+}
+
+.btn-loader{
+  border: 1px solid $primary-color;
+  color: $primary-color;
 }
 
 /** --------------------------------------------------------------- **/

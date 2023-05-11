@@ -173,7 +173,7 @@ const Book = (props) => {
       props.book._id
     );
 
-    if (result) {
+    if (result && props.book.quantity>0) {
       setDisabled(false);
     } else {
       setDisabled(true);

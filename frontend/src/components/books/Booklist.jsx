@@ -85,10 +85,10 @@ const Booklist = (props) => {
   };
 
   // Function to set different backgrounds in booklist and login page
-  function setBackground() {
+  const setBackground = () => {
     const body = document.querySelector("body");
     body.style.background = "#f7f7f7";
-  }
+  };
 
   setBackground();
 
@@ -111,6 +111,41 @@ const Booklist = (props) => {
     });
     setTableBooks(arr);
   };
+
+  /**
+   * Handles the filter option for status of book
+   * @param {Event} e 
+   */
+  const handleFilter = (e)=>{
+    setTableBooks(books);
+
+    let arr = [];
+
+    // No filter applied
+    if(e.target.value==0){
+      arr = books;
+    }
+
+    // Available books
+    else if (e.target.value==1){
+      books?.map((item) => {
+        if (item.quantity>0) {
+          arr.push(item);
+        }
+      });
+    }
+
+    // Sold books
+    else {
+      books?.map((item) => {
+        if (item.quantity===0) {
+          arr.push(item);
+        }
+      });
+    }
+
+    setTableBooks(arr);
+  }
 
   return (
     <>
@@ -136,11 +171,10 @@ const Booklist = (props) => {
             onChange={searchBook}
           />
           <label htmlFor="filterTable mx-2">Filter by:</label>
-          <select name="filterTable" id="filterTable">
+          <select name="filterTable" id="filterTable" onChange={handleFilter}>
             <option value="0">No filter</option>
             <option value="1">Available</option>
-            <option value="2">Ready to Pick</option>
-            <option value="3">Sold</option>
+            <option value="2">Sold</option>
           </select>
         </div>
         <div className="booksTable">

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, React } from "react";
+import Spinner from "react-bootstrap/Spinner";
 import CartItem from "./CartItem";
 import "../../styles/style.scss";
 import { checkoutService, clearCartService } from "../../services/cart.service";
@@ -29,6 +30,9 @@ const Cart = () => {
   // Total price of the cart
   const [totalPrice, setTotalPrice] = useState(0);
 
+  // For loader after sending request for email
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     fetchHandler().then((data) => {
       setItems(data.items);
@@ -44,7 +48,9 @@ const Cart = () => {
   };
 
   const checkout = async () => {
+    setLoading(true);
     console.log(await checkoutService(totalPrice));
+    setLoading(false);
     clearCartService();
   };
 
@@ -60,7 +66,7 @@ const Cart = () => {
           <div className="left-heading">
             <h3 className="my-3">Your Cart</h3>
           </div>
-          <div className="right-heading" style={{width:600}}>
+          <div className="right-heading" style={{ width: 600 }}>
             <span className="cartTotal">Cart total: Rs. {totalPrice}</span>
           </div>
         </div>
@@ -99,12 +105,28 @@ const Cart = () => {
         {items?.length ? (
           <>
             <div className="components cartBottom">
-              <button className="btn clearCart" onClick={clearCart}>
-                Clear Cart
-              </button>
-              <button className="checkout" onClick={checkout}>
-                Proceed to checkout <i className="fa-regular fa-credit-card"></i>
-              </button>
+              {loading ? (
+                <button className="btn btn-loader" disabled>
+                  <Spinner
+                    as="span"
+                    animation="grow"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  Sending...
+                </button>
+              ) : (
+                <>
+                  <button className="btn clearCart" onClick={clearCart}>
+                    Clear Cart
+                  </button>
+                  <button className="checkout" onClick={checkout}>
+                    Proceed to checkout{" "}
+                    <i className="fa-regular fa-credit-card"></i>
+                  </button>
+                </>
+              )}
             </div>
           </>
         ) : null}

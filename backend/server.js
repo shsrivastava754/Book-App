@@ -30,6 +30,7 @@ app.use("/", require(path.join(__dirname, "routes/google.route.js")));
 app.use("/", require(path.join(__dirname, "routes/cart.route.js")));
 app.use("/", require(path.join(__dirname, "routes/users.route.js")));
 app.use("/", require(path.join(__dirname, "routes/books.route.js")));
+app.use("/", require(path.join(__dirname, "routes/performance.route.js")));
 
 // Creating the server for backend
 app.listen(process.env.PORT, () => {

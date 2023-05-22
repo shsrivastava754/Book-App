@@ -101,14 +101,18 @@ const BookDetails = () => {
         <h5>
           <span>Price</span>: {book?.price}
         </h5>
-        <button
-          className="btn"
-          onClick={() => {
-            editBook(book);
-          }}
-        >
-          Edit Details
-        </button>
+        {localStorage.getItem("user") ? (
+          JSON.parse(localStorage.getItem("user"))["role"] === "Admin" ? (
+            <button
+              className="btn"
+              onClick={() => {
+                editBook(book);
+              }}
+            >
+              Edit Details
+            </button>
+          ) : null
+        ) : null}
         <button
           className="btn mt-3"
           onClick={() => {

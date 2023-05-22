@@ -75,27 +75,22 @@ export const removeCartItem = async (itemId, userId) => {
  */
 export const checkoutService = async (totalPrice) => {
   try {
-    // let result;
     let user = JSON.parse(localStorage.getItem("user"));
-    // result = await axios.post(
-    //   `${process.env.REACT_APP_API_URL}/cart/checkout`,
-    //   {
-    //     userId: userId,
-    //   }
-    // );
-
-    // return result;
-    let result = await axios.post(
-      `${process.env.REACT_APP_API_URL}/cart/sendEmail`,{
-        email: user.email,
+    await axios.post(`${process.env.REACT_APP_API_URL}/cart/sendEmail`, {
+      email: user.email,
+      userId: user._id,
+      totalPrice: totalPrice,
+      name: user.name,
+    });
+    let qtyResult;
+    qtyResult = await axios.post(
+      `${process.env.REACT_APP_API_URL}/cart/checkout`,
+      {
         userId: user._id,
-        totalPrice: totalPrice,
-        name: user.name
       }
     );
 
-    return result;
-
+    return qtyResult;
   } catch (error) {
     console.log(error);
   }
@@ -137,15 +132,19 @@ export const decrementQuantity = async (itemId) => {
 
 /**
  * Get the quantities of book in cart and books model from backend
- * @param {String} itemId 
- * @param {String} bookId 
+ * @param {String} itemId
+ * @param {String} bookId
  */
-export const getQuantities = async (itemId,bookId)=>{
+export const getQuantities = async (itemId, bookId) => {
   try {
     let result;
-    result = await axios.get(`${process.env.REACT_APP_API_URL}/cart/getQuantities/${JSON.parse(localStorage.getItem("user"))._id}/${itemId}/${bookId}`);
+    result = await axios.get(
+      `${process.env.REACT_APP_API_URL}/cart/getQuantities/${
+        JSON.parse(localStorage.getItem("user"))._id
+      }/${itemId}/${bookId}`
+    );
     return result;
   } catch (error) {
     console.log(error);
   }
-}
+};

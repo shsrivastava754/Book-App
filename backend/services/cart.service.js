@@ -152,12 +152,10 @@ class CartService {
    */
   static async checkoutUser(userId) {
     let cartItems = await CartModel.find({ userId: userId });
-    cartItems.map(async (item) => {
+    await cartItems.map(async (item) => {
       // Update the quantity of each book in the books collection
       await BookService.updateQuantities(item.bookId, item.quantity);
     });
-
-    this.clearCart(userId);
   }
 
   /**

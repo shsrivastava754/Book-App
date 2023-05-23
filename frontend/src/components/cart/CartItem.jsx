@@ -1,8 +1,8 @@
-import React from "react";
+import { useEffect, useState } from "react";
+
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+
 import Tooltip from "react-bootstrap/Tooltip";
-import { useEffect } from "react";
-// import Dialog from "@mui/material/Dialog";
 
 import "../../styles/style.scss";
 import {
@@ -15,18 +15,18 @@ import {
 /**
  *
  * @param {Object} props
- * @returns {React.Component} Single Cart Item
+ * @returns Single Cart Item
  */
 const CartItem = (props) => {
   // State variable for handling the confirm delete dialog box
-  const [openDialog, handleDisplay] = React.useState(false);
+  const [openDialog, handleDisplay] = useState(false);
 
   // State variable for handling quantity of item
-  const [quantity, setQuantity] = React.useState(props.item.quantity);
+  const [quantity, setQuantity] = useState(props.item.quantity);
 
   // Disabling the increment and decrement buttons on boundary cases
-  const [incrementDisabled, setIncrementDisabled] = React.useState(false);
-  const [decrementDisabled, setDecrementDisabled] = React.useState(false);
+  const [incrementDisabled, setIncrementDisabled] = useState(false);
+  const [decrementDisabled, setDecrementDisabled] = useState(false);
 
   useEffect(() => {
     // Disable the decrement button for quantity if the quantity is already zero

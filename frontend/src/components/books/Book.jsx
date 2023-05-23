@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
+import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-// import Dialog from "@mui/material/Dialog";
 
 import "../../styles/style.scss";
 import { compareQuantity } from "../../services/book.service";
@@ -57,7 +57,7 @@ const Book = (props) => {
 
   /**
    * Tooltip for add to cart button
-   * @param {Object} props 
+   * @param {Object} props
    * @returns jsx element for the tooltip of cart button
    */
   const cartTooltip = (props) => (
@@ -68,7 +68,7 @@ const Book = (props) => {
 
   /**
    * Tooltip for edit book button
-   * @param {Object} props 
+   * @param {Object} props
    * @returns jsx element for the tooltip of edit button
    */
   const editTooltip = (props) => (
@@ -79,7 +79,7 @@ const Book = (props) => {
 
   /**
    * Tooltip for delete book button
-   * @param {Object} props 
+   * @param {Object} props
    * @returns jsx element for the tooltip of delete button
    */
   const deleteTooltip = (props) => (
@@ -90,10 +90,10 @@ const Book = (props) => {
 
   /**
    * Tooltip for donated by table cell
-   * @param {Object} props 
+   * @param {Object} props
    * @returns jsx element for the tooltip of user
    */
-  const userTooltip = (props)=>(
+  const userTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       {user.email}
     </Tooltip>
@@ -101,10 +101,10 @@ const Book = (props) => {
 
   /**
    * Tooltip for quantity of book
-   * @param {Object} props 
+   * @param {Object} props
    * @returns jsx element for the tooltip of quantity
    */
-  const quantityTooltip = (p)=>(
+  const quantityTooltip = (p) => (
     <Tooltip id="button-tooltip" {...p}>
       In stock: {props.book.quantity}
     </Tooltip>
@@ -122,16 +122,16 @@ const Book = (props) => {
         description: book.description,
         price: book.price,
         quantity: book.quantity,
-        sale_price: book.sale_price
+        sale_price: book.sale_price,
       },
     });
   };
 
   /**
    * Function to navigate to a route which shows details of user with given ID
-   * @param {Object} user 
+   * @param {Object} user
    */
-  const userDetails = (id)=>{
+  const userDetails = (id) => {
     navigate(`/profile/${id}`);
   };
 
@@ -173,7 +173,7 @@ const Book = (props) => {
       props.book._id
     );
 
-    if (result && props.book.quantity>0) {
+    if (result && props.book.quantity > 0) {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -185,62 +185,38 @@ const Book = (props) => {
   return (
     <>
       <tr>
-        <td
-          onClick={() => {
-            getDetails(props.book);
-          }}
-        >
+        <td onClick={() => {getDetails(props.book)}}>
           {props.book.title}
         </td>
-        <td
-          onClick={() => {
-            getDetails(props.book);
-          }}
-        >
+        <td onClick={() => {getDetails(props.book)}}>
           {props.book.author}
         </td>
-        <td
-          onClick={() => {
-            getDetails(props.book);
-          }}
-        >
+        <td onClick={() => {getDetails(props.book)}}>
           Rs. {props.book.price}
         </td>
-        <td
-          onClick={() => {
-            getDetails(props.book);
-          }}
-        >
+        <td onClick={() => {getDetails(props.book)}}>
           Rs. {props.book.sale_price}
         </td>
-        <td
-          onClick={() => {
-            userDetails(user._id);
-          }}
-        >
-            <OverlayTrigger
-              placement="top"
-              delay={{ show: 150, hide: 10 }}
-              overlay={userTooltip}
-            >
-              <div>{user.name}</div>
-            </OverlayTrigger>
-        </td>
-        <td
-          onClick={() => {
-            getDetails(props.book);
-          }}
-        >
+        <td onClick={() => {userDetails(user._id)}}>
           <OverlayTrigger
-              placement="left"
-              delay={{ show: 150, hide: 10 }}
-              overlay={quantityTooltip}
-            >
-          {props.book.quantity > 0 ? (
-            <span className="statusAvailable">Available</span>
-          ) : (
-            <span className="statusSold">Sold</span>
-          )}
+            placement="top"
+            delay={{ show: 150, hide: 10 }}
+            overlay={userTooltip}
+          >
+            <div>{user.name}</div>
+          </OverlayTrigger>
+        </td>
+        <td onClick={() => {getDetails(props.book)}}>
+          <OverlayTrigger
+            placement="left"
+            delay={{ show: 150, hide: 10 }}
+            overlay={quantityTooltip}
+          >
+            {props.book.quantity > 0 ? (
+              <span className="statusAvailable">Available</span>
+            ) : (
+              <span className="statusSold">Sold</span>
+            )}
           </OverlayTrigger>
         </td>
 

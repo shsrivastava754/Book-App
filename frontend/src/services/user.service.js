@@ -6,8 +6,9 @@ import { toast } from "react-toastify";
  * @param {String} url
  * @returns {Number} the number of donations made by a user
  */
-export const getDonations = async (url) => {
-  return await axios.get(url).then((res) => res.data);
+export const getDonations = (url) => {
+  const response = axios.get(url).then((res) => res.data);
+  return response;
 };
 
 /**
@@ -62,6 +63,21 @@ export const postUser = async (name, username, email, password) => {
       })
       .then((res) => (res = res.data));
     toast.success("Registered new user");
+  } catch (error) {
+    toast.error("User already exists");
+  }
+};
+
+/**
+ * Post google user to backend
+ * @param {Object} userObj
+ */
+export const postGoogleUser = async (userObj) => {
+  try {
+    let res = await axios
+      .post(`${process.env.REACT_APP_API_URL}/registerGoogleUser`, userObj)
+      .then((res) => (res = res.data));
+    return res;
   } catch (error) {
     toast.error("User already exists");
   }

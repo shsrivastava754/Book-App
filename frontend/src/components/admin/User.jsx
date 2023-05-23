@@ -1,5 +1,7 @@
 import { useEffect, useState, React } from 'react';
+
 import '../../styles/style.scss';
+
 import { getDonations } from '../../services/user.service';
 
 /**
@@ -10,31 +12,22 @@ import { getDonations } from '../../services/user.service';
 const User = (props) => {
   //State variable for setting the donations made by the user
   const [donations, setDonations] = useState(0);
+  const {name,username,email,_id} = props.user;
+  const url = `${process.env.REACT_APP_API_URL}/users/getDonations/${_id}`;
   
   useEffect(() => {
-    fetchHandler().then((data)=>{
-        setDonations(data.donations);
-    });
+    (async ()=>{
+      const donationData =  await getDonations(url);
+      setDonations(donationData.donations);
+    })();
   }, []);
-  
-  const userId = props.user._id;
-  
-  const url = `${process.env.REACT_APP_API_URL}/users/getDonations/${userId}`;
-  
-  /**
-   * Function that sends API request to backend for getting number of donations
-   * @returns {Number} 
-   */
-  const fetchHandler = async ()=>{
-    return await getDonations(url);
-  };
   
   return (
     <>
     <tr>
-      <td>{props.user.name}</td>
-      <td>{props.user.username}</td>
-      <td>{props.user.email}</td>
+      <td>{name}</td>
+      <td>{username}</td>
+      <td>{email}</td>
       <td>{donations}</td>
     </tr>
     </>

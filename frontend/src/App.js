@@ -1,35 +1,23 @@
-import Header from "./components/common/Header";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Booklist from "./components/books/Booklist";
 import AddBook from "./components/books/Addbook";
 import Bookdetails from "./components/books/Bookdetails";
 import Editbook from "./components/books/Editbook";
 import Login from "./components/authentication/Login";
 import Register from "./components/authentication/Register";
-import PrivateRoutes from "./routes/PrivateRoutes";
-import ProtectLogin from "./routes/ProtectLogin";
-import ProtectAdmin from "./routes/ProtectAdmin";
 import Users from "./components/admin/Users";
 import Cart from "./components/cart/Cart";
 import Profile from "./components/profile/Profile";
 import RequestBook from "./components/books/RequestBook";
-import {
-  BrowserRouter,
-  Routes,
-  Route
-} from "react-router-dom";
-import { useState, useEffect } from "react";
+
+import PrivateRoutes from "./routes/PrivateRoutes";
+import ProtectLogin from "./routes/ProtectLogin";
+import ProtectAdmin from "./routes/ProtectAdmin";
 
 function App() {
-  const [value, setValue] = useState("")
-  const [login,setLogin] = useState(false);
-
-  useEffect(() => {
-    setValue( localStorage.getItem("user")) ;
-  }, [login]);
-  
   return (
     <BrowserRouter>
-      {value !== null ?<Header setLogin={setLogin}/> : null}
       <Routes>
 
         {/* Routes that only logged in normal user can access */}
@@ -45,9 +33,9 @@ function App() {
 
       {/* Routes that is accessed by not logged in user */}
         <Route element={<ProtectLogin/>}>
-          <Route path="/login" element={<Login setLogin={setLogin} />} exact /> 
+          <Route path="/login" element={<Login />} exact /> 
           <Route path="/register" element={<Register/>} exact /> 
-          <Route path="/" element={<Login setLogin={setLogin} />} exact /> 
+          <Route path="/" element={<Login />} exact /> 
         </Route>
 
       {/* Routes that only admin can access */}

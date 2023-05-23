@@ -12,18 +12,17 @@ class BookController {
    * @returns {Response} response status
    */
   static async getBooks(req, res) {
-    let books;
     try {
-      books = await BookService.findBooks(req.body.userId);
+      const books = await BookService.findBooks(req.body.userId);
+      const booksCount = await BookService.countBooks();
+      if (!books) {
+        return res.status(400).json({ message: "No books found" });
+      } else{
+        return res.status(200).json({ books:books, booksCount:booksCount });
+      }
     } catch (err) {
       console.log(err);
     }
-
-    if (!books) {
-      return res.status(400).json({ message: "No books found" });
-    }
-
-    return res.status(200).json({ books });
   }
 
   /**
@@ -147,11 +146,8 @@ class BookController {
 
       // Get total number of books
       let totalBooks = await BookService.getBooksSize();
-      res
-        .status(200)
-        .json({ books: books, nbHits: books.length, booksSize: totalBooks });
+      res.status(200).json({ books: books, nbHits: books.length, booksSize: totalBooks });
     } catch (error) {
-      console.log(error);
       res.status(501).json({ message: "Some error" });
     }
   }
@@ -162,7 +158,7 @@ class BookController {
    * @param {Response} res
    */
   static async requestNewBook(req, res) {
-    let result = await EmailService.requestBook(req.body);
+    let result = await BookService.requestBook(req.body);
     res.status(201).json({ result });
   }
 }

@@ -1,9 +1,14 @@
-import axios from "axios";
 import { useEffect, useState, React } from "react";
-import Spinner from "react-bootstrap/Spinner";
-import CartItem from "./CartItem";
+
 import "../../styles/style.scss";
+
 import { checkoutService, clearCartService } from "../../services/cart.service";
+
+import Header from "../common/Header";
+import CartItem from "./CartItem";
+
+import axios from "axios";
+import Spinner from "react-bootstrap/Spinner";
 
 const url = `${process.env.REACT_APP_API_URL}/cart/getCartItems`;
 
@@ -61,6 +66,7 @@ const Cart = () => {
 
   return (
     <>
+    <Header></Header>
       <div className="container bookList">
         <div className="cart-heading mt-2">
           <div className="left-heading">

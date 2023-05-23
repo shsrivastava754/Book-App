@@ -1,7 +1,10 @@
-import axios from 'axios';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState, React } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+
 import { editBookDetails } from '../../services/book.service';
+import Header from '../common/Header';
+
+import axios from 'axios';
 
 /**
  * Function to return the edit book component
@@ -60,6 +63,8 @@ const EditBook = () => {
     }
     
     return (
+        <>
+        <Header></Header>
     <div className='container mt-4 formContainer p-4'>
         <h3 className='text-center'>Edit Details</h3>
         <form onSubmit={formSubmit}>
@@ -111,6 +116,7 @@ const EditBook = () => {
             <button className="btn p-2">Save Book</button>
         </form>
     </div>
+    </>
   )
 }
 

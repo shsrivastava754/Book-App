@@ -163,23 +163,12 @@ class CartController {
   }
 
   /**
-   *
-   * @param {Request} req
-   * @param {Response} res
-   */
-  static async sendEmail(req, res) {
-    let result = await EmailService.sendEmailToUser(req.body);
-    console.log(result);
-    res.status(201).json(result);
-  }
-
-  /**
    * Send an email to admin informing the purchase of user
    * @param {Request} req
    * @param {Response} res
    */
   static async informAdmin(req, res) {
-    let result = await EmailService.sendEmailToAdmin(req.body);
+    let result = await CartService.sendEmailOnCheckout(req.body);
     res.status(201).json({ result });
   }
 }

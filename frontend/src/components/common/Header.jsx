@@ -1,14 +1,15 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+
 import '../../styles/style.scss';
+
 import { Dropdown } from 'react-bootstrap';
 
 /**
  * Function that returns the navbar component
- * @param {Object} props 
  * @returns {React.Component} Header component
  */
-const Header = (props) => {
+const Header = () => {
   const navigate = useNavigate();
 
   /**
@@ -17,10 +18,7 @@ const Header = (props) => {
   const logout = ()=>{
     // Clear browser localStorage
     localStorage.clear();
-    props.setLogin(false);
     navigate('/');
-    window.location.reload();
-    // window.open(`${process.env.REACT_APP_API_URL}/auth/logout`,"_self");
   }
 
   

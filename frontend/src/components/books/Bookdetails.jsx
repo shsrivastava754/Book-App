@@ -1,8 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, React } from "react";
-import axios from "axios";
+
 import { postToCart, deleteCartItem } from "../../services/cart.service";
 import { compareQuantity } from "../../services/book.service";
+import Header from "../common/Header";
+
+import axios from "axios";
 
 /**
  * Function to return Book details component
@@ -83,47 +86,50 @@ const BookDetails = () => {
   };
 
   return (
-    <div className="container mt-4 detailsContainer p-4">
-      <h3 className="text-center">Book Details</h3>
-      <div className="details">
-        <h5>
-          <span>Title</span>: {book?.title}
-        </h5>
-        <h5>
-          <span>Author</span>: {book?.author}
-        </h5>
-        <h5 className="my-3 lh-base">
-          <span>Description</span>: {book?.description}
-        </h5>
-        <h5>
-          <span>Status</span>: {book?.status}
-        </h5>
-        <h5>
-          <span>Price</span>: {book?.price}
-        </h5>
-        {localStorage.getItem("user") ? (
-          JSON.parse(localStorage.getItem("user"))["role"] === "Admin" ? (
-            <button
-              className="btn"
-              onClick={() => {
-                editBook(book);
-              }}
-            >
-              Edit Details
-            </button>
-          ) : null
-        ) : null}
-        <button
-          className="btn mt-3"
-          onClick={() => {
-            addToCart(book);
-          }}
-          disabled={disabled}
-        >
-          Add to Cart
-        </button>
+    <>
+      <Header></Header>
+      <div className="container mt-4 detailsContainer p-4">
+        <h3 className="text-center">Book Details</h3>
+        <div className="details">
+          <h5>
+            <span>Title</span>: {book?.title}
+          </h5>
+          <h5>
+            <span>Author</span>: {book?.author}
+          </h5>
+          <h5 className="my-3 lh-base">
+            <span>Description</span>: {book?.description}
+          </h5>
+          <h5>
+            <span>Status</span>: {book?.status}
+          </h5>
+          <h5>
+            <span>Price</span>: {book?.price}
+          </h5>
+          {localStorage.getItem("user") ? (
+            JSON.parse(localStorage.getItem("user"))["role"] === "Admin" ? (
+              <button
+                className="btn"
+                onClick={() => {
+                  editBook(book);
+                }}
+              >
+                Edit Details
+              </button>
+            ) : null
+          ) : null}
+          <button
+            className="btn mt-3"
+            onClick={() => {
+              addToCart(book);
+            }}
+            disabled={disabled}
+          >
+            Add to Cart
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -75,6 +75,16 @@ class UsersService {
     const user = await UserModel.findOne({ _id: id });
     return user;
   }
+
+  /**
+   * Finds user by his id from the users collection
+   * @param {String} id 
+   * @returns a user object
+   */
+  static async findUserById(id){
+    let user = await UserModel.findOne({ _id: id});
+    return user;
+  }
 }
 
 module.exports = UsersService;

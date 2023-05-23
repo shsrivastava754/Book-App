@@ -456,6 +456,10 @@ footer {
   padding: 3px;
 }
 
+.btn:disabled, .btn[disabled]{
+  cursor: not-allowed !important;
+}
+
 .btnPaginationActive {
   background-color: $primary-color;
   color: $btn-color;

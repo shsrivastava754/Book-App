@@ -1,6 +1,7 @@
 const CartModel = require("../database/schema/cart.schema");
 const BookModel = require("../database/schema/book.schema");
 const BookService = require("./book.service");
+const EmailService = require("./email.service");
 
 /**
  * Class for Cart Services
@@ -182,6 +183,75 @@ class CartService {
     await cartItem.save();
 
     return cartItem;
+  }
+
+  /**
+   * Sends email to admin and user on checkout by email service
+   * @param {Object} body 
+   * @returns a status message for email
+   */
+  static async sendEmailOnCheckout(body) {
+    let userEmail = body.email;
+    let name = body.name;
+
+    // Find the cart items of the user
+    let cartItems = await CartModel.find(
+      { userId: body.userId },
+      { _id: 0, title: 1, author: 1, quantity: 1, sale_price: 1 }
+    );
+
+    let productName = "Book App";
+    let productLink = "https://mailgen.js/";
+
+    let tableData = [];
+
+    // Creates the data array of objects with cart items
+    cartItems.map((item) => {
+      let obj = {
+        Title: item.title,
+        Author: item.author,
+        Quantity: item.quantity,
+        Price: item.sale_price,
+      };
+      tableData.push(obj);
+    });
+
+    let userIntro = "Your Order Placed";
+    let userOutro = `Thank you for the purchase. \n\n Total price: Rs. ${body.totalPrice}.\n\n You will receive your books shortly.`;
+
+    let adminIntro = `${name} (${userEmail}) placed an order of Rs. ${body.totalPrice}`;
+    let adminOutro = "Purchase Successful";
+
+    let userSubject = "Your Purchase on the Book App";
+    let adminSubject = "Someone made a purchase";
+
+    let result;
+
+    let userEmailObj = {
+      userEmail: userEmail,
+      name: name,
+      productName: productName,
+      productLink: productLink,
+      intro: userIntro,
+      outro: userOutro,
+      tableData: tableData,
+      subject: userSubject,
+    };
+    result = await EmailService.sendEmail(userEmailObj);
+
+    let adminEmailObj = {
+      userEmail: process.env.EMAIL,
+      name: "Admin",
+      productName: productName,
+      productLink: productLink,
+      intro: adminIntro,
+      outro: adminOutro,
+      tableData: tableData,
+      subject: adminSubject,
+    };
+
+    result = await EmailService.sendEmail(adminEmailObj);
+    return result;
   }
 }
 

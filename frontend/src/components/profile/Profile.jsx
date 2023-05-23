@@ -1,6 +1,9 @@
-import axios from "axios";
 import { useState, useEffect, React } from "react";
 import { useParams } from "react-router-dom";
+
+import Header from "../common/Header";
+
+import axios from "axios";
 
 const Profile = () => {
   const [user, setUser] = useState();
@@ -26,6 +29,7 @@ const Profile = () => {
 
   return (
     <>
+    <Header></Header>
       <div className="container mt-4 detailsContainer p-4">
         <h3>User Profile</h3>
         <div className="details">

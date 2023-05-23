@@ -1,7 +1,10 @@
 import { useState, useEffect, React } from "react";
+
 import "../../styles/style.scss";
-import User from "./User";
 import { getUsers } from "../../services/user.service";
+
+import Header from "../common/Header";
+import User from "./User";
 
 const url = `${process.env.REACT_APP_API_URL}/users/getUsers`;
 
@@ -46,6 +49,7 @@ const Users = () => {
 
   return (
     <>
+     <Header></Header>
       <div className="container bookList">
         <h3 className="my-3">Users</h3>
         <div className="components">

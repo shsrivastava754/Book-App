@@ -1,8 +1,11 @@
-import Book from "./Book";
-import axios from "axios";
 import { useEffect, useState, React } from "react";
-import "../../styles/style.scss";
 import { Link } from "react-router-dom";
+
+import "../../styles/style.scss";
+import Header from "../common/Header";
+import Book from "./Book";
+
+import axios from "axios";
 
 /**
  *
@@ -114,41 +117,40 @@ const Booklist = (props) => {
 
   /**
    * Handles the filter option for status of book
-   * @param {Event} e 
+   * @param {Event} e
    */
-  const handleFilter = (e)=>{
+  const handleFilter = (e) => {
     setTableBooks(books);
 
     let arr = [];
 
     // No filter applied
-    if(e.target.value==0){
+    if (e.target.value == 0) {
       arr = books;
     }
-
     // Available books
-    else if (e.target.value==1){
+    else if (e.target.value == 1) {
       books?.map((item) => {
-        if (item.quantity>0) {
+        if (item.quantity > 0) {
           arr.push(item);
         }
       });
     }
-
     // Sold books
     else {
       books?.map((item) => {
-        if (item.quantity===0) {
+        if (item.quantity === 0) {
           arr.push(item);
         }
       });
     }
 
     setTableBooks(arr);
-  }
+  };
 
   return (
     <>
+      <Header></Header>
       <div className="container bookList">
         <div className="table-heading">
           <div className="left-heading">
@@ -193,13 +195,7 @@ const Booklist = (props) => {
             <tbody>
               {currentRows &&
                 currentRows.map((book) => {
-                  return (
-                    <Book
-                      book={book}
-                      key={book.title}
-                      srno={books.indexOf(book) + 1}
-                    />
-                  );
+                  return <Book book={book} key={book.title} />;
                 })}
             </tbody>
           </table>
@@ -214,7 +210,6 @@ const Booklist = (props) => {
               style={{ display: "inline" }}
             >
               <option value="5">5</option>
-              <option value="3">3</option>
               <option value="10">10</option>
               <option value="15">15</option>
             </select>
@@ -258,8 +253,3 @@ const Booklist = (props) => {
 };
 
 export default Booklist;
-
-// REACT_APP_API_URL = "http://localhost:3001"
-// REACT_APP_API_REGISTER_USER = "http://localhost:3001/register"
-// REACT_APP_GET_DONATIONS = ${REACT_APP_API_URL}/users/getDonations
-// REACT_APP_GET_USERS = ${REACT_APP_API_URL}/users/getUsers

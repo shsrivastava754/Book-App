@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import '../../styles/style.scss';
 import { useNavigate } from 'react-router-dom';
-import 'react-toastify/dist/ReactToastify.css';
+
+import '../../styles/style.scss';
+
 import { postBook } from '../../services/book.service';
+
+import Header from '../common/Header';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 /**
  * 
@@ -95,6 +100,8 @@ const AddBook = () => {
     }
 
   return (
+    <>
+    <Header></Header>
     <div className='container mt-4 formContainer p-4 donationForm'>
         <h3>Donate a Book</h3>
         <form onSubmit={formSubmit} autoComplete="off">
@@ -127,6 +134,7 @@ const AddBook = () => {
             <button className="btn p-2" disabled={disabled}>Donate Book</button>
         </form>
     </div>
+    </>
   )
 }
 

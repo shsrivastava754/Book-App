@@ -10,5 +10,6 @@ router.post("/register", bodyParser, UsersController.register);
 router.post("/login", bodyParser, UsersController.login);
 router.get("/users/getDonations/:id", UsersController.donations);
 router.get("/users/:id", UsersController.getUser);
+router.post("/registerGoogleUser", bodyParser, UsersController.registerGoogleUser);
 
 module.exports = router;

@@ -1,11 +1,22 @@
 const { ObjectId } = require("mongodb");
 const BookModel = require("../database/schema/book.schema");
 const UserModel = require("../database/schema/user.schema");
+const UserService = require("../services/user.service");
+const EmailService = require("../services/email.service");
 
 /**
  * Class representing a book service.
  */
 class BookService {
+  /**
+   * Number of books in the collection
+   * @returns {Integer} number of books
+   */
+  static async countBooks() {
+    const booksCount = await BookModel.countDocuments();
+    return booksCount;
+  }
+
   /**
    * Function to find books donated by the user
    * @param {String} userId
@@ -149,6 +160,47 @@ class BookService {
     });
 
     updatedBook.save();
+  }
+
+  /**
+   * Requests a book from admin
+   * @param {Object} body
+   * @returns a status message
+   */
+  static async requestBook(body) {
+    const user = await UserService.findUserById(body.userId);
+
+    const name = "Admin";
+    const bookName = body.bookName;
+    const author = body.author;
+    const productName = "Book App";
+    const productLink = "https://mailgen.js/";
+
+    const intro = `${user.name} requested a book`;
+    const tableData = [
+      {
+        Name: bookName,
+        Author: author,
+      },
+    ];
+
+    const outro = `New Book Requested by ${user.email}`;
+    const userEmail = process.env.EMAIL;
+    const subject = "Someone requested a book";
+
+    const emailObj = {
+      intro,
+      outro,
+      tableData,
+      subject,
+      productName,
+      productLink,
+      name,
+      userEmail,
+    };
+
+    const result = await EmailService.sendEmail(emailObj);
+    return result;
   }
 }
 

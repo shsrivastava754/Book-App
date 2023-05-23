@@ -1,6 +1,4 @@
-const UserService = require("../services/user.service");
-const LocalStorage = require("node-localstorage").LocalStorage;
-localStorage = new LocalStorage("./scratch");
+const UserService = require('../services/user.service');
 
 /**
  * Controller class for Users related operations.
@@ -84,7 +82,7 @@ class UserController {
         }
       }
     } catch (error) {
-      console.log(err);
+      console.log(error);
     }
   }
 
@@ -104,25 +102,6 @@ class UserController {
   }
 
   /**
-   * Sends the details of the user from scratch folder in case of Google authentication.
-   * @param {Object} req
-   * @param {Object} res
-   * @returns {Response} the data in the scratch folder for google authentication
-   */
-  static async returnlocalStorage(req, res) {
-    try {
-      const userData = localStorage.getItem("user");
-      if (userData) {
-        return res.status(201).json({
-          user: userData,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  /**
    * Returns the user details
    * @param {Request} req
    * @param {Response} res
@@ -134,6 +113,38 @@ class UserController {
       return res.status(201).json({ message: user });
     } catch (error) {
       return res.status(501).json({ message: "No user found" });
+    }
+  }
+
+  /**
+   * Registers google user at backend
+   * @param {Request} req
+   * @param {Response} res
+   * @returns
+   */
+  static async registerGoogleUser(req, res) {
+    let newUser;
+
+    try {
+      // Check if the user already exists or not
+      const user = await UserService.findUserByUsername(req.body.username);
+
+      // If user exists the return a message
+      if (user) {
+        return res.status(201).json({ user: user });
+      }
+
+      // Else add the new user to the users collection
+      else {
+        newUser = await UserService.registerUser(req.body);
+        if (!newUser) {
+          return res.status(500).json({ message: "No user added, some error" });
+        }
+
+        return res.status(201).json({ newUser });
+      }
+    } catch (error) {
+      return res.status(500).json({ message: error });
     }
   }
 }

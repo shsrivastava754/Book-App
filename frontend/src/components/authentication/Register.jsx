@@ -1,9 +1,12 @@
-import "./authenticationStyle.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, React } from "react";
+
+import "./authenticationStyle.scss";
+
+import { postUser } from "../../services/user.service";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { postUser } from "../../services/user.service";
 
 const Register = () => {
   // State variables for the form fields
@@ -18,6 +21,8 @@ const Register = () => {
   //   State variable for disabling the submit button
   const [disabled, setDisabled] = useState(true);
 
+  const navigate = useNavigate();
+
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
   /**
@@ -30,10 +35,10 @@ const Register = () => {
 
     if (currentType === "password") {
       pass.setAttribute("type", "text");
-      toggleBtn.setAttribute("class", "fa-solid fa-eye-slash");
+      toggleBtn.setAttribute("class", "fa-sharp fa-solid fa-eye toggle");
     } else {
       pass.setAttribute("type", "password");
-      toggleBtn.setAttribute("class", "fa-sharp fa-solid fa-eye toggle");
+      toggleBtn.setAttribute("class", "fa-solid fa-eye-slash");
     }
   };
 
@@ -46,6 +51,7 @@ const Register = () => {
     if (name && email && username && password) {
       setDisabled(false);
       registerUser(name, username, email, password);
+      navigate('/');
     } else {
       setDisabled(true);
     }
@@ -78,6 +84,7 @@ const Register = () => {
     // Check if email regex matches the value entered by user
     if (emailRegex.test(e.target.value) === false) {
       setEmailError("Please enter a valid email address");
+      setDisabled(true);
     } else {
       setEmailError("");
       return true;
@@ -90,7 +97,7 @@ const Register = () => {
    */
   const checkPassword = (e) => {
     setPassword(e.target.value);
-    if (name && email && username && password) {
+    if (name && email && username && password && emailError=="") {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -103,7 +110,7 @@ const Register = () => {
    */
   const checkName = (e) => {
     setName(e.target.value);
-    if (name && email && username && password) {
+    if (name && email && username && password && emailError=="") {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -116,7 +123,7 @@ const Register = () => {
    */
   const checkUsername = (e) => {
     setUsername(e.target.value);
-    if (name && email && username && password) {
+    if (name && email && username && password && emailError=="") {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -154,19 +161,10 @@ const Register = () => {
             onChange={checkEmail}
           />
           <p className="text-danger m-0 p-0">{emailError}</p>
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            id="password"
-            value={password}
-            onChange={checkPassword}
-          />
-          <span
-            className="fa-sharp fa-solid fa-eye toggle"
-            id="toggle"
-            onClick={handleToggle}
-          ></span>
+          <div className="input-container">
+            <input className="input-field" type="password" placeholder="Password" name="password" id="password" value={password} onChange={checkPassword}/>
+            <span onClick={handleToggle}><i className="fa-solid fa-eye-slash end-button" id="toggle"></i></span>
+          </div>
           <Link to={"/login"}>Already have an account?</Link>
           <button type="submit" id="submitBtn" disabled={disabled}>
             Register

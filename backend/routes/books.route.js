@@ -4,7 +4,8 @@ const BooksController = require("../controllers/books.controller");
 const router = express.Router();
 
 // Routes for CRUD of Books Model
-router.post("/books/getBooks", bodyParser, BooksController.getBooks);
+// router.post("/books/getBooks", bodyParser, BooksController.getBooks);
+router.post("/books/getBooks", bodyParser, BooksController.getFilteredBooks);
 router.post("/", bodyParser, BooksController.addBook);
 router.get("/:id", BooksController.getById);
 router.put("/:id", bodyParser, BooksController.updateBook);

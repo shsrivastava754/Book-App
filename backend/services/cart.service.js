@@ -44,7 +44,7 @@ class CartService {
    * @param {Object} body
    */
   static async addNewItem(body) {
-    let cartItem = new CartModel({
+    const cartItem = new CartModel({
       title: body.title,
       bookId: body.bookId,
       author: body.author,
@@ -65,7 +65,7 @@ class CartService {
    * @returns {Array} cart items of a user
    */
   static async returnCartItems(id) {
-    let items = await CartModel.find({ userId: id });
+    const items = await CartModel.find({ userId: id });
     return items;
   }
 
@@ -75,7 +75,7 @@ class CartService {
    * @returns {Number} total price
    */
   static async returnTotalPrice(id) {
-    let items = await CartModel.find({ userId: id });
+    const items = await CartModel.find({ userId: id });
     let totalPrice = 0;
     items.map((item) => {
       totalPrice = totalPrice + item.sale_price * item.quantity;
@@ -135,8 +135,8 @@ class CartService {
    */
   static async returnQuantities(userId, itemId, bookId) {
     try {
-      let cartItem = await CartModel.findOne({ userId: userId, _id: itemId });
-      let book = await BookModel.findOne({ _id: bookId });
+      const cartItem = await CartModel.findOne({ userId: userId, _id: itemId });
+      const book = await BookModel.findOne({ _id: bookId });
       if (cartItem && book) {
         return [cartItem.quantity, book.quantity];
       } else {
@@ -152,7 +152,7 @@ class CartService {
    * @param {String} userId
    */
   static async checkoutUser(userId) {
-    let cartItems = await CartModel.find({ userId: userId });
+    const cartItems = await CartModel.find({ userId: userId });
     await cartItems.map(async (item) => {
       // Update the quantity of each book in the books collection
       await BookService.updateQuantities(item.bookId, item.quantity);
@@ -191,23 +191,23 @@ class CartService {
    * @returns a status message for email
    */
   static async sendEmailOnCheckout(body) {
-    let userEmail = body.email;
-    let name = body.name;
+    const userEmail = body.email;
+    const name = body.name;
 
     // Find the cart items of the user
-    let cartItems = await CartModel.find(
+    const cartItems = await CartModel.find(
       { userId: body.userId },
       { _id: 0, title: 1, author: 1, quantity: 1, sale_price: 1 }
     );
 
-    let productName = "Book App";
-    let productLink = "https://mailgen.js/";
+    const productName = "Book App";
+    const productLink = "https://mailgen.js/";
 
     let tableData = [];
 
     // Creates the data array of objects with cart items
     cartItems.map((item) => {
-      let obj = {
+      const obj = {
         Title: item.title,
         Author: item.author,
         Quantity: item.quantity,
@@ -216,18 +216,18 @@ class CartService {
       tableData.push(obj);
     });
 
-    let userIntro = "Your Order Placed";
-    let userOutro = `Thank you for the purchase. \n\n Total price: Rs. ${body.totalPrice}.\n\n You will receive your books shortly.`;
+    const userIntro = "Your Order Placed";
+    const userOutro = `Thank you for the purchase. \n\n Total price: Rs. ${body.totalPrice}.\n\n You will receive your books shortly.`;
 
-    let adminIntro = `${name} (${userEmail}) placed an order of Rs. ${body.totalPrice}`;
-    let adminOutro = "Purchase Successful";
+    const adminIntro = `${name} (${userEmail}) placed an order of Rs. ${body.totalPrice}`;
+    const adminOutro = "Purchase Successful";
 
-    let userSubject = "Your Purchase on the Book App";
-    let adminSubject = "Someone made a purchase";
+    const userSubject = "Your Purchase on the Book App";
+    const adminSubject = "Someone made a purchase";
 
     let result;
 
-    let userEmailObj = {
+    const userEmailObj = {
       userEmail: userEmail,
       name: name,
       productName: productName,
@@ -239,7 +239,7 @@ class CartService {
     };
     result = await EmailService.sendEmail(userEmailObj);
 
-    let adminEmailObj = {
+    const adminEmailObj = {
       userEmail: process.env.EMAIL,
       name: "Admin",
       productName: productName,

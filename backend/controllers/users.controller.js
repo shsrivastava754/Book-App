@@ -1,4 +1,4 @@
-const UserService = require('../services/user.service');
+const UserService = require("../services/user.service");
 
 /**
  * Controller class for Users related operations.
@@ -11,9 +11,8 @@ class UserController {
    * @returns {Response} status code with a message if users list is found or not
    */
   static async getUsers(req, res) {
-    let users;
     try {
-      users = await UserService.getUsers();
+      const users = await UserService.getUsers();
       if (!users) {
         return res.status(400).json({ message: "No users found" });
       }
@@ -31,8 +30,6 @@ class UserController {
    * @returns {Response} status code with a message or new user
    */
   static async register(req, res) {
-    let newUser;
-
     try {
       // Check if the user already exists or not
       const user = await UserService.findUserByUsername(req.body.username);
@@ -44,7 +41,7 @@ class UserController {
 
       // Else add the new user to the users collection
       else {
-        newUser = await UserService.registerUser(req.body);
+        const newUser = await UserService.registerUser(req.body);
         if (!newUser) {
           return res.status(500).json({ message: "No user added, some error" });
         }
@@ -74,7 +71,10 @@ class UserController {
 
       // Else verify the user and his/her password
       else {
-        let verified = UserService.verifyUser(req.body.password, user.password);
+        const verified = UserService.verifyUser(
+          req.body.password,
+          user.password
+        );
         if (verified) {
           return res.status(201).json({ user });
         } else {
@@ -108,8 +108,7 @@ class UserController {
    */
   static async getUser(req, res) {
     try {
-      let user;
-      user = await UserService.getUserDetails(req.params.id);
+      const user = await UserService.getUserDetails(req.params.id);
       return res.status(201).json({ message: user });
     } catch (error) {
       return res.status(501).json({ message: "No user found" });
@@ -123,8 +122,6 @@ class UserController {
    * @returns
    */
   static async registerGoogleUser(req, res) {
-    let newUser;
-
     try {
       // Check if the user already exists or not
       const user = await UserService.findUserByUsername(req.body.username);
@@ -136,7 +133,7 @@ class UserController {
 
       // Else add the new user to the users collection
       else {
-        newUser = await UserService.registerUser(req.body);
+        const newUser = await UserService.registerUser(req.body);
         if (!newUser) {
           return res.status(500).json({ message: "No user added, some error" });
         }

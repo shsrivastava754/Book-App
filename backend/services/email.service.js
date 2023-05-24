@@ -4,7 +4,9 @@ const MailGen = require("mailgen");
 class EmailService {
   /**
    * Sends an email to users
-   * @param {Object} body
+   * @param {Object} emailObj
+   * emailObj : {intro, outro, tabledata, subject, product name, 
+   * product link, name, user email}
    * @returns
    */
   static async sendEmail(emailObj) {

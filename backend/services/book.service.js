@@ -23,7 +23,7 @@ class BookService {
    * @returns {Array} books list donated by user
    */
   static async findBooks(userId) {
-    let books = await BookModel.find({
+    const books = await BookModel.find({
       donatedById: { $ne: userId },
       isDeleted: false,
     });
@@ -36,7 +36,7 @@ class BookService {
    * @returns {Object} a book with given title
    */
   static async findOneBook(title) {
-    let book = await BookModel.findOne({ title: title });
+    const book = await BookModel.findOne({ title: title });
     return book;
   }
 
@@ -66,7 +66,7 @@ class BookService {
    */
   static async addNewBook(body) {
     const user = await UserModel.findOne({ _id: body.donatedById });
-    let newBook = new BookModel({
+    const newBook = new BookModel({
       title: body.title,
       author: body.author,
       description: body.description,
@@ -100,7 +100,7 @@ class BookService {
    * @returns {Object} updated book
    */
   static async updateBook(id, body) {
-    let book = await BookModel.findByIdAndUpdate(id, {
+    const book = await BookModel.findByIdAndUpdate(id, {
       title: body.title,
       author: body.author,
       description: body.description,
@@ -119,7 +119,7 @@ class BookService {
    * @returns {Object} message of the removed book
    */
   static async removeBook(id) {
-    let book = await BookModel.findByIdAndUpdate(id, {
+    const book = await BookModel.findByIdAndUpdate(id, {
       isDeleted: true,
     });
 
@@ -133,8 +133,8 @@ class BookService {
    * @param {Number} limit
    * @returns {Array} filtered books
    */
-  static async returnFilteredBooks(skip, limit, query) {
-    let books = await BookModel.find().skip(skip).limit(limit);
+  static async returnFilteredBooks(skip, limit) {
+    const books = await BookModel.find().sort({ _id: -1 }).skip(skip).limit(limit);
     return books;
   }
 
@@ -143,7 +143,7 @@ class BookService {
    * @returns {Number} Total number of books in the collection
    */
   static async getBooksSize() {
-    let books = await BookModel.find();
+    const books = await BookModel.find();
     return books.length;
   }
 
@@ -155,7 +155,7 @@ class BookService {
   static async updateQuantities(bookId, quantity) {
     const book = await BookModel.findOne({ _id: bookId });
 
-    let updatedBook = await BookModel.findByIdAndUpdate(bookId, {
+    const updatedBook = await BookModel.findByIdAndUpdate(bookId, {
       quantity: book.quantity - quantity,
     });
 

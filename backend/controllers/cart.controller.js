@@ -12,8 +12,8 @@ class CartController {
    * @returns {Response} status code with a message if the book has been added to cart or not
    */
   static async addToCart(req, res) {
-    let cartItem;
     try {
+      let cartItem;
       // First check if item already exists or not in the cart
       const item = await CartService.returnItem(
         req.body.userId,
@@ -36,7 +36,6 @@ class CartController {
 
       return res.status(201).json({ cartItem });
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ message: error });
     }
   }
@@ -48,10 +47,9 @@ class CartController {
    * @returns {Response} cart items of the user
    */
   static async getCartItems(req, res) {
-    let items, totalPrice;
     try {
-      items = await CartService.returnCartItems(req.body.id);
-      totalPrice = await CartService.returnTotalPrice(req.body.id);
+      const items = await CartService.returnCartItems(req.body.id);
+      const totalPrice = await CartService.returnTotalPrice(req.body.id);
       if (!items) {
         return res.status(400).json({ message: "No cart items" });
       }
@@ -99,7 +97,7 @@ class CartController {
    * @param {Response} res
    */
   static async compareQuantity(req, res) {
-    let result = await CartService.compareCartQuantity(
+    const result = await CartService.compareCartQuantity(
       req.body.userId,
       req.body.bookId
     );
@@ -114,7 +112,7 @@ class CartController {
    */
   static async getQuantities(req, res) {
     try {
-      let result = await CartService.returnQuantities(
+      const result = await CartService.returnQuantities(
         req.params.userId,
         req.params.itemId,
         req.params.bookId
@@ -131,10 +129,10 @@ class CartController {
    * Function to complete the shopping of the user
    * @param {Request} req
    * @param {Response} res
-   * @returns
+   * @returns Response status
    */
   static async checkout(req, res) {
-    let result = await CartService.checkoutUser(req.body.userId);
+    const result = await CartService.checkoutUser(req.body.userId);
     return res.status(201).json({ result: result });
   }
 
@@ -168,7 +166,7 @@ class CartController {
    * @param {Response} res
    */
   static async informAdmin(req, res) {
-    let result = await CartService.sendEmailOnCheckout(req.body);
+    const result = await CartService.sendEmailOnCheckout(req.body);
     res.status(201).json({ result });
   }
 }

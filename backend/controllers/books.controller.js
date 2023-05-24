@@ -17,8 +17,8 @@ class BookController {
       const booksCount = await BookService.countBooks();
       if (!books) {
         return res.status(400).json({ message: "No books found" });
-      } else{
-        return res.status(200).json({ books:books, booksCount:booksCount });
+      } else {
+        return res.status(200).json({ books: books, booksCount: booksCount });
       }
     } catch (err) {
       console.log(err);
@@ -32,9 +32,8 @@ class BookController {
    * @returns {Response} response status with a newBook object
    */
   static async addBook(req, res) {
-    let newBook;
-
     try {
+      let newBook;
       // Check if the book exists or not
       const book = await BookService.findOneBook(req.body.title);
 
@@ -44,15 +43,15 @@ class BookController {
       } else {
         newBook = BookService.addNewBook(req.body);
       }
+
+      if (!newBook) {
+        return res.status(500).json({ message: "Not able to add book" });
+      }
+
+      return res.status(201).json({ newBook });
     } catch (error) {
       console.log(error);
     }
-
-    if (!newBook) {
-      return res.status(500).json({ message: "Not able to add book" });
-    }
-
-    return res.status(201).json({ newBook });
   }
 
   /**
@@ -62,19 +61,18 @@ class BookController {
    * @returns {Response} status code with a json message of book details
    */
   static async getById(req, res) {
-    const id = req.params.id.slice(1);
-    let book;
     try {
-      book = await BookService.findBookById(id);
+      const id = req.params.id.slice(1);
+      const book = await BookService.findBookById(id);
+
+      if (!book) {
+        return res.status(500).json({ message: "Not able to get book" });
+      }
+
+      return res.status(201).json({ book });
     } catch (error) {
       console.log(error);
     }
-
-    if (!book) {
-      return res.status(500).json({ message: "Not able to get book" });
-    }
-
-    return res.status(201).json({ book });
   }
 
   /**
@@ -84,20 +82,17 @@ class BookController {
    * @returns {Response} response whether the book has been edited or not
    */
   static async updateBook(req, res) {
-    const id = req.params.id;
-    let book;
-
     try {
-      book = await BookService.updateBook(id, req.body);
+      const id = req.params.id;
+      const book = await BookService.updateBook(id, req.body);
+      if (!book) {
+        return res.status(500).json({ message: "Not able to update book" });
+      }
+
+      return res.status(201).json({ message: "Edited successfully" });
     } catch (error) {
       console.log(error);
     }
-
-    if (!book) {
-      return res.status(500).json({ message: "Not able to update book" });
-    }
-
-    return res.status(201).json({ message: "Edited successfully" });
   }
 
   /**
@@ -107,20 +102,16 @@ class BookController {
    * @returns {Response} response status
    */
   static async deleteBook(req, res) {
-    const id = req.params.id;
-    let book;
-
     try {
-      book = await BookService.removeBook(id);
+      const id = req.params.id;
+      const book = await BookService.removeBook(id);
+      if (!book) {
+        return res.status(500).json({ message: "Not able to delete book" });
+      }
+      return res.status(201).json({ message: "Deleted successfully" });
     } catch (error) {
       console.log(error);
     }
-
-    if (!book) {
-      return res.status(500).json({ message: "Not able to delete book" });
-    }
-
-    return res.status(201).json({ message: "Deleted successfully" });
   }
 
   /**
@@ -146,7 +137,9 @@ class BookController {
 
       // Get total number of books
       let totalBooks = await BookService.getBooksSize();
-      res.status(200).json({ books: books, nbHits: books.length, booksSize: totalBooks });
+      res
+        .status(200)
+        .json({ books: books, nbHits: books.length, booksSize: totalBooks });
     } catch (error) {
       res.status(501).json({ message: "Some error" });
     }
@@ -158,8 +151,28 @@ class BookController {
    * @param {Response} res
    */
   static async requestNewBook(req, res) {
-    let result = await BookService.requestBook(req.body);
+    const result = await BookService.requestBook(req.body);
     res.status(201).json({ result });
+  }
+
+
+  static async getFilteredBooks(req,res){
+    let page = Number(req.body.page) || 1;
+
+      // Number fo documents per page
+      let limit = Number(req.body.limit) || 5;
+
+      // Formula for pagination, skip is the number of documents to skip from the collection
+      let skip = (page - 1) * limit;
+
+      let books = await BookService.returnFilteredBooks(skip, limit);
+
+      const booksCount = await BookService.countBooks();
+      if (!books) {
+        return res.status(400).json({ message: "No books found" });
+      } else {
+        return res.status(200).json({ books: books, booksCount: booksCount });
+      }
   }
 }
 

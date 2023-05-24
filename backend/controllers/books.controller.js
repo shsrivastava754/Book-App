@@ -115,37 +115,6 @@ class BookController {
   }
 
   /**
-   * Function to find books with pagination and search
-   * @param {Request} req
-   * @param {Response} res
-   */
-  static async findFilteredBooks(req, res) {
-    try {
-      // Search text
-      let query = req.query.search;
-
-      // Page number to get
-      let page = Number(req.query.page) || 1;
-
-      // Number fo documents per page
-      let limit = Number(req.query.limit) || 3;
-
-      // Formula for pagination, skip is the number of documents to skip from the collection
-      let skip = (page - 1) * limit;
-
-      let books = await BookService.returnFilteredBooks(skip, limit, query);
-
-      // Get total number of books
-      let totalBooks = await BookService.getBooksSize();
-      res
-        .status(200)
-        .json({ books: books, nbHits: books.length, booksSize: totalBooks });
-    } catch (error) {
-      res.status(501).json({ message: "Some error" });
-    }
-  }
-
-  /**
    * Request a new book from admin
    * @param {Request} req
    * @param {Response} res
@@ -165,9 +134,9 @@ class BookController {
       // Formula for pagination, skip is the number of documents to skip from the collection
       let skip = (page - 1) * limit;
 
-      let books = await BookService.returnFilteredBooks(skip, limit);
+      let books = await BookService.returnFilteredBooks(skip, limit, req.body.userId);
 
-      const booksCount = await BookService.countBooks();
+      const booksCount = await BookService.countBooks(req.body.userId);
       if (!books) {
         return res.status(400).json({ message: "No books found" });
       } else {

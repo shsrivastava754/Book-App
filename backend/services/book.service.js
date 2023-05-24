@@ -12,8 +12,13 @@ class BookService {
    * Number of books in the collection
    * @returns {Integer} number of books
    */
-  static async countBooks() {
-    const booksCount = await BookModel.countDocuments();
+  static async countBooks(userId) {
+    const booksCount = await BookModel.countDocuments(
+      {
+        isDeleted: false,
+        donatedById: { $ne: userId }
+      }
+    );
     return booksCount;
   }
 
@@ -133,18 +138,12 @@ class BookService {
    * @param {Number} limit
    * @returns {Array} filtered books
    */
-  static async returnFilteredBooks(skip, limit) {
-    const books = await BookModel.find().sort({ _id: -1 }).skip(skip).limit(limit);
+  static async returnFilteredBooks(skip, limit,userId) {
+    const books = await BookModel.find({
+      donatedById: { $ne: userId },
+      isDeleted: false
+    }).sort({ _id: -1 }).skip(skip).limit(limit);
     return books;
-  }
-
-  /**
-   *
-   * @returns {Number} Total number of books in the collection
-   */
-  static async getBooksSize() {
-    const books = await BookModel.find();
-    return books.length;
   }
 
   /**

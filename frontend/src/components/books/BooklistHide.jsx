@@ -12,55 +12,79 @@ import axios from "axios";
  * @returns {React.Component} Book list component
  */
 
-const Booklist = () => {
+const Booklist = (props) => {
   // State for books list
   const [books, setBooks] = useState();
-  const [booksLength, setBooksLength] = useState();
-  const [limit, setLimit] = useState(5);
-  const [page, setPage] = useState(1);
+  const [tableBooks, setTableBooks] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowPerPage, setRowPerPage] = useState(5);
 
   const url = `${process.env.REACT_APP_API_URL}/books/getBooks`;
 
-  useEffect(() => {
-    getFilteredBooks(page, limit);
-  }, [page, limit]);
-
-  /**
-   * Sends API request to backend for getting books based on pagination
-   * @param {Number} currPage 
-   * @param {Number} currLimit 
-   */
-  const getFilteredBooks = async (currPage = page, currLimit = limit) => {
-    const response = await axios.post(url, {
-      userId: JSON.parse(localStorage.getItem("user"))._id,
-      page: currPage,
-      limit: currLimit,
-    });
-    setBooks(response.data.books);
-    setBooksLength(response.data.booksCount);
+  // Fetches the data from Server
+  const fetchHandler = async () => {
+    return await axios
+      .post(url, {
+        userId: JSON.parse(localStorage.getItem("user"))._id,
+      })
+      .then((res) => res.data);
   };
 
+  useEffect(() => {
+    fetchHandler().then((data) => {
+      setBooks(data.books);
+      setTableBooks(data.books);
+    });
+  }, []);
+
+  const indexOfLastRowOfCurrentPage = currentPage * rowPerPage;
+  const indexOfFirstRowOfCurrentPage = indexOfLastRowOfCurrentPage - rowPerPage;
+
+  // Show specific part of data
+  let currentRows = tableBooks?.slice(
+    indexOfFirstRowOfCurrentPage,
+    indexOfLastRowOfCurrentPage
+  );
 
   const pageNumbers = [];
 
+  let tableBooksLength;
+  if (tableBooks?.length) {
+    tableBooksLength = tableBooks?.length;
+  }
+
   // Set page numbers for number of buttons
-  for (let i = 1; i <= Math.ceil(booksLength / limit); i++) {
+  for (let i = 1; i <= Math.ceil(tableBooksLength / rowPerPage); i++) {
     pageNumbers.push(i);
   }
+
+  // When page numbers is changed
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  /**
+   * Sets the number of rows per page
+   * @param {Event} e - Option from the select tag
+   */
+  const handlePageSize = (e) => {
+    setRowPerPage(e.target.value);
+    setCurrentPage(1);
+  };
 
   /**
    * When previous button is clicked
    */
   const handlePrevious = () => {
-    if (page !== 1) setPage(page - 1);
+    if (currentPage !== 1) setCurrentPage(currentPage - 1);
   };
 
   /**
    * When next button is clicked
    */
   const handleNext = () => {
-    if (page !== Math.ceil(booksLength / limit))
-      setPage(page + 1);
+    if (currentPage !== Math.ceil(books.length / rowPerPage))
+      setCurrentPage(currentPage + 1);
   };
 
   // Function to set different backgrounds in booklist and login page
@@ -69,17 +93,6 @@ const Booklist = () => {
     body.style.background = "#f7f7f7";
   };
 
-  // const getFilteredBooks = async (currPage = page, currLimit = limit) => {
-  //   const response = await axios.post(url, {
-  //     userId: JSON.parse(localStorage.getItem("user"))._id,
-  //     page: currPage,
-  //     limit: currLimit,
-  //   });
-
-  //   setBooks(response.data.books);
-  //   console.log(response.data.books);
-  // };
-
   setBackground();
 
   /**
@@ -87,7 +100,19 @@ const Booklist = () => {
    * @param {Event} e
    */
   const searchBook = (e) => {
-    console.log(e.target.value);
+    // Don't change the original books table, just change the tableBooks data
+    setTableBooks(books);
+
+    const arr = [];
+    books?.map((item) => {
+      if (
+        item.title.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        item.author.toLowerCase().includes(e.target.value.toLowerCase())
+      ) {
+        arr.push(item);
+      }
+    });
+    setTableBooks(arr);
   };
 
   /**
@@ -95,27 +120,32 @@ const Booklist = () => {
    * @param {Event} e
    */
   const handleFilter = (e) => {
-    console.log(e.target.value);
-  };
+    setTableBooks(books);
 
-  /**
-   * Sends API call at backend for number of rows per page
-   * @param {Number} e
-   */
-  const handlePageSize = (e) => {
-    setLimit(e.target.value);
-    setPage(1);
+    let arr = [];
 
-    // getFilteredBooks(1, e.target.value);
-  };
+    // No filter applied
+    if (e.target.value == 0) {
+      arr = books;
+    }
+    // Available books
+    else if (e.target.value == 1) {
+      books?.map((item) => {
+        if (item.quantity > 0) {
+          arr.push(item);
+        }
+      });
+    }
+    // Sold books
+    else {
+      books?.map((item) => {
+        if (item.quantity === 0) {
+          arr.push(item);
+        }
+      });
+    }
 
-  /**
-   * Sends API call at backend for page number of data
-   * @param {Number} number
-   */
-  const paginate = (number) => {
-    setPage(number);
-    // getFilteredBooks(number, limit);
+    setTableBooks(arr);
   };
 
   return (
@@ -163,8 +193,8 @@ const Booklist = () => {
               </tr>
             </thead>
             <tbody>
-              {books &&
-                books.map((book) => {
+              {currentRows &&
+                currentRows.map((book) => {
                   return <Book book={book} key={book.title} />;
                 })}
             </tbody>
@@ -195,7 +225,8 @@ const Booklist = () => {
             <ul className="">
               {pageNumbers.map((number) => {
                 let btnClass = " btn btnPaginationInactive mx-1";
-                if (number === page) btnClass = "btn btnPaginationActive mx-1";
+                if (number === currentPage)
+                  btnClass = "btn btnPaginationActive mx-1";
                 return (
                   <button
                     className={btnClass}

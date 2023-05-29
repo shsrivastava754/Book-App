@@ -16,6 +16,20 @@ const showerrorToast = () => {
 };
 
 /**
+ * Get cart items of an user
+ * @param {String} url 
+ * @returns response from backend
+ */
+export const getCartItems = async(url)=>{
+  const response = await axios
+    .post(url, {
+      id: JSON.parse(localStorage.getItem("user"))._id,
+    });
+
+    return response;
+}
+
+/**
  * Post book details to cart collection
  * @param {Object} book
  */

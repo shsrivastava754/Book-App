@@ -2,27 +2,15 @@ import { useEffect, useState, React } from "react";
 
 import "../../styles/style.scss";
 
-import { checkoutService, clearCartService } from "../../services/cart.service";
+import {
+  checkoutService,
+  clearCartService,
+  getCartItems,
+} from "../../services/cart.service";
 
 import Header from "../common/Header";
 import CartItem from "./CartItem";
-
-import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
-
-const url = `${process.env.REACT_APP_API_URL}/cart/getCartItems`;
-
-/**
- *
- * @returns response after fetching the cart items
- */
-const fetchHandler = async () => {
-  return await axios
-    .post(url, {
-      id: JSON.parse(localStorage.getItem("user"))._id,
-    })
-    .then((res) => res.data);
-};
 
 /**
  *
@@ -39,11 +27,14 @@ const Cart = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchHandler().then((data) => {
-      setItems(data.items);
-      setTotalPrice(data.totalPrice);
-    });
+    (async () => {
+      const response = await getCartItems(url);
+      setItems(response.data.items);
+      setTotalPrice(response.data.totalPrice);
+    })();
   }, []);
+
+  const url = `${process.env.REACT_APP_API_URL}/cart/getCartItems`;
 
   /**
    * Sending backend API request to clear the cart
@@ -66,7 +57,7 @@ const Cart = () => {
 
   return (
     <>
-    <Header></Header>
+      <Header></Header>
       <div className="container bookList">
         <div className="cart-heading mt-2">
           <div className="left-heading">

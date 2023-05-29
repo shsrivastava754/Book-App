@@ -1,11 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, React } from "react";
 
-import { postToCart, deleteCartItem } from "../../services/cart.service";
-import { compareQuantity } from "../../services/book.service";
+import { postToCart } from "../../services/cart.service";
+import { compareQuantity, getBookData } from "../../services/book.service";
 import Header from "../common/Header";
-
-import axios from "axios";
 
 /**
  * Function to return Book details component
@@ -19,6 +17,17 @@ const BookDetails = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    (async()=>{
+      const data = await getBookData(url);
+      setBook(data.data.book);
+    })();
+  }, []);
+  
+  // Getting the id from url parameters
+  const id = useParams().id;
+  const url = `${process.env.REACT_APP_API_URL}/:${id}`;
+  
   /**
    *
    * @param {Object} book Book to be edited
@@ -31,16 +40,11 @@ const BookDetails = () => {
         description: book.description,
         price: book.price,
         quantity: book.quantity,
+        sale_price: book.sale_price
       },
     });
   };
-
-  useEffect(() => {
-    fetchHandler().then((data) => {
-      setBook(data.book);
-    });
-  }, []);
-
+  
   /**
    * Function that makes API call to add an item to cart
    * @param {Object} book
@@ -62,28 +66,15 @@ const BookDetails = () => {
     const result = await compareQuantity(
       JSON.parse(localStorage.getItem("user"))._id,
       book?._id
-    );
-    if (result) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
-
-    return result;
-  };
-
-  // Getting the id from url parameters
-  const id = useParams().id;
-
-  /**
-   * Function to fetch data of book from backend
-   * @returns {Response} response from the API call at backend for details of the book
-   */
-  const fetchHandler = async () => {
-    return await axios
-      .get(`${process.env.REACT_APP_API_URL}/:${id}`)
-      .then((res) => res.data);
-  };
+      );
+      if (result) {
+        setDisabled(false);
+      } else {
+        setDisabled(true);
+      }
+      
+      return result;
+    };    
 
   return (
     <>
@@ -108,23 +99,12 @@ const BookDetails = () => {
           </h5>
           {localStorage.getItem("user") ? (
             JSON.parse(localStorage.getItem("user"))["role"] === "Admin" ? (
-              <button
-                className="btn"
-                onClick={() => {
-                  editBook(book);
-                }}
-              >
+              <button className="btn" onClick={() => {editBook(book)}} >
                 Edit Details
               </button>
             ) : null
           ) : null}
-          <button
-            className="btn mt-3"
-            onClick={() => {
-              addToCart(book);
-            }}
-            disabled={disabled}
-          >
+          <button className="btn mt-3" onClick={() => {addToCart(book)}} disabled={disabled}>
             Add to Cart
           </button>
         </div>

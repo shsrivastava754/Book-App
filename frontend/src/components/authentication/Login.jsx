@@ -113,25 +113,27 @@ const Login = () => {
             Login
           </button>
           <p className="or">or</p>
-          <GoogleLogin
-            onSuccess={async (credentialResponse) => {
-              let decoded = jwt_decode(credentialResponse.credential);
-              const userObj = {
-                email: decoded.email,
-                username: decoded.given_name,
-                role: "User",
-                name: decoded.name,
-                password: decoded.jti,
-              };
+          <div className="googleLogin m-auto">
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                let decoded = jwt_decode(credentialResponse.credential);
+                const userObj = {
+                  email: decoded.email,
+                  username: decoded.given_name,
+                  role: "User",
+                  name: decoded.name,
+                  password: decoded.jti,
+                };
 
-              let res = await postGoogleUser(userObj);
-              localStorage.setItem("user", JSON.stringify(res.user));
-              navigate("/books");
-            }}
-            onError={() => {
-              console.log("Login Failed");
-            }}
-          />
+                let res = await postGoogleUser(userObj);
+                localStorage.setItem("user", JSON.stringify(res.user));
+                navigate("/books");
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+          </div>
         </form>
       </div>
       <ToastContainer />

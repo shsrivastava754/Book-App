@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
-
 import "../../styles/style.scss";
 import { compareQuantity } from "../../services/book.service";
 import { postToCart, deleteCartItem } from "../../services/cart.service";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import { getUser } from "../../services/user.service";
+
+
 const Book = (props) => {
-  // State variables for dialog box of confirm delete
-  const [openDialog, handleDisplay] = useState(false);
 
   // State variable for setting cart button disable and enable
   const [disabled, setDisabled] = useState(false);
@@ -21,39 +22,23 @@ const Book = (props) => {
   // User details
   const [user, setUser] = useState("");
 
+  const [show, setShow] = useState(false);
+
+  
   // Check if item can be added to cart or not when the component loads
   useEffect(() => {
     compareBook();
-    fetchHandler().then((data) => {
-      setUser(data.message);
-    });
+    (async ()=>{
+      const response = await getUser(url);
+      setUser(response.data.message);
+    })();
   });
-
+  
   const navigate = useNavigate();
-
-  /**
-   * Function to fetch data of book from backend
-   * @returns {Response} response from the API call at backend for details of the book
-   */
-  const fetchHandler = async () => {
-    return await axios
-      .get(`${process.env.REACT_APP_API_URL}/users/${props.book.donatedById}`)
-      .then((res) => res.data);
-  };
-
-  /**
-   * Function to handle closing of the confirm delete dialog box
-   */
-  const handleClose = () => {
-    handleDisplay(false);
-  };
-
-  /**
-   * Function to handle opening of the confirm delete dialog box
-   */
-  const openDialogBox = () => {
-    handleDisplay(true);
-  };
+  
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const url = `${process.env.REACT_APP_API_URL}/users/${props.book.donatedById}`;
 
   /**
    * Tooltip for add to cart button
@@ -230,7 +215,7 @@ const Book = (props) => {
               <button
                 className="btn btnAction mx-2"
                 id={props.book._id}
-                onClick={deleteBook}
+                onClick={handleShow}
               >
                 <i className="fa-solid fa-trash"></i>
               </button>
@@ -285,19 +270,20 @@ const Book = (props) => {
           </td>
         )}
       </tr>
-      {/* <Dialog onClose = {handleClose} open = {openDialog} className='dialogBox'>
-      <h3 >
-              Are you sure to delete the book?
-      </h3>
-      <div className='buttons'>
-          <button onClick = {deleteBook} className='btnConfirmYes'>
-              Confirm
-          </button>
-          <button  onClick = {handleClose} className='btnConfirmNo'>
-              Cancel
-          </button>
-      </div>
-    </Dialog> */}
+    <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Book</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this book?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={deleteBook}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       <ToastContainer />
     </>

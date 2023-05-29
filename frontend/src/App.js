@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Booklist from "./components/books/Booklist";
+import BookList from "./components/books/BookList";
 import AddBook from "./components/books/Addbook";
 import Bookdetails from "./components/books/Bookdetails";
 import Editbook from "./components/books/Editbook";
@@ -22,7 +22,7 @@ function App() {
 
         {/* Routes that only logged in normal user can access */}
         <Route element={<PrivateRoutes/>}>
-          <Route path="/books" element={<Booklist/>} exact />
+          <Route path="/books" element={<BookList/>} exact />
           <Route path="/addBook" element={<AddBook/>} exact />
           <Route path="/:id" element={<Bookdetails/>} exact />
           <Route path="/books/:id" element={<Editbook/>} exact />

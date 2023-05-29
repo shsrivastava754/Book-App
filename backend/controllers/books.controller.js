@@ -133,8 +133,7 @@ class BookController {
 
       // Formula for pagination, skip is the number of documents to skip from the collection
       let skip = (page - 1) * limit;
-
-      let books = await BookService.returnFilteredBooks(skip, limit, req.body.userId);
+      let books = await BookService.returnFilteredBooks(skip, limit, req.body.userId, req.body.searchQuery,req.body.category);
 
       const booksCount = await BookService.countBooks(req.body.userId);
       if (!books) {

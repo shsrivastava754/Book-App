@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser").json();
 const CartController = require("../controllers/cart.controller");
+const MessageController = require("../controllers/message.controller");
 
 const router = express.Router();
 
@@ -40,5 +41,7 @@ router.post("/cart/checkout", bodyParser, CartController.checkout);
 
 // Sends an email to the user/admin in case of checkout
 router.post('/cart/sendEmail',bodyParser, CartController.informAdmin);
+
+router.post('/sendMessage',bodyParser,MessageController.sendMessage);
 
 module.exports = router;

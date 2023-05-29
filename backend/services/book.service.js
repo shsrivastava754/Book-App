@@ -13,12 +13,10 @@ class BookService {
    * @returns {Integer} number of books
    */
   static async countBooks(userId) {
-    const booksCount = await BookModel.countDocuments(
-      {
-        isDeleted: false,
-        donatedById: { $ne: userId }
-      }
-    );
+    const booksCount = await BookModel.countDocuments({
+      isDeleted: false,
+      donatedById: { $ne: userId },
+    });
     return booksCount;
   }
 
@@ -138,12 +136,29 @@ class BookService {
    * @param {Number} limit
    * @returns {Array} filtered books
    */
-  static async returnFilteredBooks(skip, limit,userId) {
-    const books = await BookModel.find({
+  static async returnFilteredBooks(skip, limit, userId, searchQuery,category) {
+    let books,filterCondition;
+
+    // Setting condition for select filter
+    if(category==="available"){
+      filterCondition = {quantity:{$gt:0}}
+    } else if (category==="sold"){
+      filterCondition = {quantity:0};
+    } else {
+      filterCondition = {};
+    }
+
+    books = await BookModel.find({
       donatedById: { $ne: userId },
-      isDeleted: false
-    }).sort({ _id: -1 }).skip(skip).limit(limit);
-    return books;
+      isDeleted: false,
+      $or: [
+        { title: { $regex: searchQuery, $options: "i" } },
+        { author: { $regex: searchQuery, $options: "i" } },
+      ]
+    }).find(filterCondition)
+      .sort({ _id: -1 }).skip(skip).limit(limit);
+    
+      return books;
   }
 
   /**

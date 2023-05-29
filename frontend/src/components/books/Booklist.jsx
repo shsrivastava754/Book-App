@@ -5,37 +5,33 @@ import "../../styles/style.scss";
 import Header from "../common/Header";
 import Book from "./Book";
 
-import axios from "axios";
+import { fetchFilteredBooks } from "../../services/book.service";
 
 /**
  *
  * @returns {React.Component} Book list component
  */
 
-const Booklist = () => {
+const BookList = () => {
   // State for books list
   const [books, setBooks] = useState();
   const [booksLength, setBooksLength] = useState();
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
-
-  const url = `${process.env.REACT_APP_API_URL}/books/getBooks`;
+  const [search, setSearch] = useState("");
+  const [filter,setFilter] = useState("");
 
   useEffect(() => {
-    getFilteredBooks(page, limit);
-  }, [page, limit]);
+    getFilteredBooks(page, limit, search,filter);
+  }, [page, limit, search, filter]);
 
   /**
    * Sends API request to backend for getting books based on pagination
    * @param {Number} currPage 
    * @param {Number} currLimit 
    */
-  const getFilteredBooks = async (currPage = page, currLimit = limit) => {
-    const response = await axios.post(url, {
-      userId: JSON.parse(localStorage.getItem("user"))._id,
-      page: currPage,
-      limit: currLimit,
-    });
+  const getFilteredBooks = async ( page,  limit,  search, filter) => {
+    const response = await fetchFilteredBooks(page,limit,search,filter);
     setBooks(response.data.books);
     setBooksLength(response.data.booksCount);
   };
@@ -69,17 +65,6 @@ const Booklist = () => {
     body.style.background = "#f7f7f7";
   };
 
-  // const getFilteredBooks = async (currPage = page, currLimit = limit) => {
-  //   const response = await axios.post(url, {
-  //     userId: JSON.parse(localStorage.getItem("user"))._id,
-  //     page: currPage,
-  //     limit: currLimit,
-  //   });
-
-  //   setBooks(response.data.books);
-  //   console.log(response.data.books);
-  // };
-
   setBackground();
 
   /**
@@ -87,7 +72,8 @@ const Booklist = () => {
    * @param {Event} e
    */
   const searchBook = (e) => {
-    console.log(e.target.value);
+    setSearch(e.target.value);
+    setPage(1);
   };
 
   /**
@@ -95,7 +81,14 @@ const Booklist = () => {
    * @param {Event} e
    */
   const handleFilter = (e) => {
-    console.log(e.target.value);
+    if(e.target.value==1){
+      setFilter("available");
+    } else if(e.target.value==2) {
+      setFilter("sold");
+    } else {
+      setFilter("");
+    }
+    setPage(1);
   };
 
   /**
@@ -105,8 +98,6 @@ const Booklist = () => {
   const handlePageSize = (e) => {
     setLimit(e.target.value);
     setPage(1);
-
-    // getFilteredBooks(1, e.target.value);
   };
 
   /**
@@ -115,7 +106,6 @@ const Booklist = () => {
    */
   const paginate = (number) => {
     setPage(number);
-    // getFilteredBooks(number, limit);
   };
 
   return (
@@ -221,4 +211,4 @@ const Booklist = () => {
   );
 };
 
-export default Booklist;
+export default BookList;

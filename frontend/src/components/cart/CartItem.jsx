@@ -34,19 +34,14 @@ const CartItem = (props) => {
 
     // Disable the increment button for quantity if the quantity is maximum
     const checkMaximum = async()=>{
-      const data = await fetchHandler();
-        if(data.cartQuantity === data.bookQuantity){
+      const data = await getQuantities(props.item._id,props.item.bookId);
+        if(data.data.cartQuantity === data.data.bookQuantity){
           setIncrementDisabled(true);
         }
     }
 
     checkMaximum();
-  }, [])
-  
-  const fetchHandler = async()=>{
-    let data = await getQuantities(props.item._id,props.item.bookId);
-    return data.data;
-  }
+  }, []);
 
   const userId = JSON.parse(localStorage.getItem("user"))._id;
 
@@ -58,27 +53,13 @@ const CartItem = (props) => {
   };
 
   /**
-   * Handle closing of the confirm delete dialog box
-   */
-  const handleClose = () => {
-    handleDisplay(false);
-  };
-
-  /**
-   * Handle opening of the confirm delete dialog box
-   */
-  const openDialogBox = () => {
-    handleDisplay(true);
-  };
-
-  /**
    * Function to check if the quantity of the item in cart is maximum or not
    * And Disable the increment button if it is so
    */
   const maxQuantity = async () => {
     try {
-      const data = await fetchHandler();
-      if(data.cartQuantity+1 === data.bookQuantity){
+      const data = await getQuantities(props.item._id,props.item.bookId);
+      if(data.data.cartQuantity+1 === data.data.bookQuantity){
         setIncrementDisabled(true);
         return false;
       }

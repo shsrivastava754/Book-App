@@ -42,8 +42,8 @@ export const postBook = async (
  * @param {ObjectId} id
  * @returns
  */
-export const getBookData = async (id) => {
-  let response = await axios.get(`${process.env.REACT_APP_API_URL}/:${id}`);
+export const getBookData = async (url) => {
+  let response = await axios.get(url);
   return response;
 };
 
@@ -100,7 +100,7 @@ export const compareQuantity = async (userId, bookId) => {
       `${process.env.REACT_APP_API_URL}/cart/compareQuantity`,
       {
         userId: userId,
-        bookId: bookId
+        bookId: bookId,
       }
     );
 
@@ -112,11 +112,11 @@ export const compareQuantity = async (userId, bookId) => {
 
 /**
  * Request a book at backend to admin
- * @param {String} bookName 
- * @param {String} author 
- * @returns 
+ * @param {String} bookName
+ * @param {String} author
+ * @returns
  */
-export const requestBook = async (bookName,author)=>{
+export const requestBook = async (bookName, author) => {
   let result;
   await axios
     .post(`${process.env.REACT_APP_API_URL}/books/requestBook`, {
@@ -131,4 +131,25 @@ export const requestBook = async (bookName,author)=>{
     });
 
   return result;
-}
+};
+
+/**
+ * Fetches books from backend according to pagination, searching and filtering
+ * @param {Number} page 
+ * @param {Number} limit 
+ * @param {String} search 
+ * @param {String} filter 
+ * @returns filtered books from backend
+ */
+export const fetchFilteredBooks = async (page, limit, search, filter) => {
+  const url = `${process.env.REACT_APP_API_URL}/books/getBooks`;
+  const response = await axios.post(url, {
+    userId: JSON.parse(localStorage.getItem("user"))._id,
+    page: page,
+    limit: limit,
+    searchQuery: search,
+    category: filter
+  });
+
+  return response;
+};

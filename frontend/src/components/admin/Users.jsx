@@ -6,16 +6,6 @@ import { getUsers } from "../../services/user.service";
 import Header from "../common/Header";
 import User from "./User";
 
-const url = `${process.env.REACT_APP_API_URL}/users/getUsers`;
-
-/**
- * Function to send API request at backend for the users data
- * @returns {Array} list of users
- */
-const fetchHandler = async () => {
-  return await getUsers(url);
-};
-
 /**
  *
  * @returns {React.Component} Users list component
@@ -28,9 +18,10 @@ const Users = () => {
   const [search, setSearch] = useState();
 
   useEffect(() => {
-    fetchHandler().then((data) => {
-      setUsers(data.users);
-    });
+    (async ()=>{
+      const users = await getUsers();
+      setUsers(users.users);
+    })();
   }, []);
 
   /**

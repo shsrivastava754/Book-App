@@ -16,8 +16,9 @@ export const getDonations = (url) => {
  * @param {String} url
  * @returns {Array} - List of users
  */
-export const getUsers = async (url) => {
-  return await axios.get(url).then((res) => res.data);
+export const getUsers = () => {
+  const url = `${process.env.REACT_APP_API_URL}/users/getUsers`;
+  return axios.get(url).then((res) => res.data);
 };
 
 /**
@@ -67,6 +68,17 @@ export const postUser = async (name, username, email, password) => {
     toast.error("User already exists");
   }
 };
+
+/**
+ * Fetches user details
+ * @param {String} url 
+ * @returns response from backend after fetching user details
+ */
+export const getUser = async (url)=>{
+  const response = await axios
+  .get(url);
+  return response;
+}
 
 /**
  * Post google user to backend

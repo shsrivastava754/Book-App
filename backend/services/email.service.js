@@ -15,9 +15,9 @@ class EmailService {
       const config = {
         service: "gmail",
         auth: {
-          user: process.env.EMAIL,
-          pass: process.env.PASSWORD,
-        },
+          user: process.env.email,
+          pass: process.env.password
+        }
       };
 
       // Creates a transporter to transport the mail

@@ -5,7 +5,7 @@ import "../../styles/style.scss";
 import Header from "../common/Header";
 import Book from "./Book";
 
-import { fetchFilteredBooks } from "../../services/book.service";
+import { fetchBooks } from "../../services/book.service";
 
 /**
  *
@@ -13,34 +13,33 @@ import { fetchFilteredBooks } from "../../services/book.service";
  */
 
 const BookList = () => {
+  
   // State for books list
   const [books, setBooks] = useState();
   const [booksLength, setBooksLength] = useState();
-  const [limit, setLimit] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [filter,setFilter] = useState("");
+  const pageNumbers = [];
 
   useEffect(() => {
-    getFilteredBooks(page, limit, search,filter);
-  }, [page, limit, search, filter]);
+    getBooks(page, rowsPerPage, search,filter);
+  }, [page, rowsPerPage, search, filter]);
 
   /**
    * Sends API request to backend for getting books based on pagination
    * @param {Number} currPage 
    * @param {Number} currLimit 
    */
-  const getFilteredBooks = async ( page,  limit,  search, filter) => {
-    const response = await fetchFilteredBooks(page,limit,search,filter);
+  const getBooks = async ( page,  rowsPerPage,  search, filter) => {
+    const response = await fetchBooks(page,rowsPerPage,search,filter);
     setBooks(response.data.books);
     setBooksLength(response.data.booksCount);
   };
 
-
-  const pageNumbers = [];
-
   // Set page numbers for number of buttons
-  for (let i = 1; i <= Math.ceil(booksLength / limit); i++) {
+  for (let i = 1; i <= Math.ceil(booksLength / rowsPerPage); i++) {
     pageNumbers.push(i);
   }
 
@@ -55,11 +54,11 @@ const BookList = () => {
    * When next button is clicked
    */
   const handleNext = () => {
-    if (page !== Math.ceil(booksLength / limit))
+    if (page !== Math.ceil(booksLength / rowsPerPage))
       setPage(page + 1);
   };
 
-  // Function to set different backgrounds in booklist and login page
+  // Function to set different backgrounds in books list and login page
   const setBackground = () => {
     const body = document.querySelector("body");
     body.style.background = "#f7f7f7";
@@ -96,7 +95,7 @@ const BookList = () => {
    * @param {Number} e
    */
   const handlePageSize = (e) => {
-    setLimit(e.target.value);
+    setRowsPerPage(e.target.value);
     setPage(1);
   };
 

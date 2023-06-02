@@ -141,7 +141,7 @@ export const requestBook = async (bookName, author) => {
  * @param {String} filter 
  * @returns filtered books from backend
  */
-export const fetchFilteredBooks = async (page, limit, search, filter) => {
+export const fetchBooks = async (page, limit, search, filter) => {
   const url = `${process.env.REACT_APP_API_URL}/books/getBooks`;
   const response = await axios.post(url, {
     userId: JSON.parse(localStorage.getItem("user"))._id,

@@ -1,9 +1,11 @@
 import { useState, useEffect, React } from "react";
 
+import Header from "../common/Header";
+
 import "../../styles/style.scss";
+
 import { getUsers } from "../../services/user.service";
 
-import Header from "../common/Header";
 import User from "./User";
 
 /**

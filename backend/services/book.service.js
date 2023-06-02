@@ -21,19 +21,6 @@ class BookService {
   }
 
   /**
-   * Function to find books donated by the user
-   * @param {String} userId
-   * @returns {Array} books list donated by user
-   */
-  static async findBooks(userId) {
-    const books = await BookModel.find({
-      donatedById: { $ne: userId },
-      isDeleted: false,
-    });
-    return books;
-  }
-
-  /**
    * Function to find a book by title
    * @param {String} title  - Title of the book
    * @returns {Object} a book with given title
@@ -67,20 +54,13 @@ class BookService {
    * @param {Object} body - A object with details of the book to be added
    * @returns {Object} object of the new book
    */
-  static async addNewBook(body) {
+  static async addBook(body) {
     const user = await UserModel.findOne({ _id: body.donatedById });
-    const newBook = new BookModel({
-      title: body.title,
-      author: body.author,
-      description: body.description,
-      price: body.price,
-      sale_price: body.sale_price,
-      quantity: body.quantity,
-      status: "available",
-      donatedById: user._id,
-      donatedByEmail: user.email,
-      isDeleted: false,
-    });
+    body.status = "available";
+    body.isDeleted = false;
+    body.donatedById = user._id;
+    body.donatedByEmail = user.email;
+    const newBook = new BookModel(body);
 
     await newBook.save();
     return newBook;
@@ -121,7 +101,7 @@ class BookService {
    * @param {ObjectId} id
    * @returns {Object} message of the removed book
    */
-  static async removeBook(id) {
+  static async deleteBook(id) {
     const book = await BookModel.findByIdAndUpdate(id, {
       isDeleted: true,
     });
@@ -136,7 +116,7 @@ class BookService {
    * @param {Number} limit
    * @returns {Array} filtered books
    */
-  static async returnFilteredBooks(skip, limit, userId, searchQuery,category) {
+  static async getBooks(skip, limit, userId, searchQuery,category) {
     let books,filterCondition;
 
     // Setting condition for select filter
@@ -202,16 +182,7 @@ class BookService {
     const userEmail = process.env.EMAIL;
     const subject = "Someone requested a book";
 
-    const emailObj = {
-      intro,
-      outro,
-      tableData,
-      subject,
-      productName,
-      productLink,
-      name,
-      userEmail,
-    };
+    const emailObj = { intro, outro, tableData, subject, productName, productLink, name, userEmail};
 
     const result = await EmailService.sendEmail(emailObj);
     return result;

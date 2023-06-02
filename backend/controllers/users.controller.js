@@ -92,7 +92,7 @@ class UserController {
    * @param {Object} res
    * @returns {Response} status code with a message
    */
-  static async donations(req, res) {
+  static async countDonations(req, res) {
     try {
       const donationsCount = await UserService.countDonations(req.params.id);
       return res.status(201).json({ donations: donationsCount });
@@ -108,7 +108,7 @@ class UserController {
    */
   static async getUser(req, res) {
     try {
-      const user = await UserService.getUserDetails(req.params.id);
+      const user = await UserService.getUser(req.params.id);
       return res.status(201).json({ message: user });
     } catch (error) {
       return res.status(501).json({ message: "No user found" });

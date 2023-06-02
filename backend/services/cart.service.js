@@ -43,7 +43,7 @@ class CartService {
    * Function to add new item to the cart
    * @param {Object} body
    */
-  static async addNewItem(body) {
+  static async addToCart(body) {
     const cartItem = new CartModel({
       title: body.title,
       bookId: body.bookId,
@@ -64,7 +64,7 @@ class CartService {
    * @param {ObjectId} id
    * @returns {Array} cart items of a user
    */
-  static async returnCartItems(id) {
+  static async getCartItems(id) {
     const items = await CartModel.find({ userId: id });
     return items;
   }
@@ -106,7 +106,7 @@ class CartService {
    * @param {String} bookId
    * @returns {Boolean} whether book is left or not
    */
-  static async compareCartQuantity(userId, bookId) {
+  static async compareQuantity(userId, bookId) {
     const book = await BookModel.findOne({ _id: bookId });
     const cartItem = await CartModel.findOne({
       userId: userId,
@@ -133,7 +133,7 @@ class CartService {
    * @param {String} bookId
    * @returns {Array} of quantities
    */
-  static async returnQuantities(userId, itemId, bookId) {
+  static async getQuantities(userId, itemId, bookId) {
     try {
       const cartItem = await CartModel.findOne({ userId: userId, _id: itemId });
       const book = await BookModel.findOne({ _id: bookId });
@@ -151,7 +151,7 @@ class CartService {
    * Update the cart and books collection after checkout
    * @param {String} userId
    */
-  static async checkoutUser(userId) {
+  static async checkout(userId) {
     const cartItems = await CartModel.find({ userId: userId });
     await cartItems.map(async (item) => {
       // Update the quantity of each book in the books collection
@@ -190,7 +190,7 @@ class CartService {
    * @param {Object} body 
    * @returns a status message for email
    */
-  static async sendEmailOnCheckout(body) {
+  static async informAdmin(body) {
     const userEmail = body.email;
     const name = body.name;
 

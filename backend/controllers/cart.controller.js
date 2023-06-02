@@ -27,7 +27,7 @@ class CartController {
 
       // Else add new item to the collection
       else {
-        cartItem = await CartService.addNewItem(req.body);
+        cartItem = await CartService.addToCart(req.body);
       }
 
       if (!cartItem) {
@@ -48,7 +48,7 @@ class CartController {
    */
   static async getCartItems(req, res) {
     try {
-      const items = await CartService.returnCartItems(req.body.id);
+      const items = await CartService.getCartItems(req.body.id);
       const totalPrice = await CartService.returnTotalPrice(req.body.id);
       if (!items) {
         return res.status(400).json({ message: "No cart items" });
@@ -97,10 +97,7 @@ class CartController {
    * @param {Response} res
    */
   static async compareQuantity(req, res) {
-    const result = await CartService.compareCartQuantity(
-      req.body.userId,
-      req.body.bookId
-    );
+    const result = await CartService.compareQuantity(req.body.userId,req.body.bookId);
     return res.status(201).json({ result: result });
   }
 
@@ -112,11 +109,7 @@ class CartController {
    */
   static async getQuantities(req, res) {
     try {
-      const result = await CartService.returnQuantities(
-        req.params.userId,
-        req.params.itemId,
-        req.params.bookId
-      );
+      const result = await CartService.getQuantities(req.params.userId,req.params.itemId,req.params.bookId);
       return res
         .status(201)
         .json({ cartQuantity: result[0], bookQuantity: result[1] });
@@ -132,7 +125,7 @@ class CartController {
    * @returns Response status
    */
   static async checkout(req, res) {
-    const result = await CartService.checkoutUser(req.body.userId);
+    const result = await CartService.checkout(req.body.userId);
     return res.status(201).json({ result: result });
   }
 
@@ -140,7 +133,7 @@ class CartController {
    * Increment the quantity of item in the cart
    * @param {Request} req
    * @param {Response} res
-   * @returns
+   * @returns Response status
    */
   static async changeQuantity(req, res) {
     let result;
@@ -166,7 +159,7 @@ class CartController {
    * @param {Response} res
    */
   static async informAdmin(req, res) {
-    const result = await CartService.sendEmailOnCheckout(req.body);
+    const result = await CartService.informAdmin(req.body);
     res.status(201).json({ result });
   }
 }

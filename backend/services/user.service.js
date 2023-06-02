@@ -71,7 +71,7 @@ class UsersService {
    * @param {String} id
    * @returns
    */
-  static async getUserDetails(id) {
+  static async getUser(id) {
     const user = await UserModel.findOne({ _id: id });
     return user;
   }

@@ -2,6 +2,7 @@ const CartModel = require("../database/schema/cart.schema");
 const BookModel = require("../database/schema/book.schema");
 const BookService = require("./book.service");
 const EmailService = require("./email.service");
+const EmailStyle = require("../styles/email.style");
 
 /**
  * Class for Cart Services
@@ -44,16 +45,8 @@ class CartService {
    * @param {Object} body
    */
   static async addToCart(body) {
-    const cartItem = new CartModel({
-      title: body.title,
-      bookId: body.bookId,
-      author: body.author,
-      price: body.price,
-      sale_price: body.sale_price,
-      quantity: 1,
-      userId: body.userId,
-      userEmail: body.userEmail,
-    });
+    body.quantity = 1;
+    const cartItem = new CartModel(body);
 
     await cartItem.save();
     return cartItem;
@@ -186,6 +179,16 @@ class CartService {
   }
 
   /**
+   * Returns count of cart items for an user
+   * @param {String} userId 
+   * @returns {Integer} count of cart items of an user
+   */
+  static async countCartItems(userId){
+    const count = await CartModel.count({ userId: userId });
+    return count;
+  }
+
+  /**
    * Sends email to admin and user on checkout by email service
    * @param {Object} body 
    * @returns a status message for email
@@ -200,9 +203,6 @@ class CartService {
       { _id: 0, title: 1, author: 1, quantity: 1, sale_price: 1 }
     );
 
-    const productName = "Book App";
-    const productLink = "https://mailgen.js/";
-
     let tableData = [];
 
     // Creates the data array of objects with cart items
@@ -216,38 +216,132 @@ class CartService {
       tableData.push(obj);
     });
 
-    const userIntro = "Your Order Placed";
-    const userOutro = `Thank you for the purchase. \n\n Total price: Rs. ${body.totalPrice}.\n\n You will receive your books shortly.`;
-
-    const adminIntro = `${name} (${userEmail}) placed an order of Rs. ${body.totalPrice}`;
-    const adminOutro = "Purchase Successful";
-
     const userSubject = "Your Purchase on the Book App";
     const adminSubject = "Someone made a purchase";
 
     let result;
 
+    // Css styling for the html templates
+    const style = EmailStyle.returnStyle();
+
+    // Table template for the html content
+    const tableTemplate = `
+        ${tableData.map(item => `
+        <tr>
+        <td>${item.Title}</td>
+        <td>${item.Author}</td>
+        <td>${item.Quantity}</td>
+        <td>${item.Price}</td>
+        </tr>
+        `).join("")}
+    `;
+    
+    const userEmailTemplate = `
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+      ${style}
+    </head>
+
+    <body>
+      <h3 class="header">
+          Book App
+      </h3>
+      <div class="container">
+          <h3>
+              Hi ${name},
+          </h3>
+          <p>
+            Your Order Placed
+          </p>
+          <div>
+              <span class="cartTotal">Purchase Amount: Rs. ${body.totalPrice}</span>
+          </div>
+          <table class="table-responsive">
+            <thead>
+            <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            ${tableTemplate}
+            </tbody>
+          </table>
+          <p>Thank you for the purchase. You will receive a payment link shortly.</p>
+          <p class="mb-0">Yours Truly,</p>
+          <p>Book App</p>
+      </div>
+      <footer class="footer">
+          <div class="container">
+              <span class="text-muted">© 2023 Book App. All rights reserved.</span>
+          </div>
+      </footer>
+    </body>`
+
     const userEmailObj = {
       userEmail: userEmail,
-      name: name,
-      productName: productName,
-      productLink: productLink,
-      intro: userIntro,
-      outro: userOutro,
-      tableData: tableData,
       subject: userSubject,
+      html: userEmailTemplate,
+      name: "Book App"
     };
+
     result = await EmailService.sendEmail(userEmailObj);
+
+    const adminEmailTemplate = `
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+      ${style}
+    </head>
+
+    <body>
+        <h3 class="header">
+            Book App
+        </h3>
+        <div class="container">
+            <h3>
+                Hi admin,
+            </h3>
+            <p>
+                ${name} (${userEmail}) placed an order of Rs. ${body.totalPrice}
+            </p>
+            <div>
+                <span class="cartTotal">Purchase Amount: Rs. ${body.totalPrice}</span>
+            </div>
+            <table class="table-responsive">
+            <thead>
+            <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+            </tr>
+            </thead>
+            <tbody>
+                ${tableTemplate}
+            </tbody>
+            </table>
+            <p>Purchase Successful</p>
+            <p class="mb-0">Yours Truly,</p>
+            <p>Book App</p>
+        </div>
+        <footer class="footer">
+            <div class="container">
+                <span class="text-muted">© 2023 Book App. All rights reserved.</span>
+            </div>
+        </footer>
+    </body>`
 
     const adminEmailObj = {
       userEmail: process.env.EMAIL,
-      name: "Admin",
-      productName: productName,
-      productLink: productLink,
-      intro: adminIntro,
-      outro: adminOutro,
-      tableData: tableData,
       subject: adminSubject,
+      html: adminEmailTemplate,
+      name: "Admin"
     };
 
     result = await EmailService.sendEmail(adminEmailObj);

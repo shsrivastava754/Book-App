@@ -12,13 +12,18 @@ export const getDonations = (url) => {
 };
 
 /**
- * Returns the list of users in collection
- * @param {String} url
- * @returns {Array} - List of users
+ * Get users based on pagination and filtering
+ * @param {Number} page 
+ * @param {Number} limit 
+ * @param {String} search 
+ * @returns {Promise<{users,usersCount}>}
  */
-export const getUsers = () => {
+export const fetchUsers = (page,limit,search) => {
   const url = `${process.env.REACT_APP_API_URL}/users/getUsers`;
-  return axios.get(url).then((res) => res.data);
+  return axios.post(url,{
+    page: page, limit: limit, 
+    searchQuery: search
+  }).then((res) => res.data);
 };
 
 /**

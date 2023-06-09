@@ -134,11 +134,13 @@ const Book = (props) => {
    */
   const addToCart = async (book) => {
     if (compareBook()) {
-      postToCart(book);
+      await postToCart(book);
       setDisabled(false);
     } else {
       setDisabled(true);
     }
+    
+    props.handleCallChildFunction();
   };
 
   /**
@@ -158,7 +160,7 @@ const Book = (props) => {
       props.book._id
     );
 
-    if (result && props.book.quantity > 0) {
+    if (result && props.book.quantity > 0 && props.book.donatedById!==JSON.parse(localStorage.getItem("user"))._id) {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -188,7 +190,7 @@ const Book = (props) => {
             delay={{ show: 150, hide: 10 }}
             overlay={userTooltip}
           >
-            <div>{user.name}</div>
+            <div className="bookDonor">{user.name}</div>
           </OverlayTrigger>
         </td>
         <td onClick={() => {getDetails(props.book)}}>
@@ -285,7 +287,7 @@ const Book = (props) => {
         </Modal.Footer>
       </Modal>
 
-      <ToastContainer />
+      <ToastContainer autoClose="500" />
     </>
   );
 };

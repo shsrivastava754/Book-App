@@ -131,7 +131,10 @@ const AddBook = () => {
                     <textarea type="text" value={description} className="form-control" id="description" onChange={checkDescription} />
                 </div>
             </div>
-            <button className="btn p-2" disabled={disabled}>Donate Book</button>
+            <div className="btnGroup" style={{display:"flex",justifyContent:"center"}}>
+                <button className="btn p-2 mx-2" disabled={disabled} type='submit'>Donate Book</button>
+                <button className="btn p-2 mx-2" onClick={()=>navigate('/books')}>Go Back</button>
+            </div>
         </form>
     </div>
     </>

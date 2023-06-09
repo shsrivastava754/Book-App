@@ -1,4 +1,4 @@
-import { useEffect, useState, React } from "react";
+import { useEffect, useState, React, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import "../../styles/style.scss";
@@ -20,15 +20,25 @@ const BookList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [filter,setFilter] = useState("");
+  const [filter,setFilter] = useState("available");
   const pageNumbers = [];
+
+  // Used for using the function in child component
+  const childRef = useRef(null);
 
   useEffect(() => {
     getBooks(page, rowsPerPage, search,filter);
   }, [page, rowsPerPage, search, filter]);
+  
+  // Calls the function in header component
+  const handleCallChildFunction = () => {
+    if (childRef.current) {
+      childRef.current.changeCartCount();
+    }
+  };
 
   /**
-   * Sends API request to backend for getting books based on pagination
+   * Getting books based on pagination
    * @param {Number} currPage 
    * @param {Number} currLimit 
    */
@@ -109,7 +119,8 @@ const BookList = () => {
 
   return (
     <>
-      <Header></Header>
+      <Header ref={childRef}></Header>
+      {/* <button onClick={handleCallChildFunction}>Call Child Function</button> */}
       <div className="container bookList">
         <div className="table-heading">
           <div className="left-heading">
@@ -131,10 +142,9 @@ const BookList = () => {
             placeholder="Search here..."
             onChange={searchBook}
           />
-          <label htmlFor="filterTable mx-2">Filter by:</label>
-          <select name="filterTable" id="filterTable" onChange={handleFilter}>
-            <option value="0">No filter</option>
+          <select name="filterTable" id="filterTable" onChange={handleFilter} >
             <option value="1">Available</option>
+            <option value="0">All Status</option>
             <option value="2">Sold</option>
           </select>
         </div>
@@ -154,7 +164,7 @@ const BookList = () => {
             <tbody>
               {books &&
                 books.map((book) => {
-                  return <Book book={book} key={book.title} />;
+                  return <Book book={book} key={book.title} handleCallChildFunction = {handleCallChildFunction} />;
                 })}
             </tbody>
           </table>

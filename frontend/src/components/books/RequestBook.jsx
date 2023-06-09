@@ -89,9 +89,14 @@ const RequestBook = () => {
               />
             </div>
           </div>
-          <button className="btn p-2" disabled={disabled}>
-            Request Book
-          </button>
+          <div className="btnGroup" style={{display:"flex",justifyContent:"center"}}>
+            <button className="btn p-2 mx-2" disabled={disabled} type="submit">
+              Request Book
+            </button>
+            <button className="btn p-2 mx-2" onClick={()=>navigate("/books")}>
+              Go Back
+            </button>
+          </div>
         </form>
       </div>
     </>

@@ -30,6 +30,15 @@ export const getCartItems = async(url)=>{
 }
 
 /**
+ * 
+ * @returns {Number} count of cart items for an user
+ */
+export const getCartCount = async()=>{
+  const response = await axios.post(`${process.env.REACT_APP_API_URL}/cart/getCartCount`,{userId: JSON.parse(localStorage.getItem("user"))._id});
+  return response.data.cartCount;
+}
+
+/**
  * Post book details to cart collection
  * @param {Object} book
  */

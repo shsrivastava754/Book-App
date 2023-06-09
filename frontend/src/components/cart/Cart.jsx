@@ -1,4 +1,5 @@
-import { useEffect, useState, React } from "react";
+import { useEffect, useState, React, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import "../../styles/style.scss";
 
@@ -10,7 +11,10 @@ import {
 
 import Header from "../common/Header";
 import CartItem from "./CartItem";
+
 import Spinner from "react-bootstrap/Spinner";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 /**
  *
@@ -26,6 +30,14 @@ const Cart = () => {
   // For loader after sending request for email
   const [loading, setLoading] = useState(false);
 
+  // For confirmation box
+  const [show, setShow] = useState(false);
+
+  const childRef = useRef(null);
+  
+  const navigate = useNavigate();
+
+
   useEffect(() => {
     (async () => {
       const response = await getCartItems(url);
@@ -34,7 +46,19 @@ const Cart = () => {
     })();
   }, []);
 
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+
   const url = `${process.env.REACT_APP_API_URL}/cart/getCartItems`;
+
+  // Calls the function in header component
+  const handleCallChildFunction = () => {
+    if (childRef.current) {
+      childRef.current.changeCartCount();
+    }
+  };
 
   /**
    * Sending backend API request to clear the cart
@@ -57,7 +81,7 @@ const Cart = () => {
 
   return (
     <>
-      <Header></Header>
+      <Header ref={childRef}></Header>
       <div className="container bookList">
         <div className="cart-heading mt-2">
           <div className="left-heading">
@@ -67,58 +91,45 @@ const Cart = () => {
             <span className="cartTotal">Cart total: Rs. {totalPrice}</span>
           </div>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Title</th>
-              <th scope="col">Author</th>
-              <th scope="col">Price</th>
-              <th scope="col">Sale Price</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items?.length ? null : (
-              <h4
-                className="my-4 text-center"
-                style={{ marginLeft: "auto", textAlign: "center" }}
-              >
-                Add some books to the cart
-              </h4>
-            )}
-            {items &&
-              items.map((item) => {
-                return (
-                  <CartItem
-                    item={item}
-                    key={item.title}
-                    onUpdateQuantity={handleUpdateQuantity}
-                  />
-                );
-              })}
-          </tbody>
-        </table>
         {items?.length ? (
           <>
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Title</th>
+                  <th scope="col">Author</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Sale Price</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items &&
+                  items.map((item) => {
+                    return (
+                      <CartItem
+                        item={item}
+                        key={item.title}
+                        onUpdateQuantity={handleUpdateQuantity}
+                        handleCallChildFunction = {handleCallChildFunction}
+                      />
+                    );
+                  })}
+              </tbody>
+            </table>
             <div className="components cartBottom">
               {loading ? (
                 <button className="btn btn-loader" disabled>
-                  <Spinner
-                    as="span"
-                    animation="grow"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />
-                  Sending...
+                  <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
+                  Placing order
                 </button>
               ) : (
                 <>
                   <button className="btn clearCart" onClick={clearCart}>
                     Clear Cart
                   </button>
-                  <button className="checkout" onClick={checkout}>
+                  <button className="checkout" onClick={handleShow}>
                     Proceed to checkout{" "}
                     <i className="fa-regular fa-credit-card"></i>
                   </button>
@@ -126,8 +137,43 @@ const Cart = () => {
               )}
             </div>
           </>
-        ) : null}
+        ) : (
+          <>
+            <h4
+              className="cartEmpty"
+              style={{ marginLeft: "auto", textAlign: "center" }}
+            >
+              Your Books Cart is empty
+            </h4>
+            <h4
+              className="cartEmpty py-3"
+              style={{ marginLeft: "auto", textAlign: "center" }}
+            >
+              Continue shopping on the{" "}
+              <Link to="/books" className="booksLink">
+                Books Page
+              </Link>
+            </h4>
+            <button className="btn addBooks" onClick={() => navigate("/books")}>
+              Add books
+            </button>
+          </>
+        )}
       </div>
+      <Modal show={show} onHide={handleClose} className="checkoutConfirmBox">
+        <Modal.Header closeButton className="closeButton">
+          <Modal.Title>Place Order</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Confirm your order of <span>Rs. {totalPrice}</span></Modal.Body>
+        <Modal.Footer className="modalFooter">
+          <Button onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button onClick={checkout} className="checkout">
+            Checkout
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

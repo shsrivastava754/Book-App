@@ -165,18 +165,16 @@ const EditBook = () => {
               <label htmlFor="description" className="form-label">
                 Description
               </label>
-              <textarea
-                type="text"
-                defaultValue={location.state.description}
-                className="form-control"
-                id="description"
-                onChange={(e) => {
+              <textarea type="text" defaultValue={location.state.description} className="form-control" id="description" onChange={(e) => {
                   setDescription(e.target.value);
                 }}
               />
             </div>
           </div>
-          <button className="btn p-2">Save Book</button>
+          <div className="btnGroup" style={{display:"flex",justifyContent:"center"}}>
+            <button className="btn p-2 mx-2" type="submit">Save Book</button>
+            <button className="btn p-2 mx-2" onClick={()=>navigate('/books')}>Cancel</button>
+          </div>
         </form>
       </div>
     </>

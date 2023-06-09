@@ -10,16 +10,40 @@ class UserController {
    * @param {Object} res
    * @returns {Response} status code with a message if users list is found or not
    */
-  static async getUsers(req, res) {
-    try {
-      const users = await UserService.getUsers();
-      if (!users) {
-        return res.status(400).json({ message: "No users found" });
-      }
+  // static async getUsers(req, res) {
+  //   try {
+  //     const users = await UserService.getUsers();
+  //     if (!users) {
+  //       return res.status(400).json({ message: "No users found" });
+  //     }
 
-      return res.status(200).json({ users });
-    } catch (err) {
-      return res.status(500).json({ message: err });
+  //     return res.status(200).json({ users });
+  //   } catch (err) {
+  //     return res.status(500).json({ message: err });
+  //   }
+  // }
+
+  static async getUsers (req,res){
+    const page = Number(req.body.page) || 1;
+
+    // Number fo documents per page
+    const limit = Number(req.body.limit) || 5;
+
+    // Formula for pagination, skip is the number of documents to skip from the collection
+    const skip = (page - 1) * limit;
+
+    try {
+      const users = await UserService.getUsers(skip,limit,req.body.searchQuery || "");
+
+      const usersCount = await UserService.countUsers();
+      if (!users) {
+        return res.status(401).json({ message: "No users found" });
+      } else {
+        return res.status(200).json({ users: users, usersCount: usersCount });
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({error: error})
     }
   }
 

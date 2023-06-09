@@ -10,9 +10,30 @@ class UsersService {
    *
    * @returns {Array} list of all users in the users collection
    */
-  static async getUsers() {
-    const users = await UserModel.find();
-    return users;
+  // static async getUsers() {
+  //   const users = await UserModel.find();
+  //   return users;
+  // }
+
+  static async getUsers(skip, limit, searchQuery) {
+    try {
+      const users = await UserModel.find(
+      {
+        $or: [
+          { username: { $regex: searchQuery, $options: "i" } },
+          { name: { $regex: searchQuery, $options: "i" } },
+        ]
+      }).sort({ _id: -1 }).skip(skip).limit(limit);
+
+      return users;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async countUsers() {
+    const usersCount = await UserModel.countDocuments();
+    return usersCount;
   }
 
   /**
@@ -33,13 +54,9 @@ class UsersService {
   static async registerUser(body) {
     let saltRounds = 10;
     let hashedPass = bcrypt.hashSync(body.password, saltRounds);
-    let newUser = new UserModel({
-      name: body.name,
-      username: body.username,
-      password: hashedPass,
-      email: body.email,
-      role: "User",
-    });
+    body.password = hashedPass;
+    body.role = "User";
+    let newUser = new UserModel(body);
 
     await newUser.save();
     return newUser;
@@ -78,11 +95,11 @@ class UsersService {
 
   /**
    * Finds user by his id from the users collection
-   * @param {String} id 
+   * @param {String} id
    * @returns a user object
    */
-  static async findUserById(id){
-    let user = await UserModel.findOne({ _id: id});
+  static async findUserById(id) {
+    let user = await UserModel.findOne({ _id: id });
     return user;
   }
 }

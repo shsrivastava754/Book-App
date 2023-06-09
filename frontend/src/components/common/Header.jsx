@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import '../../styles/style.scss';
+import { getCartCount } from '../../services/cart.service';
 
 import { Dropdown } from 'react-bootstrap';
 
@@ -9,8 +10,23 @@ import { Dropdown } from 'react-bootstrap';
  * Function that returns the navbar component
  * @returns {React.Component} Header component
  */
-const Header = () => {
+const Header = forwardRef((props,ref) => {
+
+  const [cartCount, setCartCount] = useState();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    (async ()=>{
+      const result =  await getCartCount();
+      setCartCount(result);
+    })();
+  }, [cartCount]);
+
+  // Expose changeCartCount to the parent component
+  useImperativeHandle(ref, () => ({
+    changeCartCount
+  }));
+  
 
   /**
    * Function to logout the user from current session
@@ -19,6 +35,15 @@ const Header = () => {
     // Clear browser localStorage
     localStorage.clear();
     navigate('/');
+  }
+
+  /**
+   * Function to change the count of cart
+   */
+  const changeCartCount = async ()=>{
+    const result = await getCartCount();
+    console.log(result);
+    setCartCount(result);
   }
 
   
@@ -47,10 +72,10 @@ const Header = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link" to="/books">Home</Link>
+                <Link className="nav-link mx-2" to="/books">Home</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/books">Books</Link>
+                <Link className="nav-link mx-2" to="/books">Books</Link>
               </li>
               {
                 localStorage.getItem("user")?
@@ -65,8 +90,10 @@ const Header = () => {
         </div>
         
         <button id='cartIcon' onClick={cart}>
-          <i className="fa-solid fa-cart-shopping"></i>
+          <i className="fa-solid fa-cart-shopping cart-icon"></i>
+          <span class="cart-count">{cartCount}</span>
         </button>
+        
         <Dropdown>
           <Dropdown.Toggle className='navDropdown'>
             <i className="fa-solid fa-user"></i>
@@ -88,6 +115,6 @@ const Header = () => {
         
     </nav>
   )
-}
+});
 
 export default Header

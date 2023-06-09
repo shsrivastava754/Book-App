@@ -3,6 +3,7 @@ const BookModel = require("../database/schema/book.schema");
 const UserModel = require("../database/schema/user.schema");
 const UserService = require("../services/user.service");
 const EmailService = require("../services/email.service");
+const EmailStyle = require("../styles/email.style");
 
 /**
  * Class representing a book service.
@@ -15,7 +16,7 @@ class BookService {
   static async countBooks(userId) {
     const booksCount = await BookModel.countDocuments({
       isDeleted: false,
-      donatedById: { $ne: userId },
+      // donatedById: { $ne: userId },
     });
     return booksCount;
   }
@@ -129,7 +130,7 @@ class BookService {
     }
 
     books = await BookModel.find({
-      donatedById: { $ne: userId },
+      // donatedById: { $ne: userId },
       isDeleted: false,
       $or: [
         { title: { $regex: searchQuery, $options: "i" } },
@@ -163,26 +164,65 @@ class BookService {
    */
   static async requestBook(body) {
     const user = await UserService.findUserById(body.userId);
-
-    const name = "Admin";
     const bookName = body.bookName;
     const author = body.author;
-    const productName = "Book App";
-    const productLink = "https://mailgen.js/";
 
-    const intro = `${user.name} requested a book`;
-    const tableData = [
-      {
-        Name: bookName,
-        Author: author,
-      },
-    ];
-
-    const outro = `New Book Requested by ${user.email}`;
     const userEmail = process.env.EMAIL;
-    const subject = "Someone requested a book";
+    const subject = `Someone requested a book`;
+    const name = 'Admin';
 
-    const emailObj = { intro, outro, tableData, subject, productName, productLink, name, userEmail};
+    // Table template that is rendered inside the html content
+    const tableTemplate = `
+        <tr>
+          <td>${bookName}</td>
+          <td>${author}</td>
+        </tr>
+    `;
+
+    const style = EmailStyle.returnStyle();
+
+    const html = `
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+      ${style}
+    </head>
+
+    <body>
+      <h3 class="header">
+          Book App
+      </h3>
+      <div class="container">
+          <h3>
+              Hi admin,
+          </h3>
+          <p>
+            ${user.name} (${userEmail}) requested a book
+          </p>
+          <table class="table-responsive">
+            <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Author</th>
+            </tr>
+            </thead>
+            <tbody>
+            ${tableTemplate}
+            </tbody>
+          </table>
+          
+          <p class="mb-0">Yours Truly,</p>
+          <p>Book App</p>
+      </div>
+      <footer class="footer">
+          <div class="container">
+              <span class="text-muted">© 2023 Book App. All rights reserved.</span>
+          </div>
+      </footer>
+    </body>`
+
+    const emailObj = { userEmail, subject, html, name};
 
     const result = await EmailService.sendEmail(emailObj);
     return result;

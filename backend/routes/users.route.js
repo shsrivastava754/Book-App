@@ -5,7 +5,7 @@ const UsersController = require("../controllers/users.controller");
 const router = express.Router();
 
 // Routes for authentication of users
-router.get("/users/getUsers", UsersController.getUsers);
+router.post("/users/getUsers", bodyParser, UsersController.getUsers);
 router.post("/register", bodyParser, UsersController.register);
 router.post("/login", bodyParser, UsersController.login);
 router.get("/users/getDonations/:id", UsersController.countDonations);

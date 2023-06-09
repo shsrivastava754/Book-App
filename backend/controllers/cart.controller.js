@@ -130,6 +130,22 @@ class CartController {
   }
 
   /**
+   * Returns the count of cart items of an user
+   * @param {Request} req 
+   * @param {Response} res 
+   * @returns {Object<cartCount>} a response from promise
+   */
+  static async countCartItems(req,res){
+    try{
+      let result = await CartService.countCartItems(req.body.userId);
+      return res.status(201).json({cartCount: result});
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({message: "Can't find count of cart items"});
+    }
+  }
+
+  /**
    * Increment the quantity of item in the cart
    * @param {Request} req
    * @param {Response} res

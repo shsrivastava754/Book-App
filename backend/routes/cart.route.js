@@ -44,4 +44,6 @@ router.post('/cart/sendEmail',bodyParser, CartController.informAdmin);
 
 router.post('/sendMessage',bodyParser,MessageController.sendMessage);
 
+router.post('/cart/getCartCount',bodyParser,CartController.countCartItems);
+
 module.exports = router;

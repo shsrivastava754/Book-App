@@ -50,6 +50,7 @@ const CartItem = (props) => {
    */
   const removeItem = () => {
     removeCartItem(props.item._id, userId);
+    props.handleCallChildFunction();
   };
 
   /**

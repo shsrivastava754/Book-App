@@ -3,12 +3,14 @@
 .navbar {
   background-color: $nav-bg-color;
   color: $white;
+  padding: 0;
 }
 
 .navbar-brand,
 .nav-link {
   color: $white;
   font-weight: 500;
+  padding: 14px;
 }
 
 .navbar-brand:hover {
@@ -16,7 +18,8 @@
 }
 
 .nav-link:hover {
-  color: $nav-link-hover;
+  color: $white;
+  background-color: $heading-color;
 }
 
 .nav-link:focus,
@@ -114,11 +117,16 @@ select {
   color: $btn-color;
   width: 20%;
   display: block;
-  margin: auto;
 }
 
 .formContainer button.btn:hover {
   background-color: transparent;
+}
+
+.btnGroup{
+  display:"flex";
+  justify-content:"center";
+  align-items:"center";
 }
 
 .donationForm button.btn:disabled,
@@ -168,19 +176,17 @@ select {
 }
 
 .detailsContainer button.btn {
-  background-color: $primary-color;
-  color: $btn-color;
+  background-color: inherit;
+  border: 1px solid $primary-color;
+  color: $primary-color;
   width: 20%;
-  display: block;
-  margin: auto;
   font-weight: 500;
 }
 
 .detailsContainer button.btn:hover,
 .formContainer button.btn:hover {
-  background-color: transparent;
-  border: 1px solid $primary-color;
-  color: $primary-color;
+  background-color: $primary-color;
+  color: $btn-color;
 }
 
 .searchBar {
@@ -237,6 +243,13 @@ select {
 .bookList select:hover,
 .bookList option:hover {
   cursor: pointer;
+}
+
+#filterTable{
+  padding: 10px;
+  margin-left: 16.2rem;
+  width: 30%;
+
 }
 
 .bookList option:hover {
@@ -343,6 +356,22 @@ select {
     padding: 7px;
     padding-top: 1px;
   }
+
+  .formContainer,
+  .detailsContainer{
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .components {
+    display: flex;
+  }
+
+  .formContainer,
+  .detailsContainer{
+    width: 100%;
+  }
 }
 
 footer {
@@ -416,6 +445,51 @@ footer {
   border: none;
 }
 
+.addBooks{
+  background-color: inherit;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  display: block;
+  margin: auto;
+  padding: 10px;
+  width: 20%;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  outline: none;
+  margin-top: 2rem;
+}
+
+.addBooks:hover{
+  color: $white;
+  background-color: $primary-color;
+}
+
+.cartEmpty{
+  color: $content-text-color;
+}
+
+.booksLink{
+  color: $primary-color;
+  text-decoration: underline;
+}
+
+.cart-icon {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.cart-count {
+  position: absolute;
+  min-width: 16px;
+  padding: 1px 2px;
+  font-size: 12px;
+  font-weight: bold;
+  color: $primary-color;
+  background-color: $white;
+  border-radius: 50%;
+}
+
 .cartBottom {
   display: flex;
   justify-content: flex-end;
@@ -440,6 +514,34 @@ footer {
 .btn-loader{
   border: 1px solid $primary-color;
   color: $primary-color;
+}
+
+.checkoutConfirmBox .modalFooter button{
+  color: $primary-color;
+  background-color: inherit;
+  border: 1px solid $primary-color;
+  padding: 7px;
+  font-weight: 400;
+}
+
+.checkoutConfirmBox .modalFooter button:hover{
+  color: $primary-color;
+}
+
+.checkoutConfirmBox .modalFooter button.checkout{
+  background-color: $primary-color;
+  color: $white;
+}
+
+.checkoutConfirmBox .modalFooter button.checkout:hover{
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  background-color: inherit;
+}
+
+.checkoutConfirmBox .closeButton{
+  outline: none;
+  border: transparent;
 }
 
 /** --------------------------------------------------------------- **/
@@ -585,6 +687,11 @@ table thead {
   overflow-y: auto;
   overflow-x: hidden;
   margin-bottom: 20px;
+}
+
+.bookDonor:hover{
+  text-decoration: underline;
+  color: $primary-color;
 }
 
 @media screen and (max-width: 600px) {

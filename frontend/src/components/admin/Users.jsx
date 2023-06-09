@@ -4,7 +4,7 @@ import Header from "../common/Header";
 
 import "../../styles/style.scss";
 
-import { getUsers } from "../../services/user.service";
+import { getUsers, fetchUsers } from "../../services/user.service";
 
 import User from "./User";
 
@@ -16,58 +16,147 @@ const Users = () => {
   // State variable for users list
   const [users, setUsers] = useState();
 
-  // State variable for search text
-  const [search, setSearch] = useState();
+  const [usersLength, setUsersLength] = useState();
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const pageNumbers = [];
 
   useEffect(() => {
-    (async ()=>{
-      const users = await getUsers();
-      setUsers(users.users);
-    })();
-  }, []);
+    getUsers(page, rowsPerPage, search);
+  }, [page, rowsPerPage, search]);
+
+  const getUsers = async (page, rowsPerPage, search) => {
+    const response = await fetchUsers(page, rowsPerPage, search);
+    setUsers(response.users);
+    setUsersLength(response.usersCount);
+  };
+
+  // Set page numbers for number of buttons
+  for (let i = 1; i <= Math.ceil(usersLength / rowsPerPage); i++) {
+    pageNumbers.push(i);
+  }
 
   /**
-   * Function to handle the search bar
-   * @returns users list according to the search text
+   * When previous button is clicked
    */
-  const handleSearch = () => {
-    if (search == null) {
-      return users;
-    }
+  const handlePrevious = () => {
+    if (page !== 1) setPage(page - 1);
+  };
 
-    return users.filter((user) =>
-      user.username.toLowerCase().includes(search.trim())
-    );
+  /**
+   * When next button is clicked
+   */
+  const handleNext = () => {
+    if (page !== Math.ceil(usersLength / rowsPerPage)) setPage(page + 1);
+  };
+
+  /**
+   * Function to manage search box
+   * @param {Event} e
+   */
+  const searchBook = (e) => {
+    setSearch(e.target.value);
+    setPage(1);
+  };
+
+  /**
+   * Sends API call at backend for number of rows per page
+   * @param {Number} e
+   */
+  const handlePageSize = (e) => {
+    setRowsPerPage(e.target.value);
+    setPage(1);
+  };
+
+  /**
+   * Sends API call at backend for page number of data
+   * @param {Number} number
+   */
+  const paginate = (number) => {
+    setPage(number);
   };
 
   return (
     <>
-     <Header></Header>
+      <Header></Header>
       <div className="container bookList">
-        <h3 className="my-3">Users</h3>
+        <div className="table-heading">
+          <div className="left-heading">
+            <h3 className="my-3 heading">Users</h3>
+          </div>
+        </div>
         <div className="components">
           <input
             className="searchBar"
             placeholder="Search user..."
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={searchBook}
           />
         </div>
-        <table className="usersTable">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Username</th>
-              <th scope="col">Email</th>
-              <th scope="col">Number of donations</th>
-            </tr>
-          </thead>
-          <tbody>
-            {handleSearch() &&
-              handleSearch().map((user) => {
-                return <User user={user} key={user._id} />;
+        <div className="booksTable">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Number of donations</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users &&
+                users.map((user) => {
+                  return <User user={user} key={user._id} />;
+                })}
+            </tbody>
+          </table>
+        </div>
+        <div className="pagination">
+          <div className="left-pagination">
+            <span htmlFor="rowsPerPage">Rows per page:</span>
+            <select
+              className="form-select"
+              onChange={(e) => handlePageSize(e)}
+              id="rowsPerPage"
+              style={{ display: "inline" }}
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </select>
+          </div>
+          <div className="right-pagination">
+            <button
+              className="btn btnPaginationControls previous"
+              onClick={() => handlePrevious()}
+            >
+              {" "}
+              Previous{" "}
+            </button>
+            <ul className="">
+              {pageNumbers.map((number) => {
+                let btnClass = " btn btnPaginationInactive mx-1";
+                if (number === page) btnClass = "btn btnPaginationActive mx-1";
+                return (
+                  <button
+                    className={btnClass}
+                    onClick={() => paginate(number)}
+                    key={number}
+                  >
+                    {number}
+                  </button>
+                );
               })}
-          </tbody>
-        </table>
+            </ul>
+            <button
+              className="btn btnPaginationControls float-right"
+              onClick={() => handleNext()}
+            >
+              {" "}
+              Next{" "}
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );

@@ -18,6 +18,8 @@ const BookDetails = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    compareBook();
+    
     (async()=>{
       const data = await getBookData(url);
       setBook(data.data.book);
@@ -97,16 +99,21 @@ const BookDetails = () => {
           <h5>
             <span>Price</span>: {book?.price}
           </h5>
-          {localStorage.getItem("user") ? (
-            JSON.parse(localStorage.getItem("user"))["role"] === "Admin" ? (
-              <button className="btn" onClick={() => {editBook(book)}} >
-                Edit Details
-              </button>
-            ) : null
-          ) : null}
-          <button className="btn mt-3" onClick={() => {addToCart(book)}} disabled={disabled}>
-            Add to Cart
-          </button>
+          <div className="btnGroup" style={{display:"flex",justifyContent:"center"}}>
+            {localStorage.getItem("user") ? (
+              JSON.parse(localStorage.getItem("user"))["role"] === "Admin" ? (
+                <button className="btn p-2 mx-2" onClick={() => {editBook(book)}} >
+                  Edit Details
+                </button>
+              ) : null
+            ) : null}
+            <button className="btn p-2 mx-2" onClick={() => {addToCart(book)}} disabled={disabled}>
+              Add to Cart
+            </button>
+            <button className="btn p-2 mx-2" onClick={() => {navigate('/books')}} disabled={disabled}>
+              Go Back
+            </button>
+          </div>
         </div>
       </div>
     </>

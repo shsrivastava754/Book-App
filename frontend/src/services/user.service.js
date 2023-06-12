@@ -26,6 +26,20 @@ export const fetchUsers = (page,limit,search) => {
   }).then((res) => res.data);
 };
 
+// Fetch donations done by the user
+export const fetchDonations = async()=>{
+  const userId = JSON.parse(localStorage.getItem("user"))._id;
+  const url = `${process.env.REACT_APP_API_URL}/users/donations/${userId}`;
+  return await axios.get(url);
+}
+
+// Fetch donations done by the user
+export const fetchOrders = async()=>{
+  const userId = JSON.parse(localStorage.getItem("user"))._id;
+  const url = `${process.env.REACT_APP_API_URL}/users/orders/${userId}`;
+  return await axios.get(url);
+}
+
 /**
  * Function for login with google ID
  * @returns {Response} response from the axios request
@@ -97,5 +111,15 @@ export const postGoogleUser = async (userObj) => {
     return res;
   } catch (error) {
     toast.error("User already exists");
+  }
+};
+
+export const getUserProfile = async (id) => {
+  try {
+    return await axios
+    .get(`${process.env.REACT_APP_API_URL}/users/${id}`)
+    .then((res) => res.data);
+  } catch (error) {
+    console.log(error);
   }
 };

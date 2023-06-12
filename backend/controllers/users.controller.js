@@ -1,3 +1,4 @@
+const OrderService = require("../services/order.service");
 const UserService = require("../services/user.service");
 
 /**
@@ -9,19 +10,7 @@ class UserController {
    * @param {Object} req
    * @param {Object} res
    * @returns {Response} status code with a message if users list is found or not
-   */
-  // static async getUsers(req, res) {
-  //   try {
-  //     const users = await UserService.getUsers();
-  //     if (!users) {
-  //       return res.status(400).json({ message: "No users found" });
-  //     }
-
-  //     return res.status(200).json({ users });
-  //   } catch (err) {
-  //     return res.status(500).json({ message: err });
-  //   }
-  // }
+   * */
 
   static async getUsers (req,res){
     const page = Number(req.body.page) || 1;
@@ -126,6 +115,21 @@ class UserController {
   }
 
   /**
+   * Returns the donations done by the user
+   * @param {Request} req 
+   * @param {Response} res 
+   * @returns {Object} donations done by the user
+   */
+  static async getDonations(req,res){
+    try {
+      const donations = await UserService.getDonations(req.params.id);
+      return res.status(201).json({ donations: donations });
+    } catch (error) {
+      return res.status(500).json({ message: error });
+    }
+  }
+
+  /**
    * Returns the user details
    * @param {Request} req
    * @param {Response} res
@@ -133,7 +137,9 @@ class UserController {
   static async getUser(req, res) {
     try {
       const user = await UserService.getUser(req.params.id);
-      return res.status(201).json({ message: user });
+      const donationsCount = await UserService.countDonations(req.params.id);
+      const ordersCount = await OrderService.ordersCount(req.params.id);
+      return res.status(201).json({ message: user,donationsCount, ordersCount });
     } catch (error) {
       return res.status(501).json({ message: "No user found" });
     }

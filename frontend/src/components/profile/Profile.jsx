@@ -3,15 +3,20 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import Header from "../common/Header";
 
-import axios from "axios";
+import { getUserProfile } from "../../services/user.service";
 
 const Profile = () => {
   const [user, setUser] = useState();
+  const [donations, setDonations] = useState();
+  const [orders, setOrders] = useState();
 
   useEffect(() => {
-    fetchHandler().then((data) => {
+    (async()=>{
+      const data = await getUserProfile(id);
       setUser(data.message);
-    });
+      setDonations(data.donationsCount);
+      setOrders(data.ordersCount);
+    })();
   }, []);
 
   // Getting the id from url parameters
@@ -19,37 +24,97 @@ const Profile = () => {
 
   const navigate = useNavigate();
 
+  const userId = JSON.parse(localStorage.getItem("user"))._id;
+
   /**
-   * Function to fetch data of book from backend
-   * @returns {Response} response from the API call at backend for details of the book
+   * Function to navigate to a route which shows details of book with given ID
+   * @param {Object} book
    */
-  const fetchHandler = async () => {
-    return await axios
-      .get(`${process.env.REACT_APP_API_URL}/users/${id}`)
-      .then((res) => res.data);
+  const getDonations = () => {
+    navigate(`/users/donations/${userId}`);
   };
+
+  /**
+   * Function to navigate the orders list page
+   */
+  const getOrders = () =>{
+    navigate(`/users/orders/${userId}`);
+  }
 
   return (
     <>
       <Header></Header>
-      <div className="container mt-4 detailsContainer p-4">
-        <h3>User Profile</h3>
-        <div className="details">
-          <h5>
-            <span>Name</span>: {user?.name}
-          </h5>
-          <h5>
-            <span>Username</span>: {user?.username}
-          </h5>
-          <h5>
-            <span>Email</span>: {user?.email}
-          </h5>
-        </div>
-        <div className="btnGroup" style={{ display: "flex", justifyContent: "center" }}>
-          <button className="btn p-2 mx-2" onClick={() => navigate("/books")}>
-            Go Back
+      <div className="container profileContainer">
+        <div className="btn-group mt-2">
+          <button className="back-btn" onClick={() => navigate("/books")}>
+          <i class="fa-solid fa-arrow-left"></i>
           </button>
+        <h3 className="my-3">User Profile</h3>
         </div>
+
+        <div className="container mt-4 detailsContainer p-4">
+          <div className="details">
+            <h5>
+              <span>Name</span>: {user?.name}
+            </h5>
+            <h5>
+              <span>Username</span>: {user?.username}
+            </h5>
+            <h5>
+              <span>Email</span>: {user?.email}
+            </h5>
+          </div>
+        </div>
+
+          <div className="row mt-4 statsContainer">
+            <div className="col-sm-6">
+              <div className="card">
+                <div className="card-body">
+                  {
+                    donations>1?<h5 className="card-title">{donations} donations</h5>:<h5 className="card-title">{donations} donation</h5>
+                  }
+                  {
+                    JSON.parse(localStorage.getItem("user"))._id===id?
+                  <>  
+                    <p className="card-text">
+                    Your act of kindness and thoughtfulness is truly inspiring, and we are incredibly grateful for your support.
+                    </p>
+                    <button className="btn" onClick={()=>{getDonations()}}>
+                      View Donations
+                    </button>
+                  </>:
+                  <p className="card-text">
+                  Their contribution is truly remarkable and greatly appreciated. With their donation, we can enhance our library and provide more resources to our community.
+                  </p>
+                  }
+                  
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-6"  >
+              <div className="card">
+                <div className="card-body">
+                  {
+                    orders>1?<h5 className="card-title">{orders} orders</h5>:<h5 className="card-title">{orders} order</h5>
+                  }
+                  {
+                    JSON.parse(localStorage.getItem("user"))._id===id?
+                  <>  
+                    <p className="card-text">
+                    We strive to provide a seamless and enjoyable shopping experience, and we are delighted that you chose our website to fulfill your needs.
+                    </p>
+                    <button className="btn" onClick={()=>{getOrders()}}>
+                      View Order History
+                    </button>
+                  </>:
+                  <p className="card-text">
+                   It's always exciting to see our users engaged in exploring new literature and expanding their knowledge.
+                  </p>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
     </>
   );

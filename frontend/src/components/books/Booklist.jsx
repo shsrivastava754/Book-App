@@ -120,7 +120,6 @@ const BookList = () => {
   return (
     <>
       <Header ref={childRef}></Header>
-      {/* <button onClick={handleCallChildFunction}>Call Child Function</button> */}
       <div className="container bookList">
         <div className="table-heading">
           <div className="left-heading">

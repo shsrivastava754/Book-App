@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+{ timestamps: true }const mongoose = require("mongoose");
 
 // This allows for more flexibility in querying the database, as queries can include fields that are not explicitly defined in the schema.
 mongoose.set("strictQuery", false);
@@ -43,7 +43,7 @@ const BookSchema = new mongoose.Schema({
 
   // Boolean variable whether the book is deleted or not (For soft delete)
   isDeleted: Boolean,
-});
+},{ timestamps: true });
 
 const BooksModel = new mongoose.model("Books", BookSchema);
 module.exports = BooksModel;

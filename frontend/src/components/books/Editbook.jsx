@@ -77,7 +77,12 @@ const EditBook = () => {
     <>
       <Header></Header>
       <div className="container mt-4 formContainer p-4">
-        <h3 className="text-center">Edit Details</h3>
+        <div className="btn-group">
+            <button className="back-btn" style={{paddingBottom:"30px"}} onClick={() => navigate("/books")}>
+            <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h3>Edit Details</h3>
+        </div>
         <form onSubmit={formSubmit}>
           <div className="row">
             <div className="col-6 mb-3">

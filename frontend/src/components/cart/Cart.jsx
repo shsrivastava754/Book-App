@@ -7,6 +7,7 @@ import {
   checkoutService,
   clearCartService,
   getCartItems,
+  addOrderService
 } from "../../services/cart.service";
 
 import Header from "../common/Header";
@@ -71,6 +72,7 @@ const Cart = () => {
     setLoading(true);
     console.log(await checkoutService(totalPrice));
     setLoading(false);
+    await addOrderService(totalPrice);
     clearCartService();
   };
 
@@ -93,6 +95,9 @@ const Cart = () => {
         </div>
         {items?.length ? (
           <>
+          {
+            loading?
+            null:
             <table>
               <thead>
                 <tr>
@@ -117,12 +122,14 @@ const Cart = () => {
                     );
                   })}
               </tbody>
-            </table>
+          </table>
+          }
+            
             <div className="components cartBottom">
               {loading ? (
                 <button className="btn btn-loader" disabled>
                   <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
-                  Placing order
+                  &nbsp;Placing order
                 </button>
               ) : (
                 <>
@@ -160,6 +167,20 @@ const Cart = () => {
           </>
         )}
       </div>
+      {loading ?  
+      <Modal show={show} onHide={handleClose} className="checkoutConfirmBox">
+      <Modal.Header closeButton className="closeButton">
+        <Modal.Title>Hold on</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>Placing you order</Modal.Body>
+      <Modal.Footer className="modalFooter">
+          <button className="btn btn-loader" disabled>
+            <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
+            &nbsp;Placing order
+          </button>
+      </Modal.Footer>
+    </Modal>
+      :
       <Modal show={show} onHide={handleClose} className="checkoutConfirmBox">
         <Modal.Header closeButton className="closeButton">
           <Modal.Title>Place Order</Modal.Title>
@@ -174,6 +195,9 @@ const Cart = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      }
+      
     </>
   );
 };

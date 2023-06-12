@@ -10,9 +10,12 @@ import Users from "./components/admin/Users";
 import Cart from "./components/cart/Cart";
 import Profile from "./components/profile/Profile";
 import RequestBook from "./components/books/RequestBook";
+import Donations from "./components/profile/Donations";
+import Orders from "./components/profile/Orders";
 
 import PrivateRoutes from "./routes/PrivateRoutes";
 import ProtectLogin from "./routes/ProtectLogin";
+import ProfileRoutes from "./routes/ProfileRoutes";
 import ProtectAdmin from "./routes/ProtectAdmin";
 
 function App() {
@@ -27,8 +30,13 @@ function App() {
           <Route path="/:id" element={<Bookdetails/>} exact />
           <Route path="/books/:id" element={<Editbook/>} exact />
           <Route path="/books/cart" element={<Cart/>} />
-          <Route path="/profile/:id" element={<Profile/>} />
           <Route path="/books/requestBook" element={<RequestBook/>} />
+          <Route path="/profile/:id" element={<Profile/>} />
+        </Route>
+
+        <Route element={<ProfileRoutes/>}>
+          <Route path="/users/donations/:id" element={<Donations/>} />
+          <Route path="/users/orders/:id" element={<Orders/>} />
         </Route>
 
       {/* Routes that is accessed by not logged in user */}

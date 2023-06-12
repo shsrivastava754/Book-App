@@ -22,7 +22,7 @@ const dbSchema = new mongoose.Schema({
 
   // Role of the user whether he/she is admin or a normal user
   role: String,
-});
+},{ timestamps: true });
 
 const Users = new mongoose.model("Users", dbSchema);
 

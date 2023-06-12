@@ -80,7 +80,7 @@
 .formContainer h3 {
   color: $heading-color;
   margin-bottom: 30px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .formContainer label {
@@ -127,6 +127,21 @@ select {
   display:"flex";
   justify-content:"center";
   align-items:"center";
+}
+
+.back-btn{
+  outline: none;
+  border: none;
+  background-color: inherit;
+}
+
+.back-btn i{
+  border-radius: 70%;
+  background-color: inherit;
+  color: $primary-color;
+  font-size: 1.2rem;
+  font-weight: bolder;
+  padding: 7px;
 }
 
 .donationForm button.btn:disabled,
@@ -294,6 +309,43 @@ select {
 
 .dialogBox h3 {
   padding: 2rem;
+}
+
+.profileContainer h3{
+  color: #6854c2;
+  font-weight: bolder;
+}
+
+.profileContainer .detailsContainer{
+  width: 100%;
+}
+
+.statsContainer .card{
+  border: none;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+
+.statsContainer .card-title{
+  font-weight: 700;
+  color: $primary-color;
+}
+
+.statsContainer .card-text{
+  color: $content-text-color;
+  height: 4rem;
+  overflow-y: auto;
+}
+
+.statsContainer .btn{
+  border: 1px solid $primary-color;
+  color: $primary-color;
+  font-weight: 500;
+}
+
+.statsContainer .btn:hover{
+  background-color: $primary-color;
+  color: $white;
 }
 
 @media screen and (max-width: 1400px) {

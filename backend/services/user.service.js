@@ -10,10 +10,6 @@ class UsersService {
    *
    * @returns {Array} list of all users in the users collection
    */
-  // static async getUsers() {
-  //   const users = await UserModel.find();
-  //   return users;
-  // }
 
   static async getUsers(skip, limit, searchQuery) {
     try {
@@ -83,6 +79,15 @@ class UsersService {
     return donationsCount;
   }
 
+  /**
+   * 
+   * @param {String} id 
+   * @returns {Object} donations done by the user
+   */
+  static async getDonations(id) {
+    const donations = await BookModel.find({ donatedById: id });
+    return donations;
+  }
   /**
    * Get details of a user from collection
    * @param {String} id

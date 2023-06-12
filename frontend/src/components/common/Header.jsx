@@ -91,7 +91,7 @@ const Header = forwardRef((props,ref) => {
         
         <button id='cartIcon' onClick={cart}>
           <i className="fa-solid fa-cart-shopping cart-icon"></i>
-          <span class="cart-count">{cartCount}</span>
+          <span className="cart-count">{cartCount}</span>
         </button>
         
         <Dropdown>

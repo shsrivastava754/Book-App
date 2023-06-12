@@ -171,3 +171,20 @@ export const getQuantities = async (itemId, bookId) => {
     console.log(error);
   }
 };
+
+export const addOrderService = async (total_price) => {
+  await axios
+    .post(`${process.env.REACT_APP_API_URL}/users/orders/addOrder`, {
+      name: JSON.parse(localStorage.getItem("user")).name,
+      userId: JSON.parse(localStorage.getItem("user"))._id,
+      email: JSON.parse(localStorage.getItem("user")).email,
+      total_price: total_price
+    })
+    .then((res) => {
+      if (res) {
+        console.log("Order added to backend");
+      } else {
+        console.log("Order adding failed");
+      }
+    });
+}

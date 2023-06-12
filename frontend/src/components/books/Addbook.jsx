@@ -103,7 +103,12 @@ const AddBook = () => {
     <>
     <Header></Header>
     <div className='container mt-4 formContainer p-4 donationForm'>
-        <h3>Donate a Book</h3>
+        <div className="btn-group">
+            <button className="back-btn" style={{paddingBottom:"30px"}} onClick={() => navigate("/books")}>
+            <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h3>Donate Book</h3>
+        </div>
         <form onSubmit={formSubmit} autoComplete="off">
             <div className="row">
                 <div className="col-md-6 mb-3">
@@ -133,7 +138,6 @@ const AddBook = () => {
             </div>
             <div className="btnGroup" style={{display:"flex",justifyContent:"center"}}>
                 <button className="btn p-2 mx-2" disabled={disabled} type='submit'>Donate Book</button>
-                <button className="btn p-2 mx-2" onClick={()=>navigate('/books')}>Go Back</button>
             </div>
         </form>
     </div>

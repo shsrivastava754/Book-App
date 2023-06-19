@@ -1,9 +1,11 @@
 import { useState, useEffect, React } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
+import UserService from "../../services/user.service";
 
 import Header from "../common/Header";
 
-import { getUserProfile } from "../../services/user.service";
+import Cookies from "js-cookie";
 
 const Profile = () => {
   const [user, setUser] = useState();
@@ -12,7 +14,7 @@ const Profile = () => {
 
   useEffect(() => {
     (async()=>{
-      const data = await getUserProfile(id);
+      const data = await UserService.getUserProfile(id);
       setUser(data.message);
       setDonations(data.donationsCount);
       setOrders(data.ordersCount);
@@ -20,25 +22,35 @@ const Profile = () => {
   }, []);
 
   // Getting the id from url parameters
-  const id = useParams().id;
-
+  
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  const id = location.state.id;
 
-  const userId = JSON.parse(localStorage.getItem("user"))._id;
+  const userId = JSON.parse(Cookies.get('userToken'))._id;
 
   /**
    * Function to navigate to a route which shows details of book with given ID
    * @param {Object} book
    */
   const getDonations = () => {
-    navigate(`/users/donations/${userId}`);
+    navigate(`/users/donations/${user.username}`,{
+      state: {
+        userId
+      }
+    });
   };
 
   /**
    * Function to navigate the orders list page
    */
   const getOrders = () =>{
-    navigate(`/users/orders/${userId}`);
+    navigate(`/users/orders/${user.username}`,{
+      state: {
+        userId
+      }
+    });
   }
 
   return (
@@ -46,7 +58,7 @@ const Profile = () => {
       <Header></Header>
       <div className="container profileContainer">
         <div className="btn-group mt-2">
-          <button className="back-btn" onClick={() => navigate("/books")}>
+          <button className="back-btn" onClick={() => navigate(-1)}>
           <i class="fa-solid fa-arrow-left"></i>
           </button>
         <h3 className="my-3">User Profile</h3>
@@ -74,7 +86,7 @@ const Profile = () => {
                     donations>1?<h5 className="card-title">{donations} donations</h5>:<h5 className="card-title">{donations} donation</h5>
                   }
                   {
-                    JSON.parse(localStorage.getItem("user"))._id===id?
+                    JSON.parse(Cookies.get('userToken'))._id===id?
                   <>  
                     <p className="card-text">
                     Your act of kindness and thoughtfulness is truly inspiring, and we are incredibly grateful for your support.
@@ -98,7 +110,7 @@ const Profile = () => {
                     orders>1?<h5 className="card-title">{orders} orders</h5>:<h5 className="card-title">{orders} order</h5>
                   }
                   {
-                    JSON.parse(localStorage.getItem("user"))._id===id?
+                    JSON.parse(Cookies.get('userToken'))._id===id?
                   <>  
                     <p className="card-text">
                     We strive to provide a seamless and enjoyable shopping experience, and we are delighted that you chose our website to fulfill your needs.

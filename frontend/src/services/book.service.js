@@ -1,6 +1,12 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 /**
+ * Utility class for handling book services
+ */
+class BookService{
+
+  /**
  *
  * @param {String} title
  * @param {String} author
@@ -9,10 +15,10 @@ import axios from "axios";
  * @param {String} quantity
  * @param {Number} sale_price
  */
-export const postBook = async ( title, author, price, description, quantity, sale_price ) => {
-  let result;
+  async addBook(title, author, price, description, quantity, sale_price){
+    let result;
   await axios.post(process.env.REACT_APP_API_URL, { title, author, price, description, quantity, sale_price, 
-      donatedById: JSON.parse(localStorage.getItem("user"))["_id"]
+      donatedById: JSON.parse(Cookies.get('userToken'))._id, token: Cookies.get('token')
     })
     .then((res) => {
       if (res) {
@@ -21,19 +27,23 @@ export const postBook = async ( title, author, price, description, quantity, sal
     });
 
   return result;
-};
+  }
 
-/**
+  /**
  * Get data of a book from backend
  * @param {ObjectId} id
  * @returns
  */
-export const getBookData = async (url) => {
-  let response = await axios.get(url);
-  return response;
-};
+  async getBookData (url) {
+    let response = await axios.get(url,{
+      params: {
+        token: Cookies.get('token')
+      }
+    });
+    return response;
+  }
 
-/**
+  /**
  * Edit book details at backend
  * @param {String} title
  * @param {String} author
@@ -44,17 +54,20 @@ export const getBookData = async (url) => {
  * @param {ObjectId} id
  * @returns {String} a response message
  */
-export const editBookDetails = async (title, author, price, description, status, quantity, id, sale_price) => {
-  let result;
-  await axios
-    .put(`${process.env.REACT_APP_API_URL}/${id}`, {title,author,price,description,status,quantity,sale_price})
-    .then((res) => {
-      if (res) {
-        result = "Edited";
-      }
-    });
-  return result;
-};
+  async editBook (bookDetails,id) {
+    const {author, description, price, quantity, sale_price, title, status } = bookDetails;
+    let result;
+    await axios
+      .put(`${process.env.REACT_APP_API_URL}/${id}`, {
+        author, description, price, quantity, sale_price, title, status, token: Cookies.get('token')
+      })
+      .then((res) => {
+        if (res) {
+          result = "Edited";
+        }
+      });
+    return result;
+  }
 
 /**
  * Function to compare the quantity of books in cart and actual book quantity in database
@@ -62,22 +75,23 @@ export const editBookDetails = async (title, author, price, description, status,
  * @param {String} bookId
  * @returns
  */
-export const compareQuantity = async (userId, bookId) => {
-  try {
-    let result;
-    result = await axios.post(
-      `${process.env.REACT_APP_API_URL}/cart/compareQuantity`,
-      {
-        userId: userId,
-        bookId: bookId,
-      }
-    );
+  async compareBook (userId, bookId){
+    try {
+      let result;
+      result = await axios.post(
+        `${process.env.REACT_APP_API_URL}/cart/compareQuantity`,
+        {
+          userId: userId,
+          bookId: bookId,
+          token: Cookies.get('token')
+        }
+      );
 
-    return result.data.result;
-  } catch (error) {
-    console.log(error);
+      return result.data.result;
+    } catch (error) {
+      console.log(error);
+    }
   }
-};
 
 /**
  * Request a book at backend to admin
@@ -85,22 +99,23 @@ export const compareQuantity = async (userId, bookId) => {
  * @param {String} author
  * @returns
  */
-export const requestBook = async (bookName, author) => {
-  let result;
-  await axios
-    .post(`${process.env.REACT_APP_API_URL}/books/requestBook`, {
-      bookName: bookName,
-      author: author,
-      userId: JSON.parse(localStorage.getItem("user"))["_id"],
-    })
-    .then((res) => {
-      if (res) {
-        result = res;
-      }
-    });
+  async sendRequest (bookName, author) {
+    let result;
+    await axios
+      .post(`${process.env.REACT_APP_API_URL}/books/requestBook`, {
+        bookName: bookName,
+        author: author,
+        userId: JSON.parse(Cookies.get('userToken'))._id,
+        token: Cookies.get('token')
+      })
+      .then((res) => {
+        if (res) {
+          result = res;
+        }
+      });
 
-  return result;
-};
+    return result;
+  }
 
 /**
  * Fetches books from backend according to pagination, searching and filtering
@@ -110,10 +125,13 @@ export const requestBook = async (bookName, author) => {
  * @param {String} filter 
  * @returns {Promise<{booksCount, books}>} filtered books from backend
  */
-export const fetchBooks = (page, limit, search, filter) => {
-  const url = `${process.env.REACT_APP_API_URL}/books/getBooks`;
-  return axios.post(url, {
-    userId: JSON.parse(localStorage.getItem("user"))._id, page: page, limit: limit, 
-    searchQuery: search, category: filter
-  });
-};
+  async getBooks (page, limit, search, filter) {
+    const url = `${process.env.REACT_APP_API_URL}/books/getBooks`;
+    return axios.post(url, {
+      userId: JSON.parse(Cookies.get('userToken'))._id, page: page, limit: limit, 
+      searchQuery: search, category: filter, token: Cookies.get('token')
+    });
+  }
+}
+
+export default new BookService();

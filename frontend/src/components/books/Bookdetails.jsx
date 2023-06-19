@@ -1,9 +1,12 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState, React } from "react";
 
-import { postToCart } from "../../services/cart.service";
-import { compareQuantity, getBookData } from "../../services/book.service";
+import CartService from "../../services/cart.service";
+import BookService from '../../services/book.service';
+
 import Header from "../common/Header";
+
+import Cookies from "js-cookie";
 
 /**
  * Function to return Book details component
@@ -16,18 +19,19 @@ const BookDetails = () => {
   const [disabled, setDisabled] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     compareBook();
     
     (async()=>{
-      const data = await getBookData(url);
+      const data = await BookService.getBookData(url);
       setBook(data.data.book);
     })();
   }, []);
   
   // Getting the id from url parameters
-  const id = useParams().id;
+  const id = location.state.bookId;
   const url = `${process.env.REACT_APP_API_URL}/:${id}`;
   
   /**
@@ -53,7 +57,7 @@ const BookDetails = () => {
    */
   const addToCart = async (book) => {
     if (compareBook()) {
-      postToCart(book);
+      CartService.addToCart(book);
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -65,8 +69,8 @@ const BookDetails = () => {
    * @returns {Boolean} whether book quantity is greater than the book in cart
    */
   const compareBook = async () => {
-    const result = await compareQuantity(
-      JSON.parse(localStorage.getItem("user"))._id,
+    const result = await BookService.compareBook(
+      JSON.parse(Cookies.get('userToken'))._id,
       book?._id
       );
       if (result) {
@@ -100,8 +104,8 @@ const BookDetails = () => {
             <span>Price</span>: {book?.price}
           </h5>
           <div className="btnGroup" style={{display:"flex",justifyContent:"center"}}>
-            {localStorage.getItem("user") ? (
-              JSON.parse(localStorage.getItem("user"))["role"] === "Admin" ? (
+            {Cookies.get('userToken') ? (
+              JSON.parse(Cookies.get('userToken')).role === "Admin" ? (
                 <button className="btn p-2 mx-2" onClick={() => {editBook(book)}} >
                   Edit Details
                 </button>

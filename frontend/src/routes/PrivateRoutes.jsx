@@ -1,15 +1,17 @@
 import React from 'react'
 import { Outlet, Navigate } from 'react-router-dom'
 
+import Cookies from 'js-cookie';
+
 const PrivateRoutes = () => {
     let flag;
-    if(localStorage.getItem("user")===null){
+    if(Cookies.get('userToken')===undefined){
         flag = false;
     } else {
         flag = true;
     }
   return (
-    flag ? <Outlet/> : <Navigate to="/login"/>
+    flag ? <Outlet/> : <Navigate to="/"/>
   )
 }
 

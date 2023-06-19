@@ -2,7 +2,7 @@ import { useEffect, useState, React } from 'react';
 
 import '../../styles/style.scss';
 
-import { getDonations } from '../../services/user.service';
+import UserService from '../../services/user.service';
 
 /**
  * Function to return user component
@@ -17,8 +17,8 @@ const User = (props) => {
   
   useEffect(() => {
     (async ()=>{
-      const donationData =  await getDonations(url);
-      setDonations(donationData.donations);
+      const donationData =  await UserService.getDonations(url);
+      setDonations(donationData.data.donations);
     })();
   }, []);
   

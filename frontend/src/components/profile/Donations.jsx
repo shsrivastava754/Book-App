@@ -1,32 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { fetchDonations } from '../../services/user.service';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+import UserService from '../../services/user.service';
+
 import Donation from './Donation';
 import Header from '../common/Header';
 
 const Donations = () => {
     const [donations, setDonations] = useState();
+    
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         (async ()=>{
-            const response = await getDonations();
+            const response = await getDonations(location.state.userId);
             setDonations(response.data.donations);
           })();
     }, []);
 
-    const getDonations = async () => {
-        const response = await fetchDonations();
+    const getDonations = async (id) => {
+        const response = await UserService.fetchDonations(id);
         return response;
-      };
+    };
     
   
     return (
     <>
     <Header></Header>
       <div className="container bookList">
-        <div className="table-heading">
-          <div className="left-heading">
-            <h3 className="my-3 heading">Your Donations</h3>
-          </div>
+        <div className="btn-group mt-2">
+          <button className="back-btn" onClick={() => navigate(-1)}>
+          <i class="fa-solid fa-arrow-left"></i>
+          </button>
+        <h3 className="my-3">Your Donations</h3>
         </div>
         <div className="booksTable">
           <table>

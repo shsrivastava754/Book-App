@@ -5,7 +5,7 @@ import "../../styles/style.scss";
 import Header from "../common/Header";
 import Book from "./Book";
 
-import { fetchBooks } from "../../services/book.service";
+import BookService from "../../services/book.service";
 
 /**
  *
@@ -43,7 +43,7 @@ const BookList = () => {
    * @param {Number} currLimit 
    */
   const getBooks = async ( page,  rowsPerPage,  search, filter) => {
-    const response = await fetchBooks(page,rowsPerPage,search,filter);
+    const response = await BookService.getBooks(page,rowsPerPage,search,filter);
     setBooks(response.data.books);
     setBooksLength(response.data.booksCount);
   };

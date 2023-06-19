@@ -1,9 +1,11 @@
 import React from 'react'
 import { Outlet, Navigate } from 'react-router-dom'
 
+import Cookies from 'js-cookie';
+
 const ProtectAdmin = () => {
     let flag;
-    localStorage.getItem("user")?JSON.parse(localStorage.getItem("user"))["role"]==='Admin'?flag=true:flag=false:flag=false;
+    Cookies.get('userToken')?JSON.parse(Cookies.get('userToken')).role==='Admin'?flag=true:flag=false:flag=false;
   return (
     flag ? <Outlet/> : <Navigate to="/books"/>
   )

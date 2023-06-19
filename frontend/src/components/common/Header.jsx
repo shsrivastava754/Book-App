@@ -2,9 +2,10 @@ import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'rea
 import { Link, useNavigate } from 'react-router-dom'
 
 import '../../styles/style.scss';
-import { getCartCount } from '../../services/cart.service';
+import CartService from '../../services/cart.service';
 
 import { Dropdown } from 'react-bootstrap';
+import Cookies from 'js-cookie';
 
 /**
  * Function that returns the navbar component
@@ -17,7 +18,7 @@ const Header = forwardRef((props,ref) => {
 
   useEffect(() => {
     (async ()=>{
-      const result =  await getCartCount();
+      const result =  await CartService.getCartCount();
       setCartCount(result);
     })();
   }, [cartCount]);
@@ -33,7 +34,7 @@ const Header = forwardRef((props,ref) => {
    */
   const logout = ()=>{
     // Clear browser localStorage
-    localStorage.clear();
+    Cookies.remove('userToken');
     navigate('/');
   }
 
@@ -41,8 +42,7 @@ const Header = forwardRef((props,ref) => {
    * Function to change the count of cart
    */
   const changeCartCount = async ()=>{
-    const result = await getCartCount();
-    console.log(result);
+    const result = await CartService.getCartCount();
     setCartCount(result);
   }
 
@@ -59,7 +59,9 @@ const Header = forwardRef((props,ref) => {
    * @param {Object} user 
    */
   const getDetails = (id)=>{
-    navigate(`/profile/${id}`);
+    navigate(`/profile/${JSON.parse(Cookies.get('userToken')).username}`,{
+      state: {id}
+    });
   };
 
   return (
@@ -78,11 +80,16 @@ const Header = forwardRef((props,ref) => {
                 <Link className="nav-link mx-2" to="/books">Books</Link>
               </li>
               {
-                localStorage.getItem("user")?
-                JSON.parse(localStorage.getItem("user"))["role"]==='Admin'?
+                Cookies.get('userToken')?
+                JSON.parse(Cookies.get('userToken')).role==='Admin'?
+                <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/users">Users</Link>
+                  <Link className="nav-link mx-2" to="/users">Users</Link>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link mx-2" to="/orders">Orders</Link>
+                </li>
+                </>
                 : null : null
               }
             </ul>
@@ -100,13 +107,12 @@ const Header = forwardRef((props,ref) => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu className='dropdownMenu'>
-            {/* <p>Hello {JSON.parse(localStorage.getItem("user"))["username"]}</p> */}
             {
-              JSON.parse(localStorage.getItem("user"))?
-              <p>Hello {JSON.parse(localStorage.getItem("user"))["username"]}</p>
+              Cookies.get('userToken')?
+              <p>Hello {JSON.parse(Cookies.get('userToken')).username}</p>
               : null
             }
-            <Dropdown.Item className='dropdownItem' onClick={()=>{getDetails(JSON.parse(localStorage.getItem("user"))._id)}}><i className="fa-solid fa-user"></i>&nbsp;&nbsp;Profile</Dropdown.Item>
+            <Dropdown.Item className='dropdownItem' onClick={()=>{getDetails(JSON.parse(Cookies.get('userToken'))._id)}}><i className="fa-solid fa-user"></i>&nbsp;&nbsp;Profile</Dropdown.Item>
             <Dropdown.Item href="/books" className='dropdownItem'><i className="fa-solid fa-book"></i>&nbsp;&nbsp;Books</Dropdown.Item>
             <Dropdown.Item href="/books/cart" className='dropdownItem'><i className="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;Cart</Dropdown.Item>
             <Dropdown.Item className='dropdownItem' onClick={logout}><i className="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Logout</Dropdown.Item>

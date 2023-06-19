@@ -1,5 +1,6 @@
 const OrderService = require("../services/order.service");
 const UserService = require("../services/user.service");
+const jwt = require('jsonwebtoken');
 
 /**
  * Controller class for Users related operations.
@@ -89,7 +90,20 @@ class UserController {
           user.password
         );
         if (verified) {
-          return res.status(201).json({ user });
+          const token = jwt.sign(
+            {
+              name: user.name,
+              email: user.email,
+              username: user.username,
+              _id: user._id,
+              role: user.role
+            }, 
+            process.env.SECRET_KEY,
+            {
+              expiresIn: '1h'
+            }
+          );
+          return res.status(201).json({ user, token });
         } else {
           return res.status(501).json({ message: "Password mismatch" });
         }
@@ -141,6 +155,7 @@ class UserController {
       const ordersCount = await OrderService.ordersCount(req.params.id);
       return res.status(201).json({ message: user,donationsCount, ordersCount });
     } catch (error) {
+      console.log(error);
       return res.status(501).json({ message: "No user found" });
     }
   }
@@ -158,7 +173,20 @@ class UserController {
 
       // If user exists the return a message
       if (user) {
-        return res.status(201).json({ user: user });
+        const token = jwt.sign(
+          {
+            name: user.name,
+            email: user.email,
+            username: user.username,
+            _id: user._id,
+            role: user.role
+          }, 
+          'secret123',
+          {
+            expiresIn: '2h'
+          }
+        );
+        return res.status(201).json({ user, token });
       }
 
       // Else add the new user to the users collection

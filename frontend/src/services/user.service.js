@@ -1,13 +1,22 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
+/**
+ * Utility class for handling User Services
+ */
+class UserService{
 /**
  * Function to send request at backend for number of donations
  * @param {String} url
  * @returns {Number} the number of donations made by a user
  */
-export const getDonations = (url) => {
-  const response = axios.get(url).then((res) => res.data);
+async getDonations(url) {
+  const response = await axios.get(url, {
+    params: {
+      token: Cookies.get('token')
+    }
+  });
   return response;
 };
 
@@ -18,38 +27,45 @@ export const getDonations = (url) => {
  * @param {String} search 
  * @returns {Promise<{users,usersCount}>}
  */
-export const fetchUsers = (page,limit,search) => {
+async getUsers(page,limit,search) {
   const url = `${process.env.REACT_APP_API_URL}/users/getUsers`;
-  return axios.post(url,{
+  return ( await axios.post(url,{
     page: page, limit: limit, 
-    searchQuery: search
-  }).then((res) => res.data);
+    searchQuery: search,
+    token: Cookies.get('token')
+  }));
 };
 
 // Fetch donations done by the user
-export const fetchDonations = async()=>{
-  const userId = JSON.parse(localStorage.getItem("user"))._id;
+async fetchDonations(userId){
   const url = `${process.env.REACT_APP_API_URL}/users/donations/${userId}`;
-  return await axios.get(url);
+  return await axios.get(url,{
+    params: {
+      token: Cookies.get('token')
+    }
+  });
 }
 
 // Fetch donations done by the user
-export const fetchOrders = async()=>{
-  const userId = JSON.parse(localStorage.getItem("user"))._id;
+async fetchOrders(userId){
   const url = `${process.env.REACT_APP_API_URL}/users/orders/${userId}`;
-  return await axios.get(url);
+  return await axios.get(url, {
+    params: {
+      token: Cookies.get('token')
+    }
+  });
 }
 
-/**
- * Function for login with google ID
- * @returns {Response} response from the axios request
- */
-export const googleLogin = async () => {
-  let result = await axios.get(
-    `${process.env.REACT_APP_API_URL}/getUserData/returnLocalstorage`
-  );
-  return result;
-};
+// Fetch donations done by the user
+async fetchAllOrders(page,limit,search){
+  const url = `${process.env.REACT_APP_API_URL}/admin/orders/getOrders`;
+  return await axios.get(url, {
+    params: {
+      token: Cookies.get('token'),
+      page: page, limit: limit, searchQuery: search
+    }
+  });
+}
 
 /**
  * Sends Axios request to the backend for login
@@ -57,7 +73,7 @@ export const googleLogin = async () => {
  * @param {String} password
  * @returns
  */
-export const loginUserRequest = async (username, password) => {
+async loginUser (username, password) {
   let res = await axios.post(`${process.env.REACT_APP_API_URL}/login`, {
     username: username,
     password: password,
@@ -72,7 +88,7 @@ export const loginUserRequest = async (username, password) => {
  * @param {String} email
  * @param {String} password
  */
-export const postUser = async (name, username, email, password) => {
+async registerUser (name, username, email, password) {
   try {
     await axios
       .post(`${process.env.REACT_APP_API_URL}/register`, {
@@ -81,7 +97,7 @@ export const postUser = async (name, username, email, password) => {
         username: username,
         password: password,
       })
-      .then((res) => (res = res.data));
+      .then((res)=> (res = res.data));
     toast.success("Registered new user");
   } catch (error) {
     toast.error("User already exists");
@@ -93,9 +109,13 @@ export const postUser = async (name, username, email, password) => {
  * @param {String} url 
  * @returns response from backend after fetching user details
  */
-export const getUser = async (url)=>{
-  const response = await axios
-  .get(url);
+async getUser (url){
+  const response = await axios.get(url,{
+    params: 
+    {
+      token: Cookies.get('token')
+    }
+  });
   return response;
 }
 
@@ -103,7 +123,7 @@ export const getUser = async (url)=>{
  * Post google user to backend
  * @param {Object} userObj
  */
-export const postGoogleUser = async (userObj) => {
+async postGoogleUser (userObj) {
   try {
     let res = await axios
       .post(`${process.env.REACT_APP_API_URL}/registerGoogleUser`, userObj)
@@ -114,12 +134,25 @@ export const postGoogleUser = async (userObj) => {
   }
 };
 
-export const getUserProfile = async (id) => {
+/**
+ * Gets the profile of user
+ * @param {String} id 
+ * @returns {Object} Details of the user
+ */
+async getUserProfile(id) {
   try {
     return await axios
-    .get(`${process.env.REACT_APP_API_URL}/users/${id}`)
-    .then((res) => res.data);
+    .get(`${process.env.REACT_APP_API_URL}/users/${id}`,{
+      params: {
+        token: Cookies.get('token')
+      }
+    })
+    .then((res)=> res.data);
   } catch (error) {
     console.log(error);
   }
 };
+
+};
+
+export default new UserService();

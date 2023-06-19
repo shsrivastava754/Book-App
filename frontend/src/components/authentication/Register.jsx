@@ -3,9 +3,9 @@ import { useState, React } from "react";
 
 import "./authenticationStyle.scss";
 
-import { postUser } from "../../services/user.service";
+import CartService from "../../services/cart.service";
 
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
@@ -65,7 +65,7 @@ const Register = () => {
    * @param {String} password
    */
   const registerUser = async (name, username, email, password) => {
-    await postUser(name, username, email, password);
+    await CartService.registerUser(name, username, email, password);
   };
 
   /**

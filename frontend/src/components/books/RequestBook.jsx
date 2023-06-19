@@ -1,7 +1,7 @@
 import { useState, React } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { requestBook } from "../../services/book.service";
+import BookService from "../../services/book.service";
 
 import Header from "../common/Header";
 
@@ -31,7 +31,7 @@ const RequestBook = () => {
    * @param {String} author
    */
   const sendRequest = async (bookName, author) => {
-    const res = await requestBook(bookName, author);
+    const res = await BookService.sendRequest(bookName, author);
     if (res) {
       navigate("/books");
     } else {
@@ -93,7 +93,7 @@ const RequestBook = () => {
             <button className="btn p-2 mx-2" disabled={disabled} type="submit">
               Request Book
             </button>
-            <button className="btn p-2 mx-2" onClick={()=>navigate("/books")}>
+            <button className="btn p-2 mx-2" onClick={()=>navigate(-1)}>
               Go Back
             </button>
           </div>

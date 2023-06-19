@@ -22,6 +22,19 @@ const dbSchema = new mongoose.Schema({
 
   // Role of the user whether he/she is admin or a normal user
   role: String,
+
+  // Address of the user
+  house_no: String,
+
+  // City of the user
+  city: String,
+
+  // State of the user
+  state: String,
+
+  // Pin Code of the user
+  pin: Number
+
 },{ timestamps: true });
 
 const Users = new mongoose.model("Users", dbSchema);

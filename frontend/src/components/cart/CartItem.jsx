@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
 
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-
-import Tooltip from "react-bootstrap/Tooltip";
+import CartService from "../../services/cart.service";
 
 import "../../styles/style.scss";
-import {
-  removeCartItem,
-  incrementQuantity,
-  decrementQuantity,
-  getQuantities
-} from "../../services/cart.service";
+
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+import Cookies from "js-cookie";
 
 /**
  *
@@ -34,7 +30,7 @@ const CartItem = (props) => {
 
     // Disable the increment button for quantity if the quantity is maximum
     const checkMaximum = async()=>{
-      const data = await getQuantities(props.item._id,props.item.bookId);
+      const data = await CartService.getQuantities(props.item._id,props.item.bookId);
         if(data.data.cartQuantity === data.data.bookQuantity){
           setIncrementDisabled(true);
         }
@@ -43,13 +39,13 @@ const CartItem = (props) => {
     checkMaximum();
   }, []);
 
-  const userId = JSON.parse(localStorage.getItem("user"))._id;
+  const userId = JSON.parse(Cookies.get('userToken'))._id;
 
   /**
    * Function to remove an item from the cart
    */
   const removeItem = () => {
-    removeCartItem(props.item._id, userId);
+    CartService.removeItem(props.item._id, userId);
     props.handleCallChildFunction();
   };
 
@@ -59,7 +55,7 @@ const CartItem = (props) => {
    */
   const maxQuantity = async () => {
     try {
-      const data = await getQuantities(props.item._id,props.item.bookId);
+      const data = await CartService.getQuantities(props.item._id,props.item.bookId);
       if(data.data.cartQuantity+1 === data.data.bookQuantity){
         setIncrementDisabled(true);
         return false;
@@ -77,7 +73,7 @@ const CartItem = (props) => {
     // If the quantity of item is 0 then if the user clicks plus button, then minus button should be enabled
     setDecrementDisabled(false);
     if (maxQuantity()) {
-      let result = await incrementQuantity(props.item._id);
+      let result = await CartService.increment(props.item._id);
       setQuantity(result.data.quantity);
       props.onUpdateQuantity(result.data.sale_price);
     }
@@ -90,7 +86,7 @@ const CartItem = (props) => {
     // If the quantity of item is max then if the user clicks minus button, then plus button should be enabled
     setIncrementDisabled(false);
 
-    let result = await decrementQuantity(props.item._id);
+    let result = await CartService.decrement(props.item._id);
     if(result.data.quantity<=1){
       setDecrementDisabled(true);
       setQuantity(result.data.quantity);

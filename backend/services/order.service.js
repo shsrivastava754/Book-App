@@ -21,6 +21,29 @@ class OrderService {
     }
   }
 
+
+  /**
+   * Returns orders list according to the applied filter
+   * @param {Integer} skip 
+   * @param {Integer} limit 
+   * @param {String} searchQuery 
+   * @returns {Array} array of orders as per filter
+   */
+  static async getOrders(skip, limit, searchQuery) {
+    try {
+      const orders = await OrderModel.find(
+      {
+        $or: [
+          { name: { $regex: searchQuery, $options: "i" } }
+        ]
+      }).sort({ _id: -1 }).skip(skip).limit(limit);
+
+      return orders;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   /**
    * Adds a book to the purchased books collection
    * @param {Object} book 
@@ -71,6 +94,12 @@ class OrderService {
    */
   static async ordersCount(userId){
     const count = await OrderModel.countDocuments({userId});
+    return count;
+  }
+
+  // Count all the orders in the orders model
+  static async countOrders() {
+    const count = await OrderModel.countDocuments();
     return count;
   }
 

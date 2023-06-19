@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "../../styles/style.scss";
-import { compareQuantity } from "../../services/book.service";
-import { postToCart, deleteCartItem } from "../../services/cart.service";
+import BookService from "../../services/book.service";
+import CartService from "../../services/cart.service";
+import UserService from "../../services/user.service";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import Cookies from 'js-cookie';
+
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { getUser } from "../../services/user.service";
 
 
 const Book = (props) => {
@@ -29,10 +31,10 @@ const Book = (props) => {
   useEffect(() => {
     compareBook();
     (async ()=>{
-      const response = await getUser(url);
+      const response = await UserService.getUser(url);
       setUser(response.data.message);
     })();
-  });
+  },[]);
   
   const navigate = useNavigate();
   
@@ -117,7 +119,12 @@ const Book = (props) => {
    * @param {Object} user
    */
   const userDetails = (id) => {
-    navigate(`/profile/${id}`);
+    const username = user.username;
+    navigate(`/profile/${username}`,{
+      state: {
+        id
+      }
+    });
   };
 
   /**
@@ -125,7 +132,11 @@ const Book = (props) => {
    * @param {Object} book
    */
   const getDetails = (book) => {
-    navigate(`/${book._id}`);
+    navigate(`/book/${book.title}`,{
+      state: {
+        bookId: book._id
+      }
+    });
   };
 
   /**
@@ -134,7 +145,7 @@ const Book = (props) => {
    */
   const addToCart = async (book) => {
     if (compareBook()) {
-      await postToCart(book);
+      await CartService.addToCart(book);
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -147,7 +158,7 @@ const Book = (props) => {
    * Function for deleting a book
    */
   const deleteBook = () => {
-    deleteCartItem(props.book._id);
+    CartService.deleteBook(props.book._id);
   };
 
   /**
@@ -155,12 +166,12 @@ const Book = (props) => {
    * @returns {Boolean} whether book quantity is greater than the book in cart
    */
   const compareBook = async () => {
-    const result = await compareQuantity(
-      JSON.parse(localStorage.getItem("user"))._id,
+    const result = await BookService.compareBook(
+      JSON.parse(Cookies.get('userToken'))._id,
       props.book._id
     );
 
-    if (result && props.book.quantity > 0 && props.book.donatedById!==JSON.parse(localStorage.getItem("user"))._id) {
+    if (result && props.book.quantity > 0 && props.book.donatedById!== JSON.parse(Cookies.get('userToken'))._id) {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -207,7 +218,7 @@ const Book = (props) => {
           </OverlayTrigger>
         </td>
 
-        {JSON.parse(localStorage.getItem("user"))["role"] === "Admin" ? (
+        {JSON.parse(Cookies.get('userToken')).role === "Admin" ? (
           <td>
             <OverlayTrigger
               placement="left"

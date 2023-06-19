@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import '../../styles/style.scss';
 
-import { postBook } from '../../services/book.service';
+import BookService from '../../services/book.service';
 
 import Header from '../common/Header';
 
@@ -53,7 +53,7 @@ const AddBook = () => {
      * @param {Number} sale_price 
      */
     const addBook = async(title,author,price,description,quantity,sale_price)=>{
-        const res = await postBook(title,author,price,description,quantity,sale_price);
+        const res = await BookService.addBook(title,author,price,description,quantity,sale_price);
         if(res){
             navigate('/books');
         } else {
@@ -104,7 +104,7 @@ const AddBook = () => {
     <Header></Header>
     <div className='container mt-4 formContainer p-4 donationForm'>
         <div className="btn-group">
-            <button className="back-btn" style={{paddingBottom:"30px"}} onClick={() => navigate("/books")}>
+            <button className="back-btn" style={{paddingBottom:"30px"}} onClick={() => navigate(-1)}>
             <i class="fa-solid fa-arrow-left"></i>
             </button>
             <h3>Donate Book</h3>

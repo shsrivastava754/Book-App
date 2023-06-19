@@ -115,9 +115,9 @@ class BookController {
     const skip = (page - 1) * limit;
 
     try {
-      const books = await BookService.getBooks(skip,limit,req.body.userId,req.body.searchQuery,req.body.category);
+      const books = await BookService.getBooks(skip,limit,req.body.searchQuery,req.body.category);
 
-      const booksCount = await BookService.countBooks(req.body.userId);
+      const booksCount = await BookService.countBooks();
       if (!books) {
         return res.status(401).json({ message: "No books found" });
       } else {

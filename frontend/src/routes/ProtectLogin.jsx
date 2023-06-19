@@ -1,9 +1,11 @@
 import React from 'react'
 import { Outlet, Navigate } from 'react-router-dom'
 
+import Cookies from 'js-cookie';
+
 const ProtectLogin = () => {
     let flag;
-    if(localStorage.getItem("user")===null){
+    if(Cookies.get('userToken')===undefined){
         flag = true;
     } else {
         flag = false;

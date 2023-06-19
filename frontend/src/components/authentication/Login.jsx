@@ -4,15 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import "./authenticationStyle.scss";
 import bg6 from "../../images/bg6.jpg";
 
-import {
-  loginUserRequest,
-  postGoogleUser,
-} from "../../services/user.service";
+import UserService from "../../services/user.service";
 
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
+import Cookies from 'js-cookie';
 
 /**
  * Returns Login Form Component
@@ -64,10 +62,20 @@ const Login = () => {
    */
   const loginUser = async (username, password) => {
     try {
-      let res = await loginUserRequest(username, password);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      let res = await UserService.loginUser(username, password);
+      
+      // Decode the token provided from backend
+      const token = jwt_decode(res.data.token);
+
+      // Set the decoded details from token into the cookies which expires in 2 hours
+      Cookies.set('userToken', JSON.stringify(token), { expires: 2 });
+
+      // Set the token into cookies to send it to backend for verifying it at backend
+      Cookies.set('token', res.data.token, { expires: 2 });
+
       navigate("/books");
     } catch (error) {
+      console.log(error);
       toast.error(error.response.data.message);
     }
   };
@@ -125,8 +133,11 @@ const Login = () => {
                   password: decoded.jti,
                 };
 
-                let res = await postGoogleUser(userObj);
-                localStorage.setItem("user", JSON.stringify(res.user));
+                let res = await UserService.postGoogleUser(userObj);
+                const token = jwt_decode(res.token);
+
+                // Set the token into the cookies which expires in 2 hours
+                Cookies.set('userToken', JSON.stringify(token), { expires: 2/24 });
                 navigate("/books");
               }}
               onError={() => {

@@ -670,7 +670,6 @@ footer {
 .left-pagination,
 .left-heading {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 20%;
 }
@@ -682,6 +681,10 @@ footer {
   font-size: 17px;
   color: $content-text-color;
   font-weight: 600;
+}
+
+.left-pagination{
+  justify-content: space-between;
 }
 
 /** ----------------------------Table CSS---------------------------- **/

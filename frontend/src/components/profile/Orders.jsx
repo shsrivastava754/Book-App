@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { fetchOrders } from '../../services/user.service';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+import UserService from '../../services/user.service';
+
 import Header from '../common/Header';
 import Order from "./Order";
 
 const Orders = () => {
     const [orders, setOrders] = useState();
+    
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         (async ()=>{
-            const response = await getOrders();
+            const response = await getOrders(location.state.userId);
             setOrders(response.data.orders);
-            console.log(response);
           })();
     }, []);
 
-    const getOrders = async () => {
-        const response = await fetchOrders();
+    const getOrders = async (id) => {
+        const response = await UserService.fetchOrders(id);
         return response;
       };
     
@@ -24,10 +29,11 @@ const Orders = () => {
     <>
     <Header></Header>
       <div className="container bookList">
-        <div className="table-heading">
-          <div className="left-heading">
-            <h3 className="my-3 heading">Your Orders</h3>
-          </div>
+        <div className="btn-group mt-2">
+            <button className="back-btn" onClick={() => navigate(-1)}>
+            <i class="fa-solid fa-arrow-left"></i>
+            </button>
+          <h3 className="my-3">Your Orders</h3>
         </div>
         <div className="booksTable">
           <table>

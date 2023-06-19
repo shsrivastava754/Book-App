@@ -1,42 +1,37 @@
-import { useState, useEffect, React } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import Header from "../common/Header";
+import UserService from '../../services/user.service';
 
-import "../../styles/style.scss";
-import UserService from "../../services/user.service";
+import Header from '../common/Header';
+import Order from './Order';
 
-import User from "./User";
+const OrderDashboard = () => {
+    const [orders, setOrders] = useState();
 
-/**
- *
- * @returns {React.Component} Users list component
- */
-const Users = () => {
-  // State variable for users list
-  const [users, setUsers] = useState();
+    const [ordersLength, setOrdersLength] = useState();
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [page, setPage] = useState(1);
+    const [search, setSearch] = useState("");
+    const pageNumbers = [];
+    
+    const navigate = useNavigate();
 
-  const [usersLength, setUsersLength] = useState();
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  
-  const navigate = useNavigate();
-  
-  useEffect(() => {
-    getUsers(page, rowsPerPage, search);
-  }, [page, rowsPerPage, search]);
-  
-  const pageNumbers = [];
+    useEffect(() => {
+        (async ()=>{
+            const response = await getOrders(page, rowsPerPage, search);
+            setOrders(response.data.orders);
+            setOrdersLength(response.data.ordersCount);
+          })();
+    }, [page, rowsPerPage, search]);
 
-  const getUsers = async (page, rowsPerPage, search) => {
-    const response = await UserService.getUsers(page, rowsPerPage, search);
-    setUsers(response.data.users);
-    setUsersLength(response.data.usersCount);
-  };
-
-  // Set page numbers for number of buttons
-  for (let i = 1; i <= Math.ceil(usersLength / rowsPerPage); i++) {
+    const getOrders = async (page, rowsPerPage, search) => {
+      const response = await UserService.fetchAllOrders(page, rowsPerPage, search);
+      return response;
+    };
+    
+    // Set page numbers for number of buttons
+  for (let i = 1; i <= Math.ceil(ordersLength / rowsPerPage); i++) {
     pageNumbers.push(i);
   }
 
@@ -51,14 +46,14 @@ const Users = () => {
    * When next button is clicked
    */
   const handleNext = () => {
-    if (page !== Math.ceil(usersLength / rowsPerPage)) setPage(page + 1);
+    if (page !== Math.ceil(ordersLength / rowsPerPage)) setPage(page + 1);
   };
 
   /**
    * Function to manage search box
    * @param {Event} e
    */
-  const searchBook = (e) => {
+  const searchOrder = (e) => {
     setSearch(e.target.value);
     setPage(1);
   };
@@ -79,39 +74,43 @@ const Users = () => {
   const paginate = (number) => {
     setPage(number);
   };
-
-  return (
+  
+    return (
     <>
-      <Header></Header>
+    <Header></Header>
       <div className="container bookList">
         <div className="btn-group mt-2">
             <button className="back-btn" onClick={() => navigate(-1)}>
             <i class="fa-solid fa-arrow-left"></i>
             </button>
-          <h3 className="my-3">Users</h3>
+          <h3 className="my-3">Customers Orders</h3>
         </div>
         <div className="components">
           <input
             className="searchBar"
-            placeholder="Search user..."
-            onChange={searchBook}
+            placeholder="Search order..."
+            onChange={searchOrder}
           />
         </div>
         <div className="booksTable">
           <table>
             <thead>
               <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Username</th>
-                <th scope="col">Email</th>
-                <th scope="col">Number of donations</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Customer Email</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">Price</th>
+                <th scope="col">Order Status</th>
               </tr>
             </thead>
             <tbody>
-              {users &&
-                users.map((user) => {
-                  return <User user={user} key={user._id} />;
-                })}
+            {
+            orders && orders.map((item)=>{
+              return (
+                <Order order={item}/>
+              )
+            })
+        }
             </tbody>
           </table>
         </div>
@@ -162,8 +161,9 @@ const Users = () => {
           </div>
         </div>
       </div>
-    </>
-  );
-};
 
-export default Users;
+    </>
+  )
+}
+
+export default OrderDashboard;

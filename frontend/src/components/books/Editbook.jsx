@@ -1,7 +1,7 @@
 import { useState, React } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 
-import { editBookDetails } from "../../services/book.service";
+import BookService from "../../services/book.service";
 import Header from "../common/Header";
 
 /**
@@ -30,7 +30,8 @@ const EditBook = () => {
    */
   const formSubmit = (e) => {
     e.preventDefault();
-    editBook(title, author, price, description, status, quantity, sale_price).then(() => navigate("/books"));
+    const obj = { title, author, price, description, status, quantity, sale_price }
+    editBook(obj).then(() => navigate("/books"));
   };
 
   /**
@@ -40,10 +41,8 @@ const EditBook = () => {
   const updateQuantity = (e) => {
     setStatus(e.target.value);
     if (e.target.value == 1) {
-      // setDefaultQuantity(1);
       setQuantity(1);
     } else if (e.target.value == 2) {
-      // setDefaultQuantity(0);
       setQuantity(0);
     }
   };
@@ -68,8 +67,8 @@ const EditBook = () => {
    * @param {Number} quantity
    * @param {Number} sale_price
    */
-  const editBook = async (title, author, price, description, status, quantity, sale_price) => {
-    let res = await editBookDetails(title, author, price, description, status, quantity, id, sale_price);
+  const editBook = async (bookDetails) => {
+    let res = await BookService.editBook(bookDetails,id);
     console.log(res);
   };
 

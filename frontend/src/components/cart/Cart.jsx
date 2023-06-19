@@ -3,12 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import "../../styles/style.scss";
 
-import {
-  checkoutService,
-  clearCartService,
-  getCartItems,
-  addOrderService
-} from "../../services/cart.service";
+import CartService from "../../services/cart.service";
 
 import Header from "../common/Header";
 import CartItem from "./CartItem";
@@ -41,7 +36,7 @@ const Cart = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getCartItems(url);
+      const response = await CartService.getCartItems(url);
       setItems(response.data.items);
       setTotalPrice(response.data.totalPrice);
     })();
@@ -65,15 +60,15 @@ const Cart = () => {
    * Sending backend API request to clear the cart
    */
   const clearCart = () => {
-    clearCartService();
+    CartService.clearCart();
   };
 
   const checkout = async () => {
     setLoading(true);
-    console.log(await checkoutService(totalPrice));
+    console.log(await CartService.checkout(totalPrice));
     setLoading(false);
-    await addOrderService(totalPrice);
-    clearCartService();
+    await CartService.addOrder(totalPrice);
+    CartService.clearCart();
   };
 
   // Passed as a prop to update the total price
@@ -87,6 +82,9 @@ const Cart = () => {
       <div className="container bookList">
         <div className="cart-heading mt-2">
           <div className="left-heading">
+            <button className="back-btn" onClick={() => navigate(-1)}>
+            <i class="fa-solid fa-arrow-left"></i>
+            </button>
             <h3 className="my-3">Your Cart</h3>
           </div>
           <div className="right-heading" style={{ width: 600 }}>

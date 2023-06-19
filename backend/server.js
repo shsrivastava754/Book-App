@@ -10,6 +10,8 @@ const DbUtil = require("./database/connection");
 // Initializing the express app
 const app = express();
 
+app.use(express.json());
+
 // Middleware used for secure transmission between backend and frontend
 app.use(cors());
 

@@ -121,9 +121,7 @@ const Book = (props) => {
   const userDetails = (id) => {
     const username = user.username;
     navigate(`/profile/${username}`,{
-      state: {
-        id
-      }
+      state: {id}
     });
   };
 

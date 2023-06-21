@@ -177,7 +177,7 @@ const EditBook = () => {
           </div>
           <div className="btnGroup" style={{display:"flex",justifyContent:"center"}}>
             <button className="btn p-2 mx-2" type="submit">Save Book</button>
-            <button className="btn p-2 mx-2" onClick={()=>navigate('/books')}>Cancel</button>
+            <button className="btn p-2 mx-2" onClick={()=>navigate(-1)}>Cancel</button>
           </div>
         </form>
       </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect, React } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import UserService from "../../services/user.service";
 
@@ -59,7 +59,7 @@ const Profile = () => {
       <div className="container profileContainer">
         <div className="btn-group mt-2">
           <button className="back-btn" onClick={() => navigate(-1)}>
-          <i class="fa-solid fa-arrow-left"></i>
+          <i className="fa-solid fa-arrow-left"></i>
           </button>
         <h3 className="my-3">User Profile</h3>
         </div>
@@ -74,6 +74,16 @@ const Profile = () => {
             </h5>
             <h5>
               <span>Email</span>: {user?.email}
+            </h5>
+            <h5>
+              <span>Address</span>: {
+                user?.address? user?.address : <>
+                <span className="text-danger" style={{fontWeight:"600"}}>No address provided.</span>
+                </>
+              }
+              {
+                !user?.address && (JSON.parse(Cookies.get('userToken'))._id===user?._id) ? <Link to={`/editAddress/${user?._id}`} className="mx-2">Click here to add your address</Link> : null
+              }
             </h5>
           </div>
         </div>

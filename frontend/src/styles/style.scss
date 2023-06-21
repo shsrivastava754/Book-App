@@ -337,6 +337,10 @@ select {
   overflow-y: auto;
 }
 
+.orderActions .card-text{
+  height: 6.7rem;
+}
+
 .statsContainer .btn{
   border: 1px solid $primary-color;
   color: $primary-color;
@@ -742,6 +746,10 @@ table thead {
   overflow-y: auto;
   overflow-x: hidden;
   margin-bottom: 20px;
+}
+
+.orderedBooksList .booksTable{
+  height: auto;
 }
 
 .bookDonor:hover{

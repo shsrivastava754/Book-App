@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import UserService from '../../services/user.service';
+import UserService from '../../../services/user.service';
 
-import Header from '../common/Header';
+import Header from '../../common/Header';
 import Order from './Order';
 
-const OrderDashboard = () => {
+const Orders_Dashboard = () => {
     const [orders, setOrders] = useState();
 
     const [ordersLength, setOrdersLength] = useState();
@@ -110,7 +110,7 @@ const OrderDashboard = () => {
                 <Order order={item}/>
               )
             })
-        }
+            }
             </tbody>
           </table>
         </div>
@@ -166,4 +166,4 @@ const OrderDashboard = () => {
   )
 }
 
-export default OrderDashboard;
+export default Orders_Dashboard;

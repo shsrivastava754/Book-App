@@ -114,7 +114,7 @@ const BookDetails = () => {
             <button className="btn p-2 mx-2" onClick={() => {addToCart(book)}} disabled={disabled}>
               Add to Cart
             </button>
-            <button className="btn p-2 mx-2" onClick={() => {navigate('/books')}} disabled={disabled}>
+            <button className="btn p-2 mx-2" onClick={() => {navigate(-1)}} disabled={disabled}>
               Go Back
             </button>
           </div>

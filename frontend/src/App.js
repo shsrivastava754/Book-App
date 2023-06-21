@@ -12,12 +12,14 @@ import Profile from "./components/profile/Profile";
 import RequestBook from "./components/books/RequestBook";
 import Donations from "./components/profile/Donations";
 import Orders from "./components/profile/Orders";
+import Address from "./components/profile/Address";
 
 import PrivateRoutes from "./routes/PrivateRoutes";
 import ProtectLogin from "./routes/ProtectLogin";
 import ProfileRoutes from "./routes/ProfileRoutes";
 import ProtectAdmin from "./routes/ProtectAdmin";
-import OrderDashboard from "./components/admin/OrderDashboard";
+import Orders_Dashboard from "./components/admin/orders/Orders_Dashboard";
+import Order_Details from "./components/admin/orders/Order_Details";
 
 function App() {
   return (
@@ -33,6 +35,7 @@ function App() {
           <Route path="/books/cart" element={<Cart/>} />
           <Route path="/books/requestBook" element={<RequestBook/>} />
           <Route path="/profile/:username" element={<Profile/>} />
+          <Route path="/editAddress/:id" element={<Address/>} />
         </Route>
 
         <Route element={<ProfileRoutes/>}>
@@ -50,7 +53,8 @@ function App() {
       {/* Routes that only admin can access */}
         <Route element={<ProtectAdmin/>}>
           <Route path="/users" element={<Users/>} exact/>
-          <Route path="/orders" element={<OrderDashboard/>} exact/>
+          <Route path="/orders" element={<Orders_Dashboard/>} exact/>
+          <Route path="/orders/:id" element={<Order_Details/>} exact/>
         </Route>
       </Routes>
     </BrowserRouter>

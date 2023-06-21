@@ -16,4 +16,7 @@ router.post("/users/orders/addOrder", tokenMiddleware, OrderController.addOrder)
 // Gets all the order for admin
 router.get("/admin/orders/getOrders", tokenMiddleware, OrderController.getOrders);
 
+// Gets all the order for admin
+router.get("/orders/:id", tokenMiddleware, OrderController.getBooksInOrder);
+
 module.exports = router;

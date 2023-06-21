@@ -91,6 +91,22 @@ class OrderController {
       return res.status(500).json({ message: "Not able to find count of orders" });
     }
   }
+
+  /**
+   * Get books that were ordered at a time
+   * @param {Object} req 
+   * @param {Object} res 
+   * @returns {Array} list of books
+   */
+  static async getBooksInOrder(req,res) {
+    try {
+      let books = await OrderService.getBooksInOrder(req.params.id);
+      return res.status(201).json({ books });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({message: "Not able to find books in the order"});
+    }
+  }
 };
 
 module.exports = OrderController;

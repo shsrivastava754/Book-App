@@ -103,6 +103,11 @@ class OrderService {
     return count;
   }
 
+  static async getBooksInOrder(id) {
+    const books = PurchasedBooksModel.find({orderId:id});
+    return books;
+  }
+
 }
 
 module.exports = OrderService;

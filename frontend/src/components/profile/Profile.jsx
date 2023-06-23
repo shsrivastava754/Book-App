@@ -77,12 +77,14 @@ const Profile = () => {
             </h5>
             <h5>
               <span>Address</span>: {
-                user?.address? user?.address : <>
+                user?.address? <>
+                  {user.address.house}, {user.address.locality}, {user.address.city}, {user.address.state} ({user.address.pin})
+                </> : <>
                 <span className="text-danger" style={{fontWeight:"600"}}>No address provided.</span>
                 </>
               }
               {
-                !user?.address && (JSON.parse(Cookies.get('userToken'))._id===user?._id) ? <Link to={`/editAddress/${user?._id}`} className="mx-2">Click here to add your address</Link> : null
+                (JSON.parse(Cookies.get('userToken'))._id===user?._id)? <Link to={`/editAddress/${userId}`}> <span><i class="fa-solid fa-pen-to-square"></i></span> </Link>:null
               }
             </h5>
           </div>

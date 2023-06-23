@@ -13,5 +13,7 @@ router.get("/users/getDonations/:id", tokenMiddleware, UsersController.countDona
 router.get("/users/:id", tokenMiddleware, UsersController.getUser);
 router.post("/registerGoogleUser", UsersController.registerGoogleUser);
 router.get("/users/donations/:id", tokenMiddleware, UsersController.getDonations);
+router.get("/users/info/getAddress", tokenMiddleware, UsersController.getAddress);
+router.post("/users/addAddress", tokenMiddleware, UsersController.addAddress);
 
 module.exports = router;

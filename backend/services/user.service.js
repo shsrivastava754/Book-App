@@ -107,6 +107,31 @@ class UsersService {
     let user = await UserModel.findOne({ _id: id });
     return user;
   }
+
+  /**
+   * Edits the address of user
+   * @param {Object} address 
+   * @param {String} id 
+   * @returns {Object} Details of the user
+   */
+  static async addAddress(address,id){
+    const user = await UserModel.findByIdAndUpdate(id, {
+      address: address
+    });
+
+    user.save();
+    return user;
+  }
+
+  /**
+   * Returns address of the user
+   * @param {String} id 
+   * @returns {Object} address of the user
+   */
+  static async getAddress(id){
+    const user = await UserModel.findOne({_id:id});
+    return user.address;
+  }
 }
 
 module.exports = UsersService;

@@ -29,20 +29,20 @@ const Order = (props) => {
     
   return (
     <>
-    <tr>
-        <td onClick={() => {getOrderDetails()}}>
+    <tr onClick={() => {getOrderDetails()}}>
+        <td>
             {props.order.name}
         </td>
-        <td onClick={() => {getOrderDetails()}}>
+        <td>
           {props.order.email}
         </td>
-        <td onClick={() => {getOrderDetails()}}>
+        <td>
           {formattedTimestamp}
         </td>
-        <td onClick={() => {getOrderDetails()}}>
+        <td>
           Rs. {props.order.total_price}
         </td>
-        <td onClick={() => {getOrderDetails()}}>
+        <td>
             <span className='statusAvailable'>
                 {props.order.status}
             </span>

@@ -5,8 +5,11 @@ import Header from '../../common/Header';
 import OrderService from '../../../services/order.service';
 import Ordered_Book from './Ordered_Book';
 
+import UserService from '../../../services/user.service';
+
 const Order_Details = () => {
     const [books, setBooks] = useState();
+    const [address, setAddress] = useState();
     
     const navigate = useNavigate();
     const location = useLocation();
@@ -15,8 +18,14 @@ const Order_Details = () => {
         (async ()=>{
             const response = await getOrders();
             setBooks(response.data.books);
+
+            const result = await UserService.getAddress(userId);
+            setAddress(result.data.address);
           })();
+          
     }, []);
+
+    const userId = location.state.order.userId;
 
     const getOrders = async () => {
         const orders = await OrderService.getBooks(location.state.order._id);
@@ -79,12 +88,30 @@ const Order_Details = () => {
             <div className="col-sm-6"  >
               <div className="card">
                 <div className="card-body">
-                    <p className="card-text">
-                    <span style={{fontWeight:"bold"}}>Shipping Address:</span> <br/>IAPL House, <br/> West Patel Nagar
-                    </p>
-                    <button className="btn">
-                      View Order History
-                    </button>
+                  {
+                      (address===undefined)?
+                      <>
+                        <p className="card-text">
+                        <span style={{fontWeight:"bold"}}>Shipping Address:</span> <br/>
+                            Address not provided
+                        </p>
+                        <button className="btn">
+                          Send Address Request
+                        </button>
+                      </>
+                      
+                      : 
+
+                      <>
+                      <p className="card-text">
+                        <span style={{fontWeight:"bold"}}>Shipping Address:</span> <br/>
+                          {address?.house}, {address?.locality} <br/> {address?.city}, {address?.state} ({address?.pin})
+                        </p>
+                        <button className="btn">
+                          Send Pickup Request
+                        </button>
+                      </>
+                  }
                 </div>
               </div>
             </div>

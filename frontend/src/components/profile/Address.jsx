@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import '../../styles/style.scss';
 
-import BookService from '../../services/book.service';
+import UserService from '../../services/user.service';
 
 import Header from '../common/Header';
 
@@ -34,13 +34,21 @@ const Address = () => {
     const formSubmit = (e)=>{
         e.preventDefault();
 
-        // addBook(house,locality,city,state,pin);
+        addAddress();
         setHouse("");
         setLocality("");
         setCity("");
         setState("");
         setPin("");
     };
+
+    const addAddress = async ()=>{
+        const address = {
+            house, locality, state, city, pin
+        }
+        const res = await UserService.addAddress(address);
+        console.log(res);
+    }
 
     const checkToEnable = ()=>{
         if(!house || !locality || !state || !city || !pin){
@@ -96,16 +104,16 @@ const Address = () => {
                     <input type="text" value={locality} className="form-control" id="author" onChange={checkLocality} />
                 </div>
                 <div className="col-md-6 mb-3">
-                    <label htmlFor="price" className="form-label">City</label>
-                    <input type="number" value={city} className="form-control" id="price" onChange={checkCity} min={1} />
+                    <label htmlFor="city" className="form-label">City</label>
+                    <input type="text" value={city} className="form-control" id="city" onChange={checkCity} min={1} />
                 </div>
                 <div className="col-md-6 mb-3">
-                    <label htmlFor="sale_price" className="form-label">State</label>
-                    <input type="number" value={state} className="form-control" id="sale_price" onChange={checkState} min={1} />
+                    <label htmlFor="state" className="form-label">State</label>
+                    <input type="text" value={state} className="form-control" id="state" onChange={checkState} min={1} />
                 </div>
                 <div className="col-md-6 mb-3">
-                    <label htmlFor="price" className="form-label">PIN Code</label>
-                    <input type="number" value={pin} className="form-control" id="quantity" onChange={checkPin} min={1} />
+                    <label htmlFor="pin" className="form-label">PIN Code</label>
+                    <input type="number" value={pin} className="form-control" id="pin" onChange={checkPin} min={100000} />
                 </div>
             </div>
             <div className="btnGroup" style={{display:"flex",justifyContent:"center"}}>

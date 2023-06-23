@@ -43,7 +43,7 @@ class BookController {
    */
   static async findBookById(req, res) {
     try {
-      const id = req.params.id.slice(1);
+      const id = req.params.id;
       const book = await BookService.findBookById(id);
 
       if (!book) {

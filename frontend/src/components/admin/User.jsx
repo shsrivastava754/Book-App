@@ -1,4 +1,5 @@
 import { useEffect, useState, React } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import '../../styles/style.scss';
 
@@ -12,6 +13,9 @@ import UserService from '../../services/user.service';
 const User = (props) => {
   //State variable for setting the donations made by the user
   const [donations, setDonations] = useState(0);
+  
+  const navigate = useNavigate();
+  
   const {name,username,email,_id} = props.user;
   const url = `${process.env.REACT_APP_API_URL}/users/getDonations/${_id}`;
   
@@ -21,10 +25,20 @@ const User = (props) => {
       setDonations(donationData.data.donations);
     })();
   }, []);
+
+  /**
+   * Function to navigate to a route which shows details of user with given ID
+   * @param {Object} user
+   */
+  const userDetails = () => {
+    navigate(`/profile/${username}`,{
+      state: {id:_id}
+    });
+  };
   
   return (
     <>
-    <tr>
+    <tr onClick={() => {userDetails()}}>
       <td>{name}</td>
       <td>{username}</td>
       <td>{email}</td>

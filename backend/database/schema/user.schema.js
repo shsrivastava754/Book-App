@@ -24,16 +24,7 @@ const dbSchema = new mongoose.Schema({
   role: String,
 
   // Address of the user
-  house_no: String,
-
-  // City of the user
-  city: String,
-
-  // State of the user
-  state: String,
-
-  // Pin Code of the user
-  pin: Number
+  address: Object
 
 },{ timestamps: true });
 

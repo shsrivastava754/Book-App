@@ -202,6 +202,32 @@ class UserController {
       return res.status(500).json({ message: error });
     }
   }
+
+  /**
+   * Edits the address of the user
+   * @param {Object} req 
+   * @param {Object res 
+   * @returns Response from the service
+   */
+  static async addAddress(req, res){
+    try {
+      const user = await UserService.addAddress(req.body.address,req.body.id);
+      return res.status(201).json({ user });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: error });
+    }
+  }
+
+  static async getAddress(req, res){
+    try {
+      const address = await UserService.getAddress(req.query.id);
+      return res.status(201).json({ address });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: error });
+    }
+  }
 }
 
 module.exports = UserController;

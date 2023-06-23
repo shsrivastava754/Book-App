@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import CartService from "../../services/cart.service";
 
@@ -23,6 +24,8 @@ const CartItem = (props) => {
   // Disabling the increment and decrement buttons on boundary cases
   const [incrementDisabled, setIncrementDisabled] = useState(false);
   const [decrementDisabled, setDecrementDisabled] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Disable the decrement button for quantity if the quantity is already zero
@@ -109,13 +112,21 @@ const CartItem = (props) => {
     </Tooltip>
   );
 
+  const getBookDetails = ()=>{
+    navigate(`/book/${props.item.title}`,{
+      state: {
+        bookId: props.item.bookId
+      }
+    });
+  };
+
   return (
     <>
       <tr>
-        <td>{props.item.title}</td>
-        <td>{props.item.author}</td>
-        <td>Rs. {props.item.price}</td>
-        <td>Rs. {props.item.sale_price}</td>
+        <td onClick={() => {getBookDetails()}}>{props.item.title}</td>
+        <td onClick={() => {getBookDetails()}}>{props.item.author}</td>
+        <td onClick={() => {getBookDetails()}}>Rs. {props.item.price}</td>
+        <td onClick={() => {getBookDetails()}}>Rs. {props.item.sale_price}</td>
         <td>
           <button
             onClick={decrement}

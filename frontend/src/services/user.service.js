@@ -153,6 +153,38 @@ async getUserProfile(id) {
   }
 };
 
+/**
+ * Saves the address in the backend
+ * @param {Object} address 
+ * @returns {Object} Response from the API call at backend
+ */
+async addAddress(address){
+  try {
+    let res = await axios.post(`${process.env.REACT_APP_API_URL}/users/addAddress`,{
+      address,token: Cookies.get('token'),id: JSON.parse(Cookies.get('userToken'))._id
+    });
+
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+/**
+ * 
+ * @returns Address of the user
+ */
+async getAddress(userId){
+  let response = await axios.get(`${process.env.REACT_APP_API_URL}/users/info/getAddress`,{
+    params: {
+      token: Cookies.get('token'),
+      id: userId
+    }
+  });
+
+  return response;
+}
+
 };
 
 export default new UserService();

@@ -32,7 +32,7 @@ const BookDetails = () => {
   
   // Getting the id from url parameters
   const id = location.state.bookId;
-  const url = `${process.env.REACT_APP_API_URL}/:${id}`;
+  const url = `${process.env.REACT_APP_API_URL}/${id}`;
   
   /**
    *
@@ -114,7 +114,7 @@ const BookDetails = () => {
             <button className="btn p-2 mx-2" onClick={() => {addToCart(book)}} disabled={disabled}>
               Add to Cart
             </button>
-            <button className="btn p-2 mx-2" onClick={() => {navigate(-1)}} disabled={disabled}>
+            <button className="btn p-2 mx-2" onClick={() => {navigate(-1)}}>
               Go Back
             </button>
           </div>

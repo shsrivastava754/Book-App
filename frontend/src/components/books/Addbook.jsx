@@ -34,7 +34,7 @@ const AddBook = () => {
     const formSubmit = (e)=>{
         e.preventDefault();
 
-        addBook(title,author,price,description,quantity,sale_price);
+        addBook();
         setTitle("");
         setAuthor("");
         setPrice("");
@@ -52,8 +52,9 @@ const AddBook = () => {
      * @param {Number} quantity 
      * @param {Number} sale_price 
      */
-    const addBook = async(title,author,price,description,quantity,sale_price)=>{
-        const res = await BookService.addBook(title,author,price,description,quantity,sale_price);
+    const addBook = async()=>{
+        const bookDetails = {title,author,price,description,quantity,sale_price};
+        const res = await BookService.addBook(bookDetails);
         if(res){
             navigate('/books');
         } else {

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Ordered_Book = (props) => {
     const navigate = useNavigate();
-
     
     // Navigate to the single order page
     const getBookDetails = () => {

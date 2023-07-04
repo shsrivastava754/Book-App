@@ -19,14 +19,16 @@ const Orders_Dashboard = () => {
 
     useEffect(() => {
         (async ()=>{
-            const response = await getOrders(page, rowsPerPage, search);
+            const filters = {page, rowsPerPage, search};
+            const response = await getOrders(filters);
             setOrders(response.data.orders);
             setOrdersLength(response.data.ordersCount);
           })();
     }, [page, rowsPerPage, search]);
 
-    const getOrders = async (page, rowsPerPage, search) => {
-      const response = await UserService.fetchAllOrders(page, rowsPerPage, search);
+    const getOrders = async (filters) => {
+      const response = await UserService.fetchAllOrders(filters);
+      console.log(response.data.ordersCount);
       return response;
     };
     
@@ -39,14 +41,18 @@ const Orders_Dashboard = () => {
    * When previous button is clicked
    */
   const handlePrevious = () => {
-    if (page !== 1) setPage(page - 1);
+    if (page !== 1) {
+      setPage(page - 1);
+    }
   };
 
   /**
    * When next button is clicked
    */
   const handleNext = () => {
-    if (page !== Math.ceil(ordersLength / rowsPerPage)) setPage(page + 1);
+    if (page !== Math.ceil(ordersLength / rowsPerPage)){
+      setPage(page + 1);
+    }
   };
 
   /**
@@ -81,7 +87,7 @@ const Orders_Dashboard = () => {
       <div className="container bookList">
         <div className="btn-group mt-2">
             <button className="back-btn" onClick={() => navigate(-1)}>
-            <i class="fa-solid fa-arrow-left"></i>
+            <i className="fa-solid fa-arrow-left"></i>
             </button>
           <h3 className="my-3">Customers Orders</h3>
         </div>
@@ -105,9 +111,9 @@ const Orders_Dashboard = () => {
             </thead>
             <tbody>
             {
-            orders && orders.map((item)=>{
+            orders?.map((item)=>{
               return (
-                <Order order={item}/>
+                <Order order={item} key={item._id}/>
               )
             })
             }

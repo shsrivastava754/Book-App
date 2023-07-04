@@ -34,7 +34,7 @@ const Book = (props) => {
       const response = await UserService.getUser(url);
       setUser(response.data.message);
     })();
-  },[]);
+  },[disabled]);
   
   const navigate = useNavigate();
   
@@ -169,6 +169,10 @@ const Book = (props) => {
       props.book._id
     );
 
+    if(!result){
+      setDisabled(false);
+    }
+
     if (result && props.book.quantity > 0 && props.book.donatedById!== JSON.parse(Cookies.get('userToken'))._id) {
       setDisabled(false);
     } else {
@@ -199,7 +203,7 @@ const Book = (props) => {
             delay={{ show: 150, hide: 10 }}
             overlay={userTooltip}
           >
-            <div className="bookDonor">{user.name}</div>
+            <div className="bookDonor">{user?.name}</div>
           </OverlayTrigger>
         </td>
         <td onClick={() => {getDetails(props.book)}}>
@@ -281,16 +285,16 @@ const Book = (props) => {
           </td>
         )}
       </tr>
-    <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+    <Modal show={show} onHide={handleClose} className="checkoutConfirmBox">
+        <Modal.Header closeButton className="closeButton">
           <Modal.Title>Delete Book</Modal.Title>
         </Modal.Header>
         <Modal.Body>Are you sure you want to delete this book?</Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer className="modalFooter">
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={deleteBook}>
+          <Button variant="danger" onClick={deleteBook} className="delete">
             Delete
           </Button>
         </Modal.Footer>

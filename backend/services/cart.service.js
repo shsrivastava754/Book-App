@@ -193,7 +193,7 @@ class CartService {
    * @param {Object} body 
    * @returns a status message for email
    */
-  static async informAdmin(body) {
+  static async sendMails(body) {
     const userEmail = body.email;
     const name = body.name;
 

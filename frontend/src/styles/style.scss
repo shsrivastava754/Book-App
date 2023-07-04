@@ -190,6 +190,11 @@ select {
   font-weight: 700;
 }
 
+.detailsContainer .editIcon{
+  margin-left: 10px;
+  cursor: pointer;
+}
+
 .detailsContainer button.btn {
   background-color: inherit;
   border: 1px solid $primary-color;
@@ -598,6 +603,16 @@ footer {
 .checkoutConfirmBox .closeButton{
   outline: none;
   border: transparent;
+}
+
+.checkoutConfirmBox button.delete{
+  background-color: $primary-color;
+  color: $btn-color;
+}
+
+.checkoutConfirmBox button.delete:hover{
+  background-color: $btn-color;
+  color: $primary-color;
 }
 
 /** --------------------------------------------------------------- **/

@@ -2,8 +2,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, React } from "react";
 
 import "./authenticationStyle.scss";
+import bg6 from "../../images/bg6.jpg";
 
-import CartService from "../../services/cart.service";
+import UserService from "../../services/user.service";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -51,7 +52,6 @@ const Register = () => {
     if (name && email && username && password) {
       setDisabled(false);
       registerUser(name, username, email, password);
-      navigate('/');
     } else {
       setDisabled(true);
     }
@@ -65,7 +65,16 @@ const Register = () => {
    * @param {String} password
    */
   const registerUser = async (name, username, email, password) => {
-    await CartService.registerUser(name, username, email, password);
+    const response = await UserService.registerUser(name, username, email, password);
+    const otpResponse = await UserService.sendOtp(response.data.newUser._id);
+    if(otpResponse){
+      navigate('/verifyEmail',{
+        state:{
+          id: response.data.newUser._id,
+          email
+        }
+      });
+    }
   };
 
   /**
@@ -129,6 +138,13 @@ const Register = () => {
       setDisabled(true);
     }
   };
+
+  function setBackground(bg) {
+    let body = document.querySelector("body");
+    body.style = `background: url(${bg}) rgba(255, 0, 150, 0.3);background-size:cover;background-repeat:no-repeat;background-blend-mode: multiply;`;
+  }
+
+  setBackground(bg6);
 
   return (
     <>

@@ -16,19 +16,28 @@ const BookList = () => {
   
   // State for books list
   const [books, setBooks] = useState();
-  const [booksLength, setBooksLength] = useState();
+
+  // Count of books
+  const [booksCount, setBooksCount] = useState();
+
+  // Pagination variables
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(1);
+  
+  // Search text in the searchbox
   const [search, setSearch] = useState("");
-  const [filter,setFilter] = useState("available");
+
+  // Dropdown filter for status of the book
+  const [category, setCategory] = useState("available");
+  
   const pageNumbers = [];
 
   // Used for using the function in child component
   const childRef = useRef(null);
 
   useEffect(() => {
-    getBooks(page, rowsPerPage, search,filter);
-  }, [page, rowsPerPage, search, filter]);
+    getBooks();
+  }, [page, rowsPerPage, search, category]);
   
   // Calls the function in header component
   const handleCallChildFunction = () => {
@@ -42,14 +51,15 @@ const BookList = () => {
    * @param {Number} currPage 
    * @param {Number} currLimit 
    */
-  const getBooks = async ( page,  rowsPerPage,  search, filter) => {
-    const response = await BookService.getBooks(page,rowsPerPage,search,filter);
+  const getBooks = async () => {
+    const filters = {page,rowsPerPage,search,category};
+    const response = await BookService.getBooks(filters);
     setBooks(response.data.books);
-    setBooksLength(response.data.booksCount);
+    setBooksCount(response.data.booksCount);
   };
 
   // Set page numbers for number of buttons
-  for (let i = 1; i <= Math.ceil(booksLength / rowsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(booksCount / rowsPerPage); i++) {
     pageNumbers.push(i);
   }
 
@@ -64,7 +74,7 @@ const BookList = () => {
    * When next button is clicked
    */
   const handleNext = () => {
-    if (page !== Math.ceil(booksLength / rowsPerPage))
+    if (page !== Math.ceil(booksCount / rowsPerPage))
       setPage(page + 1);
   };
 
@@ -91,11 +101,11 @@ const BookList = () => {
    */
   const handleFilter = (e) => {
     if(e.target.value==1){
-      setFilter("available");
+      setCategory("available");
     } else if(e.target.value==2) {
-      setFilter("sold");
+      setCategory("sold");
     } else {
-      setFilter("");
+      setCategory("");
     }
     setPage(1);
   };
@@ -161,8 +171,7 @@ const BookList = () => {
               </tr>
             </thead>
             <tbody>
-              {books &&
-                books.map((book) => {
+                {books?.map((book) => {
                   return <Book book={book} key={book.title} handleCallChildFunction = {handleCallChildFunction} />;
                 })}
             </tbody>

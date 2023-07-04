@@ -98,8 +98,17 @@ class OrderService {
   }
 
   // Count all the orders in the orders model
-  static async countOrders() {
-    const count = await OrderModel.countDocuments();
+  static async countOrders(searchQuery) {
+    let count;
+    if(searchQuery==""){
+      count = await OrderModel.countDocuments();
+    } else {
+      count = await OrderModel.countDocuments({
+        $or: [
+                { name: { $regex: searchQuery, $options: "i" } }
+              ]
+    });
+    }
     return count;
   }
 

@@ -23,9 +23,9 @@ class UserController {
     const skip = (page - 1) * limit;
 
     try {
-      const users = await UserService.getUsers(skip,limit,req.body.searchQuery || "");
+      const users = await UserService.getUsers(skip,limit,req.body.searchQuery);
 
-      const usersCount = await UserService.countUsers();
+      const usersCount = await UserService.countUsers(req.body.searchQuery);
       if (!users) {
         return res.status(401).json({ message: "No users found" });
       } else {
@@ -170,9 +170,11 @@ class UserController {
     try {
       // Check if the user already exists or not
       const user = await UserService.findUserByUsername(req.body.username);
-
+      
       // If user exists the return a message
       if (user) {
+        user.isVerified = true;
+        await user.save();
         const token = jwt.sign(
           {
             name: user.name,
@@ -191,6 +193,7 @@ class UserController {
 
       // Else add the new user to the users collection
       else {
+        req.body.isVerified = true;
         const newUser = await UserService.registerUser(req.body);
         if (!newUser) {
           return res.status(500).json({ message: "No user added, some error" });
@@ -219,10 +222,60 @@ class UserController {
     }
   }
 
+  /**
+   * Get address of an user
+   * @param {Object} req 
+   * @param {Object} res 
+   * @returns {Object} address of the user
+   */
   static async getAddress(req, res){
     try {
       const address = await UserService.getAddress(req.query.id);
       return res.status(201).json({ address });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: error });
+    }
+  }
+
+  /**
+   * Sends the otp to the user
+   * @param {Object} req 
+   * @param {Object} res 
+   * @returns {Object} new otp formed
+   */
+  static async sendOtp(req,res){
+    try {
+      const id = req.body.id;
+      const user = await UserService.findUserById(id);
+      const result = await UserService.sendOtp(user);
+
+      return res.status(201).json({ result });
+
+
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: error });
+    }
+  }
+
+  /**
+   * 
+   * @param {Object} req 
+   * @param {Object} res 
+   * @returns {Boolean} whether the otp is verified or not
+   */
+  static async verifyOtp(req,res){
+    try {
+      const id = req.body.id;
+      const otp = req.body.otp;
+      const result = await UserService.verifyOtp(id,otp);
+
+      if(result === 'Correct OTP'){
+        await UserService.userVerified(id);
+      }
+
+      return res.status(201).json({ result });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: error });

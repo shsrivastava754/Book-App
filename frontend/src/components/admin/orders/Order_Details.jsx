@@ -2,13 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import Header from '../../common/Header';
-import OrderService from '../../../services/order.service';
 import Ordered_Book from './Ordered_Book';
 
+import OrderService from '../../../services/order.service';
 import UserService from '../../../services/user.service';
 
 const Order_Details = () => {
+
+    // State variable for books in the order
     const [books, setBooks] = useState();
+
+    // State variable for the address of the user
     const [address, setAddress] = useState();
     
     const navigate = useNavigate();
@@ -25,8 +29,10 @@ const Order_Details = () => {
           
     }, []);
 
+    // Id of the user who placed order
     const userId = location.state.order.userId;
 
+    // Get books in the order
     const getOrders = async () => {
         const orders = await OrderService.getBooks(location.state.order._id);
         return orders;
@@ -62,9 +68,9 @@ const Order_Details = () => {
             </thead>
             <tbody>
               {
-                books && books.map((book)=>{
+                books?.map((book)=>{
                   return(
-                    <Ordered_Book book={book} />
+                    <Ordered_Book book={book} key={book._id} />
                   )
                 }) 
               }

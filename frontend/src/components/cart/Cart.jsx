@@ -108,15 +108,10 @@ const Cart = () => {
                 </tr>
               </thead>
               <tbody>
-                {items &&
-                  items.map((item) => {
+                {items.map((item) => {
                     return (
-                      <CartItem
-                        item={item}
-                        key={item.title}
-                        onUpdateQuantity={handleUpdateQuantity}
-                        handleCallChildFunction = {handleCallChildFunction}
-                      />
+                      <CartItem item={item} key={item.title} onUpdateQuantity={handleUpdateQuantity}
+                        handleCallChildFunction = {handleCallChildFunction} />
                     );
                   })}
               </tbody>

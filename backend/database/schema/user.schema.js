@@ -24,7 +24,10 @@ const dbSchema = new mongoose.Schema({
   role: String,
 
   // Address of the user
-  address: Object
+  address: Object,
+
+  // Whether user is verified or not
+  isVerified: Boolean
 
 },{ timestamps: true });
 

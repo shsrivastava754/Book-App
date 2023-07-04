@@ -1,5 +1,4 @@
 const BookService = require("../services/book.service");
-const EmailService = require("../services/email.service");
 
 /**
  * Class that contains methods to handle CRUD operations on books.
@@ -117,13 +116,14 @@ class BookController {
     try {
       const books = await BookService.getBooks(skip,limit,req.body.searchQuery,req.body.category);
 
-      const booksCount = await BookService.countBooks();
+      const booksCount = await BookService.countBooks(req.body.searchQuery,req.body.category);
       if (!books) {
         return res.status(401).json({ message: "No books found" });
       } else {
         return res.status(200).json({ books: books, booksCount: booksCount });
       }
     } catch (error) {
+      console.log(error);
       return res.status(401).json({error: error})
     }
   }

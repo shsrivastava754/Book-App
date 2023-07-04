@@ -33,8 +33,11 @@ const Header = forwardRef((props,ref) => {
    * Function to logout the user from current session
    */
   const logout = ()=>{
-    // Clear browser localStorage
+    // Clear cookies
+    
     Cookies.remove('userToken');
+    Cookies.remove('token');
+    Cookies.remove('isVerified');
     navigate('/');
   }
 

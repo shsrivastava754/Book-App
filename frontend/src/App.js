@@ -6,6 +6,7 @@ import Bookdetails from "./components/books/Bookdetails";
 import Editbook from "./components/books/Editbook";
 import Login from "./components/authentication/Login";
 import Register from "./components/authentication/Register";
+import VerifyEmail from "./components/authentication/VerifyEmail";
 import Users from "./components/admin/Users";
 import Cart from "./components/cart/Cart";
 import Profile from "./components/profile/Profile";
@@ -46,6 +47,7 @@ function App() {
       {/* Routes that is accessed by not logged in user */}
         <Route element={<ProtectLogin/>}>
           <Route path="/login" element={<Login />} exact /> 
+          <Route path="/verifyEmail" element={<VerifyEmail />} exact /> 
           <Route path="/register" element={<Register/>} exact /> 
           <Route path="/" element={<Login />} exact /> 
         </Route>

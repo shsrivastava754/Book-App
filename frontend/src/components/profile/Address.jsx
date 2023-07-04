@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import '../../styles/style.scss';
 
@@ -16,16 +16,22 @@ import 'react-toastify/dist/ReactToastify.css';
  */
 const Address = () => {
     
+    const location = useLocation();
+    
     // States for form fields
-    const [house, setHouse] = useState("");
-    const [locality, setLocality] = useState("");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [pin, setPin] = useState("");
+    const [house, setHouse] = useState(location.state.house);
+    const [locality, setLocality] = useState(location.state.locality);
+    const [city, setCity] = useState(location.state.city);
+    const [state, setState] = useState(location.state.state);
+    const [pin, setPin] = useState(location.state.pin);
     const [disabled, setDisabled] = useState(true);
 
-
     const navigate = useNavigate();
+
+    useEffect(() => {
+      checkToEnable();
+    }, [])
+    
 
     /**
      * Validating the form
@@ -47,7 +53,9 @@ const Address = () => {
             house, locality, state, city, pin
         }
         const res = await UserService.addAddress(address);
-        console.log(res);
+        if(res){
+            navigate(-1);
+        }
     }
 
     const checkToEnable = ()=>{
@@ -97,23 +105,23 @@ const Address = () => {
             <div className="row">
                 <div className="col-md-6 mb-3">
                     <label htmlFor="title" className="form-label">House No.</label>
-                    <input type="text" value={house} className="form-control" id="title" onChange={checkHouse} />
+                    <input type="text" defaultValue={location.state.house} className="form-control" id="title" onChange={checkHouse} />
                 </div>
                 <div className="col-md-6 mb-3">
                     <label htmlFor="author" className="form-label">Locality</label>
-                    <input type="text" value={locality} className="form-control" id="author" onChange={checkLocality} />
+                    <input type="text" defaultValue={location.state.locality} className="form-control" id="author" onChange={checkLocality} />
                 </div>
                 <div className="col-md-6 mb-3">
                     <label htmlFor="city" className="form-label">City</label>
-                    <input type="text" value={city} className="form-control" id="city" onChange={checkCity} min={1} />
+                    <input type="text" defaultValue={location.state.city} className="form-control" id="city" onChange={checkCity} min={1} />
                 </div>
                 <div className="col-md-6 mb-3">
                     <label htmlFor="state" className="form-label">State</label>
-                    <input type="text" value={state} className="form-control" id="state" onChange={checkState} min={1} />
+                    <input type="text" defaultValue={location.state.state} className="form-control" id="state" onChange={checkState} min={1} />
                 </div>
                 <div className="col-md-6 mb-3">
                     <label htmlFor="pin" className="form-label">PIN Code</label>
-                    <input type="number" value={pin} className="form-control" id="pin" onChange={checkPin} min={100000} />
+                    <input type="number" defaultValue={location.state.pin} className="form-control" id="pin" onChange={checkPin} min={100000} />
                 </div>
             </div>
             <div className="btnGroup" style={{display:"flex",justifyContent:"center"}}>

@@ -11,6 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import Cookies from 'js-cookie';
+import Alert from 'react-bootstrap/Alert';
 
 /**
  * Returns Login Form Component
@@ -21,6 +22,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(true);
+  const [showAlert, setShowAlert] = useState(false);
 
   let navigate = useNavigate();
 
@@ -55,6 +57,13 @@ const Login = () => {
     }
   };
 
+  const handleClick = () => {
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 3000); // Change the duration (in milliseconds) as needed
+  };
+
   /**
    * Function to send request to backend for logging user into the app
    * @param {String} username
@@ -67,13 +76,22 @@ const Login = () => {
       // Decode the token provided from backend
       const token = jwt_decode(res.data.token);
 
+      if(res.data.user.isVerified){
       // Set the decoded details from token into the cookies which expires in 2 hours
       Cookies.set('userToken', JSON.stringify(token), { expires: 2 });
 
       // Set the token into cookies to send it to backend for verifying it at backend
       Cookies.set('token', res.data.token, { expires: 2 });
 
+      // The user is verified
+      Cookies.set('isVerified', true, { expires: 2 })
+      
       navigate("/books");
+      } else {
+        handleClick();
+      }
+
+
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
@@ -107,6 +125,11 @@ const Login = () => {
 
   return (
     <>
+      {showAlert && (
+        <Alert variant="success" onClose={() => setShowAlert(false)} dismissible className="text-center container">
+          <strong>User is not verified</strong>
+        </Alert>
+      )}
       <div className="login-card">
         <h2>Login</h2>
         <h3>Enter your credentials</h3>
@@ -134,10 +157,17 @@ const Login = () => {
                 };
 
                 let res = await UserService.postGoogleUser(userObj);
-                const token = jwt_decode(res.token);
+                const token = jwt_decode(res.data.token);
 
                 // Set the token into the cookies which expires in 2 hours
                 Cookies.set('userToken', JSON.stringify(token), { expires: 2/24 });
+
+                // Set the token into cookies to send it to backend for verifying it at backend
+                Cookies.set('token', res.data.token, { expires: 2 });
+
+                // Set is verified flag for the user
+                Cookies.set('isVerified', res.data.user.isVerified, { expires: 2 });
+
                 navigate("/books");
               }}
               onError={() => {

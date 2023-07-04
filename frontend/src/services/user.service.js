@@ -57,12 +57,12 @@ async fetchOrders(userId){
 }
 
 // Fetch donations done by the user
-async fetchAllOrders(page,limit,search){
+async fetchAllOrders(filters){
   const url = `${process.env.REACT_APP_API_URL}/admin/orders/getOrders`;
   return await axios.get(url, {
     params: {
       token: Cookies.get('token'),
-      page: page, limit: limit, searchQuery: search
+      page: filters.page, limit: filters.limit, searchQuery: filters.search
     }
   });
 }
@@ -90,44 +90,43 @@ async loginUser (username, password) {
  */
 async registerUser (name, username, email, password) {
   try {
-    await axios
+    const response = await axios
       .post(`${process.env.REACT_APP_API_URL}/register`, {
         name: name,
         email: email,
         username: username,
         password: password,
-      })
-      .then((res)=> (res = res.data));
-    toast.success("Registered new user");
-  } catch (error) {
-    toast.error("User already exists");
-  }
-};
+      });
 
-/**
- * Fetches user details
- * @param {String} url 
- * @returns response from backend after fetching user details
- */
+      return response;
+    } catch (error) {
+      toast.error("User already exists");
+    }
+  };
+  
+  /**
+   * Fetches user details
+   * @param {String} url 
+   * @returns response from backend after fetching user details
+  */
 async getUser (url){
-  const response = await axios.get(url,{
+  const result = await axios.get(url,{
     params: 
     {
       token: Cookies.get('token')
     }
   });
-  return response;
+  return result;
 }
 
 /**
  * Post google user to backend
  * @param {Object} userObj
- */
+*/
 async postGoogleUser (userObj) {
   try {
     let res = await axios
-      .post(`${process.env.REACT_APP_API_URL}/registerGoogleUser`, userObj)
-      .then((res) => (res = res.data));
+    .post(`${process.env.REACT_APP_API_URL}/registerGoogleUser`, userObj);
     return res;
   } catch (error) {
     toast.error("User already exists");
@@ -138,7 +137,7 @@ async postGoogleUser (userObj) {
  * Gets the profile of user
  * @param {String} id 
  * @returns {Object} Details of the user
- */
+*/
 async getUserProfile(id) {
   try {
     return await axios
@@ -157,7 +156,7 @@ async getUserProfile(id) {
  * Saves the address in the backend
  * @param {Object} address 
  * @returns {Object} Response from the API call at backend
- */
+*/
 async addAddress(address){
   try {
     let res = await axios.post(`${process.env.REACT_APP_API_URL}/users/addAddress`,{
@@ -173,7 +172,7 @@ async addAddress(address){
 /**
  * 
  * @returns Address of the user
- */
+*/
 async getAddress(userId){
   let response = await axios.get(`${process.env.REACT_APP_API_URL}/users/info/getAddress`,{
     params: {
@@ -181,7 +180,28 @@ async getAddress(userId){
       id: userId
     }
   });
+  
+  return response;
+}
 
+/**
+ * Sends otp to the user after registration
+ * @param {String} id 
+ * @returns response whether otp has been sent
+*/
+async sendOtp(id){
+  let response = await axios.post(`${process.env.REACT_APP_API_URL}/sendOtp`,{id});
+  return response;
+}
+
+/**
+ * Verifies the otp that user has entered
+ * @param {String} id 
+ * @param {Number} code 
+ * @returns whether the otp is correct or not
+*/
+async verifyOtp(id,code){
+  let response = await axios.post(`${process.env.REACT_APP_API_URL}/verifyOtp`,{id,otp:code});
   return response;
 }
 

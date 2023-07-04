@@ -1,12 +1,11 @@
 const nodemailer = require("nodemailer");
 
-class EmailService {
+class OtpEmailService {
   /**
-   * Sends an email to users
+   * Sends an email with OTP to users
    * @param {Object} emailObj
-   * emailObj : { subject, html template, 
-   * user email}
-   * @returns
+   * emailObj : { name, user email, otp}
+   * @returns {Object} response of the mail
    */
   static async sendEmail(emailObj) {
     try {
@@ -24,10 +23,10 @@ class EmailService {
 
       // Messages for the mail
       const message = {
-        from: `${emailObj.name} ${process.env.EMAIL}`,
+        from: `Book App ${process.env.EMAIL}`,
         to: emailObj.userEmail,
-        subject: emailObj.subject,
-        html: emailObj.html
+        subject: "OTP Details for Book App",
+        html: `<p>Dear ${emailObj.name},<br>Your One Time Password (OTP) for verification of your account is: <strong>${emailObj.otp}.</strong> <br>The OTP will be valid for 10 minutes only. Click on resend otp for a new OTP.<br><br> Regards,<br> Book App</p>`
       };
 
       let result;
@@ -50,4 +49,4 @@ class EmailService {
   }
 }
 
-module.exports = EmailService;
+module.exports = OtpEmailService;

@@ -15,8 +15,6 @@ import Cookies from "js-cookie";
  * @returns Single Cart Item
  */
 const CartItem = (props) => {
-  // State variable for handling the confirm delete dialog box
-  const [openDialog, handleDisplay] = useState(false);
 
   // State variable for handling quantity of item
   const [quantity, setQuantity] = useState(props.item.quantity);
@@ -160,20 +158,6 @@ const CartItem = (props) => {
           </OverlayTrigger>
         </td>
       </tr>
-      {/* <Dialog onClose = {handleClose} open = {openDialog} className='dialogBox'>
-      <h3>
-              Are you sure to remove the item?
-      </h3>
-      <br></br>
-      <div className='buttons'>
-          <button onClick = {removeItem} className='btnConfirmYes'>
-              Confirm
-          </button>
-          <button onClick = {handleClose} className='btnConfirmNo'>
-              Cancel
-          </button>
-      </div>
-    </Dialog> */}
     </>
   );
 };

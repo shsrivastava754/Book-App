@@ -42,6 +42,18 @@ const Profile = () => {
     });
   };
 
+  const editAddress = () => {
+    navigate(`/editAddress/${userId}`,{
+      state: {
+        house: user.address?.house || '',
+        city: user.address?.city || '',
+        locality: user.address?.locality || '',
+        state: user.address?.state || '',
+        pin: user.address?.pin || ''
+      }
+    });
+  };
+
   /**
    * Function to navigate the orders list page
    */
@@ -84,7 +96,7 @@ const Profile = () => {
                 </>
               }
               {
-                (JSON.parse(Cookies.get('userToken'))._id===user?._id)? <Link to={`/editAddress/${userId}`}> <span><i class="fa-solid fa-pen-to-square"></i></span> </Link>:null
+                (JSON.parse(Cookies.get('userToken'))._id===user?._id)? <span onClick={editAddress} className="editIcon"><i class="fa-solid fa-pen-to-square"></i></span> :null
               }
             </h5>
           </div>

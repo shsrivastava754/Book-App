@@ -22,7 +22,7 @@ button {
 }
 
 .login-card > h2,
-.register-card h2 {
+.register-card h2{
   margin: 0 0 12px;
   font-size: 36px;
   font-weight: 700;
@@ -37,7 +37,7 @@ button {
 }
 
 .login-form,
-.register-form {
+.register-form{
   width: 100%;
   margin: 0;
   display: grid;
@@ -45,7 +45,7 @@ button {
 }
 
 .login-form input,
-.register-form input {
+.register-form input{
   width: 100%;
   height: 56px;
   padding: 0 16px;
@@ -68,7 +68,8 @@ button {
 }
 
 .login-form > button:enabled,
-.register-form > button:enabled {
+.register-form > button:enabled,
+button.verifyOtp:enabled {
   padding: 15px 25px;
   border: unset;
   border-radius: 15px;
@@ -85,7 +86,8 @@ button {
 }
 
 .login-form > button:disabled,
-.register-form > button:disabled {
+.register-form > button:disabled,
+button.verifyOtp:disabled {
   padding: 15px 25px;
   border: unset;
   border-radius: 15px;
@@ -98,7 +100,8 @@ button {
 }
 
 .login-form > button::before,
-.register-form > button::before {
+.register-form > button::before,
+button.verifyOtp::before {
   content: "";
   position: absolute;
   top: 0;
@@ -114,17 +117,20 @@ button {
 }
 
 .login-form > button:enabled:hover,
-.register-form > button:hover:enabled {
+.register-form > button:hover:enabled, 
+button.verifyOtp:hover:enabled {
   color: $authentication-button-background;
 }
 
 .login-form > button:hover:enabled::before,
-.register-form > button:hover:enabled::before {
+.register-form > button:hover:enabled::before, 
+button.verifyOtp:hover:enabled::before {
   width: 100%;
 }
 
 .login-card,
-.register-card {
+.register-card,
+.otp-container {
   position: relative;
 }
   
@@ -154,13 +160,115 @@ button {
   cursor: not-allowed;
 }
 
+.otp-form #submitBtn:disabled,
+.otp-form #submitBtn[disabled] {
+  background-color: $disabled-button-bg;
+  color: grey;
+  cursor: not-allowed;
+}
+
 .or {
   margin-bottom: 0;
 }
 
+// otp form
+
+.otp-container{
+  padding: 30px;
+  max-width: 700px;
+  margin: auto;
+  margin-top: 150px;
+  border-radius: 24px;
+  background: $white;
+}
+
+.otp-container h2{
+  margin: 0 0 12px;
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.otp-container p{
+  margin: 0 0 30px;
+  font-weight: 700;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.38);
+  text-align: center;
+}
+
+.code-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 40px 0;
+}
+
+.code{
+  caret-color: transparent; 
+  border-radius: 10px;
+  font-size: 30px;
+  width: 75px;
+  height: 75px;
+  margin: 10px;
+  text-align: center;
+  padding: 0 16px;
+  font-weight: 700;
+  border: 2px solid $input-color;
+}
+
+.code::-webkit-outer-spin-button,
+.code::-webkit-inner-spin-button{
+  -webkit-appearance: none;
+}
+
+.code:valid{
+  box-shadow: 0 10px 10px -5px $box-shadow-otp;
+}
+
+button.verifyOtp{
+  display: block;
+  margin: auto;
+  width: 40%;
+}
+
+.resend{
+  color: $primary-color;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.otp-container .email{
+  color: $content-text-color;
+}
+
+.otp-container .register{
+  color: $primary-color;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 600px){
+  .otp-container{
+    width: 80%;
+  }
+
+  .code-container{
+    flex-wrap: wrap;
+  }
+
+  .code{
+    height: 50px;
+    max-width: 50px;
+    font-size: bold;
+  }
+}
+
 @media (width>=500px) {
   .login-card,
-  .register-card {
+  .register-card,
+  .otp-card {
     width: 400px;
   }
 

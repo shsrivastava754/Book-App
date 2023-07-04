@@ -1,6 +1,8 @@
 const UserModel = require("../database/schema/user.schema");
 const BookModel = require("../database/schema/book.schema");
+const OtpModel = require("../database/schema/otp.schema");
 const bcrypt = require("bcrypt");
+const OtpEmailService = require("./otpEmail.service");
 
 /**
  * Class for users service
@@ -27,9 +29,23 @@ class UsersService {
     }
   }
 
-  static async countUsers() {
-    const usersCount = await UserModel.countDocuments();
-    return usersCount;
+  /**
+   * Number of users according to the filter
+   * @param {String} searchQuery 
+   * @returns {Integer} count of users
+   */
+  static async countUsers(searchQuery) {
+    let count;
+    if(searchQuery==""){
+      count = await UserModel.countDocuments();
+    } else {
+      count = await UserModel.countDocuments({
+        $or: [
+                { name: { $regex: searchQuery, $options: "i" } }
+              ]
+    });
+    }
+    return count;
   }
 
   /**
@@ -52,6 +68,9 @@ class UsersService {
     let hashedPass = bcrypt.hashSync(body.password, saltRounds);
     body.password = hashedPass;
     body.role = "User";
+    if(body.isVerified===undefined){
+      body.isVerified = false
+    }
     let newUser = new UserModel(body);
 
     await newUser.save();
@@ -67,6 +86,13 @@ class UsersService {
   static verifyUser(enteredPassword, actualPassword) {
     let verified = bcrypt.compareSync(enteredPassword, actualPassword);
     return verified;
+  }
+
+  static async userVerified(id){
+    const user = await UserModel.findByIdAndUpdate(id, {
+      isVerified: true
+    });
+    user.save();
   }
 
   /**
@@ -131,6 +157,59 @@ class UsersService {
   static async getAddress(id){
     const user = await UserModel.findOne({_id:id});
     return user.address;
+  }
+
+  /**
+   * Sends the otp to the mail
+   * @param {Object} user 
+   * @returns {Object} the new otp document created in the otp collection
+   */
+  static async sendOtp(user){
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const expirationTime = Date.now() + 600000;
+
+    await OtpModel.deleteMany({userId:user._id});
+
+    const emailObj = {
+      name: user.name,
+      userEmail: user.email,
+      otp
+    };
+
+    const mailMessage = await OtpEmailService.sendEmail(emailObj);
+
+    const newOtp = new OtpModel({
+      email: user.email,
+      otp,
+      userId: user._id,
+      expirationTime,
+      isVerified: false
+    });
+
+    await newOtp.save();
+    return newOtp;
+  }
+
+  /**
+   * Verify the otp entered by the user
+   * @param {String} id 
+   * @param {Number} otp 
+   * @returns {String} whether the otp is verified or not
+   */
+  static async verifyOtp(id,otp){
+    const userOtp = await OtpModel.findOne({userId:id});
+    const currentTime = Date.now();
+    if(!userOtp || userOtp.expirationTime<currentTime){
+      return 'Invalid or expired OTP';
+    }
+
+    if(userOtp.otp!==otp){
+      return 'Incorrect OTP';
+    }
+
+    userOtp.verified = true;
+    await userOtp.save();
+    return 'Correct OTP';
   }
 }
 

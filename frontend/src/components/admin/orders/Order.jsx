@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Order = (props) => {
+    // State variable for the date of creation
     const [createdAt,setCreatedAt] = useState();
 
     useEffect(() => {
@@ -10,6 +11,7 @@ const Order = (props) => {
 
     const navigate = useNavigate();
 
+    // Conversion of the date saved in database
     const timestamp = new Date(createdAt);
     const date = timestamp.getDate();
     const month = timestamp.getMonth()+1;

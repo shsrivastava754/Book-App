@@ -43,8 +43,8 @@ class OrderController {
     const skip = (page - 1) * limit;
 
     try {
-      const orders = await OrderService.getOrders(skip,limit,req.query.searchQuery || "");
-      const ordersCount = await OrderService.countOrders();
+      const orders = await OrderService.getOrders(skip,limit,req.query.searchQuery);
+      const ordersCount = await OrderService.countOrders(req.query.searchQuery);
       if (!orders) {
         return res.status(401).json({ message: "No orders found" });
       } else {

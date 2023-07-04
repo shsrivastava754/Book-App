@@ -33,7 +33,7 @@ router.get("/cart/getQuantities/:userId/:itemId/:bookId", tokenMiddleware, CartC
 router.post("/cart/checkout", tokenMiddleware, CartController.checkout);
 
 // Sends an email to the user/admin in case of checkout
-router.post('/cart/sendEmail', tokenMiddleware, CartController.informAdmin);
+router.post('/cart/sendEmail', tokenMiddleware, CartController.sendMails);
 
 router.post('/sendMessage', tokenMiddleware, MessageController.sendMessage);
 

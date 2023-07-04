@@ -174,8 +174,8 @@ class CartController {
    * @param {Request} req
    * @param {Response} res
    */
-  static async informAdmin(req, res) {
-    const result = await CartService.informAdmin(req.body);
+  static async sendMails(req, res) {
+    const result = await CartService.sendMails(req.body);
     res.status(201).json({ result });
   }
 }

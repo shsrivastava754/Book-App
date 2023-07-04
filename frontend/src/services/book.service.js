@@ -6,25 +6,25 @@ import Cookies from "js-cookie";
  */
 class BookService{
 
+  
   /**
- *
- * @param {String} title
- * @param {String} author
- * @param {Number} price
- * @param {String} description
- * @param {String} quantity
- * @param {Number} sale_price
- */
-  async addBook(title, author, price, description, quantity, sale_price){
+   * Adding the book into the database
+   * @param {Object} bookDetails 
+   * @returns {Object} Result obtained from backend after adding book
+   */
+  async addBook(bookDetails){
     let result;
-  await axios.post(process.env.REACT_APP_API_URL, { title, author, price, description, quantity, sale_price, 
-      donatedById: JSON.parse(Cookies.get('userToken'))._id, token: Cookies.get('token')
-    })
-    .then((res) => {
-      if (res) {
-        result = res;
-      }
-    });
+    await axios.post(process.env.REACT_APP_API_URL, { title: bookDetails.title, author: bookDetails.author, price: bookDetails.price, 
+      description: bookDetails.description, quantity: bookDetails.quantity, sale_price: bookDetails.sale_price, 
+        donatedById: JSON.parse(Cookies.get('userToken'))._id, token: Cookies.get('token')
+      })
+      .then((res) => {
+        if (res) {
+          result = res;
+        }
+      });
+
+    console.log(result);
 
   return result;
   }
@@ -43,17 +43,13 @@ class BookService{
     return response;
   }
 
+  
   /**
- * Edit book details at backend
- * @param {String} title
- * @param {String} author
- * @param {Number} price
- * @param {String} description
- * @param {String} status
- * @param {Number} quantity
- * @param {ObjectId} id
- * @returns {String} a response message
- */
+   * Editing the details of the book
+   * @param {Object} bookDetails 
+   * @param {String} id 
+   * @returns {Object} Response from the backend
+   */
   async editBook (bookDetails,id) {
     const {author, description, price, quantity, sale_price, title, status } = bookDetails;
     let result;
@@ -125,11 +121,11 @@ class BookService{
  * @param {String} filter 
  * @returns {Promise<{booksCount, books}>} filtered books from backend
  */
-  async getBooks (page, limit, search, filter) {
+  async getBooks (filters) {
     const url = `${process.env.REACT_APP_API_URL}/books/getBooks`;
     return axios.post(url, {
-      userId: JSON.parse(Cookies.get('userToken'))._id, page: page, limit: limit, 
-      searchQuery: search, category: filter, token: Cookies.get('token')
+      userId: JSON.parse(Cookies.get('userToken'))._id, page: filters.page, limit: filters.limit, 
+      searchQuery: filters.search, category: filters.category, token: Cookies.get('token')
     });
   }
 }

@@ -13,12 +13,26 @@ class BookService {
    * Number of books in the collection
    * @returns {Integer} number of books
    */
-  static async countBooks() {
-      const booksCount = await BookModel.countDocuments({
-        isDeleted: false,
-      });
+  static async countBooks(searchQuery,category) {
+    let filterCondition;
 
-      return booksCount;
+    // Setting condition for select filter
+    if(category==="available"){
+      filterCondition = {quantity:{$gt:0}}
+    } else if (category==="sold"){
+      filterCondition = {quantity:0};
+    } else {
+      filterCondition = {};
+    }
+
+    const books = await BookModel.find({
+      $or: [
+      { title: { $regex: searchQuery, $options: "i" } },
+      { author: { $regex: searchQuery, $options: "i" } },
+    ]
+    }).find(filterCondition).find({isDeleted: false});
+
+      return books.length;
   }
 
   /**
@@ -199,7 +213,7 @@ class BookService {
               Hi admin,
           </h3>
           <p>
-            ${user.name} (${userEmail}) requested a book
+            ${user.name} (${user.email}) requested a book
           </p>
           <table class="table-responsive">
             <thead>

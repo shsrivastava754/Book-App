@@ -26,10 +26,10 @@ Steps for setup of the project:
    npm install
 
 3) Create a .env file in the backend folder and define the following environment variables:
-   PORT: <backend_server_port>
-   MONGO_URI: <mongodb_connection_uri>
-   EMAIL: <email_used_for_using_mail_services>
-   PASSWORD: <app_password_generated_by_2_step_authentication>
+   PORT: <backend_server_port>, 
+   MONGO_URI: <mongodb_connection_uri>, 
+   EMAIL: <email_used_for_using_mail_services>, 
+   PASSWORD: <app_password_generated_by_2_step_authentication>, 
    SECRET_KEY: <secret_key_for_generating_jwt_token_on_login>
 
 4) Start the backend server by running the following command:
@@ -45,7 +45,7 @@ The backend server will start running on the specified port.
    npm install
 
 3) Create a .env file in the frontend folder and define the following environment variable:
-   REACT_APP_API_URL = http://localhost:<backend_server_port>
+   REACT_APP_API_URL = http://localhost:<backend_server_port> , 
    REACT_APP_GOOGLE_CLIENT_ID = <Client_Id_obtained_from_the_google_cloud_services>
    
    Make sure to replace <backend_server_port> with the actual port number on which the backend server is running.

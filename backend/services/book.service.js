@@ -2,7 +2,7 @@ const { ObjectId } = require("mongodb");
 const BookModel = require("../database/schema/book.schema");
 const UserModel = require("../database/schema/user.schema");
 const UserService = require("../services/user.service");
-const EmailService = require("../services/email.service");
+const EmailService = require("../services/email/email.service");
 const EmailStyle = require("../styles/email.style");
 
 /**

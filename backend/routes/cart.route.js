@@ -1,7 +1,6 @@
 const express = require("express");
 
 const CartController = require("../controllers/cart.controller");
-const MessageController = require("../controllers/message.controller");
 const tokenMiddleware = require('../middlewares/token.middleware');
 
 const router = express.Router();
@@ -34,8 +33,6 @@ router.post("/cart/checkout", tokenMiddleware, CartController.checkout);
 
 // Sends an email to the user/admin in case of checkout
 router.post('/cart/sendEmail', tokenMiddleware, CartController.sendMails);
-
-router.post('/sendMessage', tokenMiddleware, MessageController.sendMessage);
 
 // Gets the count of cart items of an user
 router.post('/cart/getCartCount', tokenMiddleware, CartController.countCartItems);

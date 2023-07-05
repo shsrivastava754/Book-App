@@ -1,7 +1,7 @@
 const CartModel = require("../database/schema/cart.schema");
 const BookModel = require("../database/schema/book.schema");
 const BookService = require("./book.service");
-const EmailService = require("./email.service");
+const EmailService = require("./email/email.service");
 const EmailStyle = require("../styles/email.style");
 
 /**

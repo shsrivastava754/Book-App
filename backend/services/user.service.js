@@ -2,7 +2,7 @@ const UserModel = require("../database/schema/user.schema");
 const BookModel = require("../database/schema/book.schema");
 const OtpModel = require("../database/schema/otp.schema");
 const bcrypt = require("bcrypt");
-const OtpEmailService = require("./otpEmail.service");
+const OtpEmailService = require("./email/otpEmail.service");
 
 /**
  * Class for users service

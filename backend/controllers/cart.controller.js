@@ -1,5 +1,5 @@
 const CartService = require("../services/cart.service");
-const EmailService = require("../services/email.service");
+const EmailService = require("../services/email/email.service");
 
 /**
  * Controller class for handling operations related to the user cart

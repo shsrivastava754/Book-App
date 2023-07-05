@@ -3,7 +3,9 @@
 The book app built using the MERN stack (MongoDB, Express.js, React.js, Node.js) is a comprehensive application that allows users to search for, view, and manage books.
 
 Before you begin, make sure you have the following prerequisites installed on your machine:
+
 Node.js: Install the latest stable version of Node.js from the official website: https://nodejs.org
+
 Git: Install the latest stable version of Git from the official website: https://git-scm.com/downloads
 
 Steps for setup of the project:

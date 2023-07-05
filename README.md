@@ -33,7 +33,7 @@ Steps for setup of the project:
 4) Start the backend server by running the following command:
    npm start
 
-# The backend server will start running on the specified port.
+The backend server will start running on the specified port.
 
 # Step 3: Set up the Frontend (React.js)
 1) Change the current working directory to the project's frontend folder by writing following line into the terminal:
@@ -51,7 +51,7 @@ Steps for setup of the project:
 4) Start the frontend development server by running the following command:
    npm start
 
-# The frontend server will start running on http://localhost:3000 and connect to the backend server.
+The frontend server will start running on http://localhost:3000 and connect to the backend server.
 
 # Step 4: Database setup
 1) Install mongoDb compass on your system. Download link: https://www.mongodb.com/try/download/compass

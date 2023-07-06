@@ -46,7 +46,7 @@ The backend server will start running on the specified port.
 
 The frontend server will start running on http://localhost:3000 and connect to the backend server.
 
-# Step 4: Database and user setup
+# Step 4: Database and User Setup
 1) Create a new database on the Atlas MongoDB page: https://cloud.mongodb.com/
 
 2) Provide the obtained URI of the database to the .env file at backend.

@@ -25,13 +25,8 @@ Steps for setup of the project:
 2) Install the dependencies by running the following command:
    npm install
 
-3) Create a .env file in the backend folder and define the following environment variables:
-   PORT: <backend_server_port>, 
-   MONGO_URI: <mongodb_connection_uri>, 
-   EMAIL: <email_used_for_using_mail_services>, 
-   PASSWORD: <app_password_generated_by_2_step_authentication>, 
-   SECRET_KEY: <secret_key_for_generating_jwt_token_on_login>
-
+3) Create a .env file in the backend folder and copy the entire text written in "sample.env" file present in the backend folder. Paste the copied text into the       .env file created. Replace the variables by respective information.
+   
 4) Start the backend server by running the following command:
    npm start
 
@@ -44,25 +39,24 @@ The backend server will start running on the specified port.
 2) Install the dependencies by running the following command:
    npm install
 
-3) Create a .env file in the frontend folder and define the following environment variable:
-   REACT_APP_API_URL = http://localhost:<backend_server_port> , 
-   REACT_APP_GOOGLE_CLIENT_ID = <Client_Id_obtained_from_the_google_cloud_services>
-   
-   Make sure to replace <backend_server_port> with the actual port number on which the backend server is running.
+3) Create a .env file in the backend folder and copy the entire text written in "sample.env" file present in the backend folder. Paste the copied text into the       .env file created. Replace the variables by respective information.
 
 4) Start the frontend development server by running the following command:
    npm start
 
 The frontend server will start running on http://localhost:3000 and connect to the backend server.
 
-# Step 4: Database setup
-1) Install mongoDb compass on your system. Download link: https://www.mongodb.com/try/download/compass
-   # OR
-   Create a new database on the Atlas MongoDB page: https://cloud.mongodb.com/
+# Step 4: Database and user setup
+1) Create a new database on the Atlas MongoDB page: https://cloud.mongodb.com/
 
 2) Provide the obtained URI of the database to the .env file at backend.
    Example: MONGO_URI = "mongodb://127.0.0.1:27017/myDatabase"
 
+3) i) Change the current working directory to the project's frontend folder by writing following line into the terminal:
+      cd <project_folder>/backend
+   ii) Write following line of code to register the admin user into the database:
+      npm run setup
+   
 # Step 5: Open the Application
 1) Open your web browser and visit http://localhost:3000.
 

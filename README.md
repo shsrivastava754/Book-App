@@ -52,7 +52,7 @@ The frontend server will start running on http://localhost:3000 and connect to t
 2) Provide the obtained URI of the database to the .env file at backend.
    Example: MONGO_URI = "mongodb://127.0.0.1:27017/myDatabase"
 
-3) i) Change the current working directory to the project's frontend folder by writing following line into the terminal:<br>
+3) i) Change the current working directory to the project's backend folder by writing following line into the terminal:<br>
       cd <project_folder>/backend <br>
    ii) Write following line of code to register the admin user into the database:
       npm run setup

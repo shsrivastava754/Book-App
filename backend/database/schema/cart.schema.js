@@ -40,6 +40,9 @@ const CartSchema = new mongoose.Schema({
 
   // Email of the user that added in the cart
   userEmail: String,
+
+  // Status of the book
+  status: String
 },{ timestamps: true });
 
 const Books = new mongoose.model("Cart", CartSchema);

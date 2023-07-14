@@ -142,8 +142,8 @@ const Book = (props) => {
    * @param {Object} book
    */
   const addToCart = async (book) => {
+    await CartService.addToCart(book);
     if (compareBook()) {
-      await CartService.addToCart(book);
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -169,14 +169,24 @@ const Book = (props) => {
       props.book._id
     );
 
-    if(!result){
-      setDisabled(false);
-    }
 
-    if (result && props.book.quantity > 0 && props.book.donatedById!== JSON.parse(Cookies.get('userToken'))._id) {
-      setDisabled(false);
-    } else {
+    // If quantity has not reached the maximum limit
+    if(props.book.quantity <= 0){
       setDisabled(true);
+    } 
+    
+    // If the quantity has reached maximum limit
+    else {
+      // If book is donated by current logged in user then disable the button
+      if(props.book.donatedById == JSON.parse(Cookies.get('userToken'))._id){
+        setDisabled(true);
+      } else {
+        if(result){
+          setDisabled(false);
+        } else {
+          setDisabled(true);
+        }
+      }
     }
 
     return result;

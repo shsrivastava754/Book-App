@@ -139,6 +139,23 @@ class CartService{
     }
   };
 
+  /**
+   * Updating the quantities of the items in everyone's cart
+   * @returns Result after updating the quantities in the cart
+   */
+  async updateQuantitiesInCart () {
+    try {
+      let userId = JSON.parse(Cookies.get('userToken'))._id;
+      let result = await axios.post(
+        `${process.env.REACT_APP_API_URL}/cart/updateQuantitiesInCart/${userId}`,
+        { token: Cookies.get('token') }
+      );
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 /**
  * Increments the quantity at the backend
  * @param {String} itemId

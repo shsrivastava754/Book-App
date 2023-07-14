@@ -107,7 +107,30 @@ const Profile = () => {
               <div className="card">
                 <div className="card-body">
                   {
-                    donations>1?<h5 className="card-title">{donations} donations</h5>:<h5 className="card-title">{donations} donation</h5>
+                    donations>1?
+                    <div className="cart-heading card-title">
+                      <div className="left-heading">
+                        <h5>{donations} donations</h5>
+                      </div>
+                      {
+                        JSON.parse(Cookies.get('userToken'))._id===id?
+                        <div className="right-heading" style={{ width: 600 }}>
+                          <span className="cartTotal" onClick={()=>getDonations()}>View Donations</span>
+                        </div> : null
+                      }
+                    </div>
+                    :
+                    <div className="cart-heading card-title">
+                      <div className="left-heading">
+                        <h5>{donations} donation</h5>
+                      </div>
+                      {
+                        JSON.parse(Cookies.get('userToken'))._id===id?
+                        <div className="right-heading" style={{ width: 600 }}>
+                          <span className="cartTotal" onClick={()=>getDonations()}>View Donations</span>
+                        </div> : null
+                      }
+                    </div>
                   }
                   {
                     JSON.parse(Cookies.get('userToken'))._id===id?
@@ -115,9 +138,6 @@ const Profile = () => {
                     <p className="card-text">
                     Your act of kindness and thoughtfulness is truly inspiring, and we are incredibly grateful for your support.
                     </p>
-                    <button className="btn" onClick={()=>{getDonations()}}>
-                      View Donations
-                    </button>
                   </>:
                   <p className="card-text">
                   Their contribution is truly remarkable and greatly appreciated. With their donation, we can enhance our library and provide more resources to our community.
@@ -131,7 +151,32 @@ const Profile = () => {
               <div className="card">
                 <div className="card-body">
                   {
-                    orders>1?<h5 className="card-title">{orders} orders</h5>:<h5 className="card-title">{orders} order</h5>
+                    orders>1?
+                    <div className="cart-heading card-title">
+                      <div className="left-heading">
+                        <h5>{orders} orders</h5>
+                      </div>
+                      {
+                        JSON.parse(Cookies.get('userToken'))._id===id?
+                        <div className="right-heading" style={{ width: 600 }}>
+                          <span className="cartTotal" onClick={()=>getOrders()}>View Orders</span>
+                        </div> : null
+                      }
+                      
+                    </div>
+                    :
+                    <div className="cart-heading card-title">
+                      <div className="left-heading">
+                        <h5>{orders} order</h5>
+                      </div>
+
+                      {
+                        JSON.parse(Cookies.get('userToken'))._id===id?
+                        <div className="right-heading" style={{ width: 600 }}>
+                          <span className="cartTotal" onClick={()=>getOrders()}>View Orders</span>
+                        </div> : null
+                      }
+                    </div>
                   }
                   {
                     JSON.parse(Cookies.get('userToken'))._id===id?
@@ -139,9 +184,6 @@ const Profile = () => {
                     <p className="card-text">
                     We strive to provide a seamless and enjoyable shopping experience, and we are delighted that you chose our website to fulfill your needs.
                     </p>
-                    <button className="btn" onClick={()=>{getOrders()}}>
-                      View Order History
-                    </button>
                   </>:
                   <p className="card-text">
                    It's always exciting to see our users engaged in exploring new literature and expanding their knowledge.

@@ -6,6 +6,7 @@ import CartService from '../../services/cart.service';
 
 import { Dropdown } from 'react-bootstrap';
 import Cookies from 'js-cookie';
+import { metadata } from '../../metadata/metadata';
 
 /**
  * Function that returns the navbar component
@@ -70,7 +71,7 @@ const Header = forwardRef((props,ref) => {
   return (
     <nav className="navbar navbar-expand-lg sticky-top">
         <div className="container-fluid">
-          <Link className='navbar-brand' to='/books'>Book App</Link>
+          <Link className='navbar-brand' to='/books'>{metadata.appName}</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>

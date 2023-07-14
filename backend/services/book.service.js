@@ -164,10 +164,16 @@ class BookService {
    */
   static async updateQuantities(bookId, quantity) {
     const book = await BookModel.findOne({ _id: bookId });
-
-    const updatedBook = await BookModel.findByIdAndUpdate(bookId, {
-      quantity: book.quantity - quantity,
-    });
+    let updatedBook;
+    if(book.quantity==quantity){
+      updatedBook = await BookModel.findByIdAndUpdate(bookId,{
+        quantity: 0
+      });
+    } else {
+      updatedBook = await BookModel.findByIdAndUpdate(bookId, {
+        quantity: book.quantity - quantity,
+      });
+    }
 
     updatedBook.save();
   }

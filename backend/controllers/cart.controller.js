@@ -31,7 +31,7 @@ class CartController {
       }
 
       if (!cartItem) {
-        return res.status(500).json({ message: "Not added to cart" });
+        return res.status(501).json({ message: "Not added to cart" });
       }
 
       return res.status(201).json({ cartItem });
@@ -177,6 +177,16 @@ class CartController {
   static async sendMails(req, res) {
     const result = await CartService.sendMails(req.body);
     res.status(201).json({ result });
+  }
+
+  static async updateQuantitiesInCart(req,res) {
+    try {
+      let result = await CartService.updateQuantitiesInCart(req.params.userId);
+
+      return res.status(201).json({ result });
+    } catch(error) {
+      return res.status(501).json({ error });
+    }
   }
 }
 

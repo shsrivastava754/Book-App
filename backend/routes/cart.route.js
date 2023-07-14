@@ -19,6 +19,9 @@ router.post("/cart/clearCart", tokenMiddleware, CartController.clearCart);
 // Change the quantity of items in cart in case of increment and decrement
 router.put("/cart/updateQuantity/:userId/:itemId", tokenMiddleware, CartController.changeQuantity);
 
+// Change the quantities of books in the cart collection when user checks out
+router.post("/cart/updateQuantitiesInCart/:userId", tokenMiddleware, CartController.updateQuantitiesInCart);
+
 // Deletes and item from the cart
 router.delete("/cart/:itemId/:userId", tokenMiddleware, CartController.deleteItem);
 

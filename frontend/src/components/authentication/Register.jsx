@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, React } from "react";
+import { useState, React, useEffect } from "react";
 
 import "./authenticationStyle.scss";
-import bg6 from "../../images/bg6.jpg";
+import { metadata } from '../../metadata/metadata';
 
 import UserService from "../../services/user.service";
 
@@ -23,6 +23,10 @@ const Register = () => {
   const [disabled, setDisabled] = useState(true);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setBackground();
+  }, []);
 
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
@@ -139,46 +143,41 @@ const Register = () => {
     }
   };
 
-  function setBackground(bg) {
+  function setBackground() {
     let body = document.querySelector("body");
-    body.style = `background: url(${bg}) rgba(255, 0, 150, 0.3);background-size:cover;background-repeat:no-repeat;background-blend-mode: multiply;`;
+    body.style = `background-color: rgba(195, 207, 216, 0.873);background-size:cover;background-repeat:no-repeat;`;
   }
-
-  setBackground(bg6);
 
   return (
     <>
+    <div className="container auth-container">
+      <div className="row">
+      <div className="col-sm-6 left">
+        <h1>{metadata.appName}</h1>
+        <h2>{metadata.appTagline}</h2>
+        <img src={metadata.appSvg} alt="donation image" className="mt-5 img-responsive" />
+      </div>
+      <div className="col-sm-6 right">
       <div className="register-card">
         <h2>Register</h2>
         <h3>Enter your credentials</h3>
         <form className="register-form" onSubmit={register} autoComplete="off">
-          <input
-            type="text"
-            placeholder="Name"
-            name="name"
-            id="name"
-            value={name}
-            onChange={checkName}
-          />
-          <input
-            type="text"
-            placeholder="Username"
-            name="username"
-            id="username"
-            value={username}
-            onChange={checkUsername}
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            name="email"
-            id="email"
-            value={email}
-            onChange={checkEmail}
-          />
+          <div class="form-floating mb-3">
+            <input type="text" placeholder="Name" name="name" id="name" value={name} onChange={checkName} className="form-control" />
+            <label htmlFor="name">Name</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" placeholder="Username" name="username" id="username" value={username} onChange={checkUsername} className="form-control" />
+            <label htmlFor="username">Username</label>
+          </div>
+          <div class="form-floating">
+            <input type="email" placeholder="Email" name="email" id="email" value={email} onChange={checkEmail} className="form-control" />
+            <label htmlFor="email">Email</label>
+          </div>
           <p className="text-danger m-0 p-0">{emailError}</p>
-          <div className="input-container">
-            <input className="input-field" type="password" placeholder="Password" name="password" id="password" value={password} onChange={checkPassword}/>
+          <div className="input-container form-floating">
+            <input className="input-field form-control" type="password" placeholder="Password" name="password" id="password" value={password} onChange={checkPassword}/>
+            <label htmlFor="password">Password</label>
             <span onClick={handleToggle}><i className="fa-solid fa-eye-slash end-button" id="toggle"></i></span>
           </div>
           <Link to={"/login"}>Already have an account?</Link>
@@ -187,6 +186,9 @@ const Register = () => {
           </button>
         </form>
       </div>
+      </div>
+      </div>
+    </div>
       <ToastContainer />
     </>
   );

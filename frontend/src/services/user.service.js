@@ -69,15 +69,12 @@ async fetchAllOrders(filters){
 
 /**
  * Sends Axios request to the backend for login
- * @param {String} username
+ * @param {String} email
  * @param {String} password
  * @returns
  */
-async loginUser (username, password) {
-  let res = await axios.post(`${process.env.REACT_APP_API_URL}/login`, {
-    username: username,
-    password: password,
-  });
+async loginUser (email, password) {
+  let res = await axios.post(`${process.env.REACT_APP_API_URL}/login`, {email, password});
   return res;
 };
 
@@ -129,6 +126,7 @@ async postGoogleUser (userObj) {
     .post(`${process.env.REACT_APP_API_URL}/registerGoogleUser`, userObj);
     return res;
   } catch (error) {
+    console.log(error);
     toast.error("User already exists");
   }
 };

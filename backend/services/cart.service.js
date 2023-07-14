@@ -3,6 +3,7 @@ const BookModel = require("../database/schema/book.schema");
 const BookService = require("./book.service");
 const EmailService = require("./email/email.service");
 const EmailStyle = require("../styles/email.style");
+const BooksModel = require("../database/schema/book.schema");
 
 /**
  * Class for Cart Services
@@ -46,10 +47,13 @@ class CartService {
    */
   static async addToCart(body) {
     body.quantity = 1;
-    const cartItem = new CartModel(body);
-
-    await cartItem.save();
-    return cartItem;
+    const book = await BookModel.findOne({_id:body.bookId});
+    if(book.quantity>0){
+      body.status = "Available";
+      const cartItem = new CartModel(body);
+      await cartItem.save();
+      return cartItem;
+    }
   }
 
   /**
@@ -103,8 +107,9 @@ class CartService {
     const book = await BookModel.findOne({ _id: bookId });
     const cartItem = await CartModel.findOne({
       userId: userId,
-      bookId: bookId,
+      bookId: bookId
     });
+
     let res;
     if (cartItem != null) {
       if (cartItem.quantity < book.quantity) {
@@ -145,10 +150,55 @@ class CartService {
    * @param {String} userId
    */
   static async checkout(userId) {
-    const cartItems = await CartModel.find({ userId: userId });
-    await cartItems.map(async (item) => {
-      // Update the quantity of each book in the books collection
-      await BookService.updateQuantities(item.bookId, item.quantity);
+    try {
+      const cartItems = await CartModel.find({ userId: userId, status: "Available" });
+
+      await cartItems.map(async (item) => {
+
+        // Find the book in the books collection
+        const originalBook = await BookModel.findOne({ _id: item.bookId });
+
+        // Take out its quantity
+        const originalBookQuantity = originalBook.quantity;
+
+        // Update the quantity of book in the books collection
+        await BookService.updateQuantities(item.bookId, item.quantity);
+
+        // Now update the quantities of the book in everyone's cart
+        await this.updateQuantities(item,userId,originalBookQuantity);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /**
+   * Updates the quantities of book in everyone's cart
+   * @param {Object} item 
+   * @param {String} userId 
+   * @param {Number} originalBookQuantity 
+   */
+  static async updateQuantities(item,userId,originalBookQuantity){
+
+    // All the books in cart with bookId as item.bookId
+    const booksInCart = await CartModel.find( {bookId: item.bookId} );
+
+    // Updating the quantities of books in cart
+    await booksInCart.map(async (book)=>{
+      let cartItem = await CartModel.findOne({ _id: book._id});
+      if(cartItem.userId!==userId){
+
+        // If someone purchased more amount of books than the amount present in someone's cart 
+        // Example: If someone purchased 10 books, and a guy has just 5 books in his cart 
+
+        if(originalBookQuantity - item.quantity === 0){
+          cartItem.status  = "Sold out";
+        } else if(originalBookQuantity - item.quantity < cartItem.quantity){
+          cartItem.quantity = originalBookQuantity - item.quantity;
+        }
+
+        cartItem.save();
+      }
     });
   }
 
@@ -200,7 +250,7 @@ class CartService {
     // Find the cart items of the user
     const cartItems = await CartModel.find(
       { userId: body.userId },
-      { _id: 0, title: 1, author: 1, quantity: 1, sale_price: 1 }
+      { _id: 0, title: 1, author: 1, quantity: 1, sale_price: 1, status: 1 }
     );
 
     let tableData = [];
@@ -211,9 +261,12 @@ class CartService {
         Title: item.title,
         Author: item.author,
         Quantity: item.quantity,
-        Price: item.sale_price,
+        Price: item.sale_price
       };
-      tableData.push(obj);
+
+      if(item.status=="Available"){
+        tableData.push(obj);
+      }
     });
 
     const userSubject = "Your Purchase on the Book App";

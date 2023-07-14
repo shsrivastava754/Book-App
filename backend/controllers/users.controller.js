@@ -76,7 +76,7 @@ class UserController {
   static async login(req, res) {
     try {
       // First find the user in the users collection
-      const user = await UserService.findUserByUsername(req.body.username);
+      const user = await UserService.findUserByEmail(req.body.email);
 
       // If user does not exists then return 500 internal server error
       if (!user) {
@@ -169,7 +169,7 @@ class UserController {
   static async registerGoogleUser(req, res) {
     try {
       // Check if the user already exists or not
-      const user = await UserService.findUserByUsername(req.body.username);
+      const user = await UserService.findUserByEmail(req.body.email);
       
       // If user exists the return a message
       if (user) {

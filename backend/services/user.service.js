@@ -59,6 +59,26 @@ class UsersService {
   }
 
   /**
+   * Function to return a user from collection
+   * @param {String} email
+   * @returns {Object} user
+   */
+  static async findUserByEmail(email) {
+    const user = await UserModel.findOne({ email });
+    return user;
+  }
+
+  /**
+   * Function to return a user from collection
+   * @param {String} email
+   * @returns {Object} user
+   */
+  static async findUserByEmail(email) {
+    const user = await UserModel.findOne({ email });
+    return user;
+  }
+
+  /**
    * Function to register a new user
    * @param {Object} body
    * @returns {Object} an object of the added user

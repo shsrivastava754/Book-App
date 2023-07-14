@@ -104,6 +104,7 @@ const Cart = () => {
                   <th scope="col">Price</th>
                   <th scope="col">Sale Price</th>
                   <th scope="col">Quantity</th>
+                  <th scope="col">Status</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>

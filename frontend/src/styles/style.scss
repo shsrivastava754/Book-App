@@ -706,6 +706,25 @@ footer {
   justify-content: space-between;
 }
 
+.statsContainer .card-title h5{
+  font-weight: 700;
+  color: $primary-color;
+}
+
+.statsContainer .card-title .left-heading{
+  width: 40%;
+}
+
+.statsContainer span.cartTotal{
+  padding: 6px;
+  cursor: pointer;
+}
+
+.statsContainer span.cartTotal:hover{
+  background-color: $primary-color;
+  color: $white;
+}
+
 /** ----------------------------Table CSS---------------------------- **/
 
 table {

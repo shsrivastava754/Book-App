@@ -29,6 +29,12 @@ const CartItem = (props) => {
     // Disable the decrement button for quantity if the quantity is already zero
     quantity===1?setDecrementDisabled(true):setDecrementDisabled(false);
 
+    if(props.item.status==="Sold out"){
+      setDecrementDisabled(true);
+      setIncrementDisabled(true);
+    }
+    
+
     // Disable the increment button for quantity if the quantity is maximum
     const checkMaximum = async()=>{
       const data = await CartService.getQuantities(props.item._id,props.item.bookId);
@@ -141,6 +147,14 @@ const CartItem = (props) => {
           >
             +
           </button>
+        </td>
+        <td onClick={() => {getBookDetails()}}>
+          {
+            props.item.status=="Available"?
+              <span className="statusAvailable">{props.item.status}</span>
+              :
+              <span className="statusSold">{props.item.status}</span>
+          }
         </td>
         <td>
           <OverlayTrigger

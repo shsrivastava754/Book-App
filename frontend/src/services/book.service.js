@@ -82,7 +82,6 @@ class BookService{
           token: Cookies.get('token')
         }
       );
-
       return result.data.result;
     } catch (error) {
       console.log(error);

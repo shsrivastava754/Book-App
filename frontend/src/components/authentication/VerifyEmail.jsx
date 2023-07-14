@@ -1,10 +1,9 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState, React, useRef } from "react";
+import { useState, React, useRef, useEffect } from "react";
 
 import "./authenticationStyle.scss";
 
 import UserService from "../../services/user.service";
-import bg6 from "../../images/bg6.jpg";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,6 +16,11 @@ const VerifyEmail = () => {
   const inputRefs = useRef([]);
   
   const location = useLocation();
+
+  useEffect(() => {
+    setBackground();
+  }, []);
+  
 
   const handleChange = (e, index) => {
     const { value } = e.target;
@@ -66,14 +70,11 @@ const VerifyEmail = () => {
 
     toast.success("OTP sent to your email");
   }
-  
 
-  function setBackground(bg) {
+  function setBackground() {
     let body = document.querySelector("body");
-    body.style = `background: url(${bg}) rgba(255, 0, 150, 0.3);background-size:cover;background-repeat:no-repeat;background-blend-mode: multiply;`;
+    body.style = `background-color: rgba(195, 207, 216, 0.873);background-size:cover;background-repeat:no-repeat;`;
   }
-
-  setBackground(bg6);
 
   return (
     <>

@@ -174,6 +174,8 @@ const Login = () => {
                       };
 
                       let res = await UserService.postGoogleUser(userObj);
+
+                      console.log(res);
                       const token = jwt_decode(res.data.token);
 
                       // Set the token into the cookies which expires in 2 hours

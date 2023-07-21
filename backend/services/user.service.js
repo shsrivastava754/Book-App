@@ -2,7 +2,7 @@ const UserModel = require("../database/schema/user.schema");
 const BookModel = require("../database/schema/book.schema");
 const OtpModel = require("../database/schema/otp.schema");
 const bcrypt = require("bcrypt");
-const OtpEmailService = require("./email/otpEmail.service");
+const CommonEmailService = require("./email/common.service");
 
 /**
  * Class for users service
@@ -55,16 +55,6 @@ class UsersService {
    */
   static async findUserByUsername(username) {
     const user = await UserModel.findOne({ username: username });
-    return user;
-  }
-
-  /**
-   * Function to return a user from collection
-   * @param {String} email
-   * @returns {Object} user
-   */
-  static async findUserByEmail(email) {
-    const user = await UserModel.findOne({ email });
     return user;
   }
 
@@ -193,10 +183,13 @@ class UsersService {
     const emailObj = {
       name: user.name,
       userEmail: user.email,
-      otp
+      otp,
+      from: `Book App ${process.env.EMAIL}`,
+      subject: "OTP Details for Book App",
+      html: `<p>Dear ${user.name},<br>Your One Time Password (OTP) for verification of your account is: <strong>${otp}.</strong> <br>The OTP will be valid for 10 minutes only. Click on resend otp for a new OTP.<br><br> Regards,<br> Book App</p>`
     };
 
-    const mailMessage = await OtpEmailService.sendEmail(emailObj);
+    const mailMessage = await CommonEmailService.sendEmail(emailObj);
 
     const newOtp = new OtpModel({
       email: user.email,

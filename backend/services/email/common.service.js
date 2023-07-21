@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-class OtpEmailService {
+class CommonEmailService {
   /**
    * Sends an email with OTP to users
    * @param {Object} emailObj
@@ -23,10 +23,10 @@ class OtpEmailService {
 
       // Messages for the mail
       const message = {
-        from: `Book App ${process.env.EMAIL}`,
+        from: emailObj.from,
         to: emailObj.userEmail,
-        subject: "OTP Details for Book App",
-        html: `<p>Dear ${emailObj.name},<br>Your One Time Password (OTP) for verification of your account is: <strong>${emailObj.otp}.</strong> <br>The OTP will be valid for 10 minutes only. Click on resend otp for a new OTP.<br><br> Regards,<br> Book App</p>`
+        subject: emailObj.subject,
+        html: emailObj.html
       };
 
       let result;
@@ -49,4 +49,4 @@ class OtpEmailService {
   }
 }
 
-module.exports = OtpEmailService;
+module.exports = CommonEmailService;
